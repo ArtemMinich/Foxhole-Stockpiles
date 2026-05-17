@@ -1,0 +1,1752 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #1e1e2e;
+      --surface: #313244;
+      --border:  #45475a;
+      --text:    #cdd6f4;
+      --subtext: #a6adc8;
+      --muted:   #6c7086;
+      --accent:  #cba6f7;
+      --green:   #a6e3a1;
+      --red:     #f38ba8;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #app {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ── Shared ── */
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .field { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--subtext);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus { border-color: var(--accent); }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .error-msg {
+      color: var(--red);
+      font-size: 12px;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    button {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-primary            { background: var(--accent); color: var(--bg); }
+    .btn-primary:disabled   { background: var(--border); color: var(--muted); cursor: not-allowed; }
+    .btn-secondary          { background: var(--surface); color: var(--subtext); border: 1px solid var(--border); }
+    .btn-secondary:hover    { opacity: 0.8; }
+    .btn-danger             { background: #45475a; color: var(--red); border: 1px solid var(--red); }
+
+    /* ── Preview chips (add mode) ── */
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      min-height: 28px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .chip.ok  { border-color: var(--green); color: var(--green); }
+    .chip.err { border-color: var(--red);   color: var(--red); }
+    .chip-label { opacity: 0.65; }
+
+    /* ── Add mode wrapper ── */
+    .add-wrapper {
+      padding: 10px 14px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Edit mode layout ── */
+    .edit-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .edit-header {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .stockpile-path {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle-group {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .toggle-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      background: transparent;
+      color: var(--subtext);
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .nonzero-count {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── Items table ── */
+    .table-container {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 1;
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    thead th.col-count { width: 90px; text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid #2a2a3c;
+      transition: background 0.1s;
+    }
+    tbody tr:hover { background: var(--surface); }
+    tbody tr.hidden { display: none; }
+    tbody tr.extra  { background: #2a2a1e; }
+
+    td.col-name {
+      padding: 6px 12px;
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    td.col-name a {
+      color: var(--text);
+      text-decoration: none;
+    }
+    td.col-name a:hover { color: var(--accent); text-decoration: underline; }
+    td.col-name .extra-badge {
+      font-size: 10px;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    td.col-count {
+      padding: 4px 12px;
+      width: 90px;
+      text-align: right;
+    }
+    td.col-count input[type="number"] {
+      width: 70px;
+      padding: 4px 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: inherit;
+      text-align: right;
+      outline: none;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+    td.col-count input[type="number"]::-webkit-outer-spin-button,
+    td.col-count input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; appearance: none; }
+    td.col-count input[type="number"]:focus { border-color: var(--accent); }
+    td.col-count input[type="number"].nonzero { border-color: var(--green); color: var(--green); }
+
+    .loading { color: var(--muted); padding: 40px; text-align: center; }
+
+    /* ── FIR panel ── */
+    .fir-panel {
+      padding: 10px 16px 12px;
+      background: #23233a;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .fir-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .fir-panel textarea {
+      width: 100%;
+      height: 110px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      padding: 8px 10px;
+      resize: none;
+      outline: none;
+    }
+    .fir-panel textarea:focus { border-color: var(--accent); }
+    .fir-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .fir-status { font-size: 12px; min-height: 16px; }
+    .fir-status.ok  { color: var(--green); }
+    .fir-status.err { color: var(--red); }
+    .btn-sm { padding: 4px 10px; font-size: 11px; }
+    .btn-fir { background: #2a2a45; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-fir:hover { opacity: 0.85; }
+
+    /* ── Config mode ── */
+    .config-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 16px 0;
+      overflow: hidden;
+    }
+    .config-search {
+      margin-bottom: 10px;
+    }
+    .config-search input {
+      width: 100%;
+      padding: 7px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+    .config-search input:focus { border-color: var(--accent); }
+    .config-list {
+      flex: 1;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .config-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #2a2a3c;
+      font-size: 12px;
+    }
+    .config-item:last-child { border-bottom: none; }
+    .config-item:hover { background: var(--surface); }
+    .config-item.hidden { display: none; }
+    .config-item input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .config-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0 14px;
+      font-size: 12px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* ── Export / Import modes ── */
+    .export-wrapper, .import-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 16px 0;
+      overflow: hidden;
+    }
+
+    .json-output {
+      flex: 1;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      padding: 10px 12px;
+      resize: none;
+      outline: none;
+      overflow-y: auto;
+    }
+    .json-output:focus { border-color: var(--accent); }
+
+    .copy-status {
+      font-size: 12px;
+      color: var(--green);
+      min-height: 20px;
+      padding: 4px 0;
+      flex-shrink: 0;
+    }
+
+    .replace-row {
+      margin: 10px 0 4px;
+      flex-shrink: 0;
+    }
+    .replace-row label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--text);
+    }
+    .replace-row input[type="checkbox"] {
+      accent-color: var(--red);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .import-error {
+      font-size: 12px;
+      min-height: 20px;
+      padding: 4px 0;
+      flex-shrink: 0;
+    }
+
+    /* ── Category bar ── */
+    .category-bar {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      overflow-x: auto;
+    }
+    .category-bar::-webkit-scrollbar { height: 4px; }
+    .category-bar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .cat-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 7px;
+      border: 2px solid transparent;
+      background: var(--surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      flex-shrink: 0;
+      transition: border-color 0.1s;
+    }
+    .cat-btn:hover { border-color: var(--subtext); }
+    .cat-btn.active { border-color: var(--accent); background: rgba(203,166,247,0.12); }
+    .cat-btn img { width: 30px; height: 30px; object-fit: contain; }
+
+    /* ── Items grid ── */
+    .items-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+      gap: 6px;
+      align-content: start;
+    }
+
+    .item-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .item-card.hidden { display: none; }
+
+    .item-card img,
+    .item-img-placeholder {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .item-img-placeholder { background: var(--border); border-radius: 4px; }
+
+    .item-name {
+      flex: 1;
+      font-size: 9px;
+      color: var(--subtext);
+      text-align: center;
+      line-height: 1.3;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      width: 100%;
+    }
+    .unlisted-badge { font-size: 8px; color: var(--muted); display: block; }
+
+    .item-card input[type="number"] {
+      width: 100%;
+      padding: 3px 4px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: inherit;
+      text-align: center;
+      outline: none;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+    .item-card input[type="number"]::-webkit-outer-spin-button,
+    .item-card input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .item-card input[type="number"]:focus { border-color: var(--accent); }
+    .item-card input[type="number"].nonzero { border-color: var(--green); color: var(--green); }
+    .view-count {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Compare bar ── */
+    .compare-bar {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .compare-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-height: 78px;
+      overflow-y: auto;
+    }
+    .stockpile-chip {
+      padding: 3px 9px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--subtext);
+      font-size: 11px;
+      cursor: pointer;
+      transition: border-color 0.1s, color 0.1s;
+      white-space: nowrap;
+    }
+    .stockpile-chip.active { border-color: var(--green); color: var(--green); }
+    .stockpile-chip:hover  { opacity: 0.8; }
+
+
+    .item-card.compare-done { border-color: var(--green); opacity: 0.45; }
+    .cmp-done { color: var(--green); }
+    .cmp-need { color: var(--red);   }
+  </style>
+</head>
+<body>
+  <div id="app"><p class="loading">Loading…</p></div>
+
+  <script>
+    // ─── State ───────────────────────────────────────────────────────────────
+    var currentMode      = null;
+    var existingKeys     = [];
+    var currentStockpile = null;
+    var allItems         = [];
+    var allCategories    = [];
+    var selectedCategory = 'All';
+    var visibleFields    = [];
+    var exportStockpiles = [];
+    var viewItems    = {};
+    var currentTitle = '';
+    var currentRequest     = null;
+    var addRequestViewStock = false;
+    var selectedRefCategory = 'All';
+    var currentViewRequest = null;
+    var allStockpiles       = [];
+    var selectedStockpileIds = {};
+
+    // ─── Widget → iframe ──────────────────────────────────────────────────────
+    window.onmessage = function(event) {
+      var msg = event.data.pluginMessage;
+      if (!msg) return;
+      currentMode = msg.mode;
+
+      if (currentMode === 'add') {
+        existingKeys = msg.existingKeys || [];
+        allItems     = msg.allItems     || [];
+        renderAdd();
+      } else if (currentMode === 'edit') {
+        currentStockpile = msg.stockpile;
+        allItems         = msg.allItems || [];
+        allCategories    = msg.allCategories || [];
+        selectedCategory = 'All';
+        renderEdit();
+      } else if (currentMode === 'config') {
+        allItems      = msg.allItems || [];
+        visibleFields = msg.visibleFields || [];
+        renderConfig();
+      } else if (currentMode === 'export') {
+        exportStockpiles = msg.stockpiles || [];
+        renderExport();
+      } else if (currentMode === 'view') {
+        viewItems        = msg.items         || {};
+        currentTitle     = msg.title         || '';
+        allItems         = msg.allItems      || [];
+        allCategories    = msg.allCategories || [];
+        selectedCategory = 'All';
+        renderView();
+      }  else if (currentMode === 'import') {
+        renderImport();
+      } else if (currentMode === 'viewrequest') {
+        currentViewRequest   = msg.request       || {};
+        allStockpiles        = msg.allStockpiles || [];
+        allItems             = msg.allItems      || [];
+        allCategories        = msg.allCategories || [];
+        selectedCategory     = 'All';
+        selectedStockpileIds = {};
+        renderViewRequest();
+      } else if (currentMode === 'addrequest') {
+        allItems         = msg.allItems      || [];
+        allCategories    = msg.allCategories || [];
+        allStockpiles    = msg.allStockpiles || [];
+        selectedCategory = 'All';
+        currentRequest   = { id: uid(), name: '', description: '', items: {}, createdAt: 0, createdBy: '' };
+        renderAddRequest();
+      }
+    };
+
+    function send(data) {
+      parent.postMessage({ pluginMessage: data }, '*');
+    }
+
+    // =========================================================================
+    // ADD MODE
+    // =========================================================================
+
+    function renderAdd() {
+      document.getElementById('app').innerHTML = [
+        '<div class="add-wrapper">',
+          '<textarea id="firInput" class="json-output"',
+          '          placeholder="Speaking Woods - Tine - Seaport - SW-TN1,2026.05.17-10.40.28&#10;&quot;Dusk&quot; ce.III (Crate),0&#10;7.92mm (Crate),15&#10;..."',
+          '          spellcheck="false"></textarea>',
+          '<div id="parsePreview" style="margin-top:8px;min-height:32px"></div>',
+          '<div class="error-msg" id="errorMsg"></div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-secondary" id="cancelBtn">Cancel</button>',
+          '<button class="btn-primary"   id="saveBtn" disabled>Save</button>',
+        '</div>',
+      ].join('');
+      mountAdd();
+    }
+
+    function parseFIRHeader(line) {
+      line = (line || '').trim();
+      var lastComma = line.lastIndexOf(',');
+      var pathPart  = lastComma >= 0 ? line.substring(0, lastComma).trim() : line;
+      var datePart  = lastComma >= 0 ? line.substring(lastComma + 1).trim() : '';
+      var parts     = pathPart.split(' - ');
+      if (parts.length < 4) return null;
+      var region    = parts[0].trim();
+      var hex       = parts[1].trim();
+      var structure = parts[2].trim();
+      var code      = parts.slice(3).join(' - ').trim();
+      if (!region || !hex || !structure || !code) return null;
+      // Parse "2026.05.17-10.40.28"
+      var ts = 0;
+      var m  = datePart.match(/^(\d{4})\.(\d{2})\.(\d{2})-(\d{2})\.(\d{2})\.(\d{2})$/);
+      if (m) {
+        ts = new Date(
+          parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3]),
+          parseInt(m[4]), parseInt(m[5]), parseInt(m[6])
+        ).getTime();
+      }
+      return { region: region, hex: hex, structure: structure, code: code, ts: ts };
+    }
+
+    function mountAdd() {
+      var ta        = document.getElementById('firInput');
+      var preview   = document.getElementById('parsePreview');
+      var errorEl   = document.getElementById('errorMsg');
+      var saveBtn   = document.getElementById('saveBtn');
+      var cancelBtn = document.getElementById('cancelBtn');
+      var pending   = null;
+
+      setTimeout(function() { ta.focus(); }, 0);
+
+      function update() {
+        var text = ta.value.trim();
+        preview.innerHTML = '';
+        errorEl.textContent = '';
+        pending = null;
+        saveBtn.disabled = true;
+        if (!text) return;
+
+        var lines  = text.split('\n');
+        var header = parseFIRHeader(lines[0]);
+        if (!header) {
+          errorEl.textContent = 'Cannot parse first line — expected "Region - Hex - Structure - Code,date"';
+          return;
+        }
+
+        var items    = parseFIR(text);
+        var nonzero  = Object.keys(items).filter(function(k) { return items[k] > 0; }).length;
+        var nodeKey  = header.region + '|' + header.hex + '|' + header.structure + '|' + header.code;
+        var isUpdate = existingKeys.indexOf(nodeKey) !== -1;
+
+        preview.innerHTML = [
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">',
+            '<span style="font-size:12px;color:var(--text)">',
+              esc(header.region) + ' › ' + esc(header.hex) + ' › ' +
+              esc(header.structure) + ' › <strong>' + esc(header.code) + '</strong>',
+            '</span>',
+            '<span class="chip ' + (isUpdate ? 'ok' : '') + '">',
+              isUpdate ? 'update existing' : 'new',
+            '</span>',
+            '<span style="font-size:11px;color:var(--muted)">' + nonzero + ' non-zero items</span>',
+          '</div>',
+        ].join('');
+
+        pending = {
+          id: uid(), region: header.region, hex: header.hex,
+          structure: header.structure, code: header.code,
+          items: items, lastUpdated: header.ts || 0, lastEditedBy: '',
+        };
+        saveBtn.disabled = false;
+      }
+
+      ta.addEventListener('input', update);
+      ta.addEventListener('paste', function() { setTimeout(update, 0); });
+      ta.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !saveBtn.disabled) saveBtn.click();
+        if (e.key === 'Escape') cancelBtn.click();
+      });
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+      saveBtn.addEventListener('click', function() {
+        if (!pending) return;
+        send({ type: 'save', mode: 'add', payload: pending });
+      });
+    }
+
+    // =========================================================================
+    // EDIT MODE
+    // =========================================================================
+
+    function renderEdit() {
+      var sp = currentStockpile;
+      document.getElementById('app').innerHTML = [
+        '<div class="edit-wrapper">',
+          '<div class="category-bar" id="catBar"></div>',
+          '<div class="items-grid" id="itemsGrid"></div>',
+          '<div class="buttons">',
+            '<button class="btn-secondary" id="cancelBtn">Cancel</button>',
+            '<button class="btn-primary"   id="saveBtn">Save</button>',
+          '</div>',
+        '</div>',
+      ].join('');
+      buildCategoryBar();
+      buildItemsGrid();
+      mountEdit();
+    }
+
+    function buildCategoryBar() {
+      var bar = document.getElementById('catBar');
+      if (!bar) return;
+      bar.innerHTML = allCategories.map(function(cat) {
+        var active = cat.name === selectedCategory ? ' active' : '';
+        return '<button class="cat-btn' + active + '" data-cat="' + esc(cat.name) + '" title="' + esc(cat.name) + '">'+
+               '<img src="' + esc(cat.imgUrl) + '" alt="" loading="lazy"></button>';
+      }).join('');
+    }
+
+    function buildItemsGrid() {
+      var sp = currentStockpile;
+
+      var catByName = {};
+      var imgByName = {};
+      allItems.forEach(function(item) {
+        var k = normKey(item.name);
+        catByName[k] = item.category;
+        imgByName[k] = item.imgUrl || '';
+      });
+
+      var renderedExtras = {};
+      var html = '';
+
+      // Catalog items: only those with count > 0; render crate sibling right after
+      allItems.forEach(function(item) {
+        var key        = normKey(item.name);
+        var displayCat = item.category;
+        if (item.category === 'Vehicles')                  displayCat = 'Vehicles Non-Crate';
+        else if (item.category === 'Shippable Structures') displayCat = 'Shippable Structures Non-Crate';
+        var count = sp.items[key] !== undefined ? sp.items[key] : (sp.items[item.name] || 0);
+        if (count > 0) html += makeItemCard(key, item.imgUrl, count, displayCat, false);
+
+        if (item.category === 'Vehicles' || item.category === 'Shippable Structures') {
+          var crateKey   = key + ' (Crate)';
+          var crateCount = sp.items[crateKey];
+          if (crateCount !== undefined && crateCount > 0) {
+            html += makeItemCard(crateKey, item.imgUrl, crateCount, item.category, false);
+            renderedExtras[crateKey] = true;
+          }
+        }
+      });
+
+      // Truly unlisted extras
+      Object.keys(sp.items).forEach(function(storedName) {
+        if (catByName[normKey(storedName)]) return;
+        if (renderedExtras[storedName])     return;
+        var count = sp.items[storedName] || 0;
+        if (count <= 0) return;
+        html += makeItemCard(storedName, '', count, 'All', true);
+      });
+
+      document.getElementById('itemsGrid').innerHTML = html;
+      filterItems();
+    }
+
+        function makeItemCard(name, imgUrl, count, category, isExtra) {
+      var inputVal = count > 0 ? count : '';
+      var inputCls = count > 0 ? ' class="nonzero"' : '';
+      var cardCls  = '';
+      var imgTag   = imgUrl ? '<img src="' + esc(imgUrl) + '" alt="" loading="lazy">' : '<div class="item-img-placeholder"></div>';
+      var extra    = isExtra ? '<span class="unlisted-badge">(unlisted)</span>' : '';
+      return '<div class="item-card' + cardCls + '" data-cat="' + esc(category) + '">'+
+             imgTag +
+             '<span class="item-name">' + esc(name) + extra + '</span>'+
+             '<input type="number" min="0" placeholder="0" data-item-name="' + esc(name) + '" value="' + esc(String(inputVal)) + '"' + inputCls + '>'+
+             '</div>';
+    }
+
+    function filterItems() {
+      document.querySelectorAll('#itemsGrid .item-card, #refItemsGrid .item-card').forEach(function(card) {
+        var cat = card.getAttribute('data-cat');
+        if (selectedCategory === 'All' || cat === selectedCategory) card.classList.remove('hidden');
+        else card.classList.add('hidden');
+      });
+    }
+
+    function mountEdit() {
+      var grid      = document.getElementById('itemsGrid');
+      var catBar    = document.getElementById('catBar');
+      var cancelBtn = document.getElementById('cancelBtn');
+      var saveBtn   = document.getElementById('saveBtn');
+      catBar.addEventListener('click', function(e) {
+        var btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        selectedCategory = btn.getAttribute('data-cat');
+        catBar.querySelectorAll('.cat-btn').forEach(function(b) {
+          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+        });
+        filterItems();
+      });
+      grid.addEventListener('input', function(e) {
+        if (e.target.tagName !== 'INPUT') return;
+        var count = parseInt(e.target.value) || 0;
+        var card  = e.target.parentElement;
+        if (count > 0) { e.target.classList.add('nonzero');        }
+        else           { e.target.classList.remove('nonzero');  }
+      });
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+      saveBtn.addEventListener('click', function() {
+        var newItems = {};
+        grid.querySelectorAll('input[data-item-name]').forEach(function(inp) {
+          var count = parseInt(inp.value) || 0;
+          if (count > 0) newItems[inp.getAttribute('data-item-name')] = count;
+        });
+        send({ type: 'save', mode: 'edit', payload: { id: currentStockpile.id, items: newItems } });
+      });
+    }
+
+        // =========================================================================
+    // CONFIG MODE
+    // =========================================================================
+
+    function renderConfig() {
+      document.getElementById('app').innerHTML = [
+        '<div class="config-wrapper">',
+          '<h2>Configure Display</h2>',
+          '<div class="config-search">',
+            '<input id="cfgSearch" type="text" placeholder="Filter items…" autocomplete="off">',
+          '</div>',
+          '<div class="config-list" id="cfgList"></div>',
+          '<div class="config-footer">',
+            '<span id="cfgCount"></span>',
+            '<button class="btn-sm btn-secondary" id="cfgClearBtn">Clear all</button>',
+          '</div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-secondary" id="cancelBtn">Cancel</button>',
+          '<button class="btn-primary"   id="saveBtn">Save</button>',
+        '</div>',
+      ].join('');
+      buildConfigList();
+      mountConfig();
+    }
+
+    function buildConfigList() {
+      var checkedSet = {};
+      visibleFields.forEach(function(f) { checkedSet[f] = true; });
+
+      var html = allItems.map(function(item) {
+        var checked = checkedSet[item.name] ? ' checked' : '';
+        return '<label class="config-item">'
+             + '<input type="checkbox" value="' + esc(item.name) + '"' + checked + '>'
+             + '<span>' + esc(item.name) + '</span>'
+             + '</label>';
+      }).join('');
+
+      document.getElementById('cfgList').innerHTML = html;
+      updateCfgCount();
+    }
+
+    function mountConfig() {
+      var search    = document.getElementById('cfgSearch');
+      var list      = document.getElementById('cfgList');
+      var clearBtn  = document.getElementById('cfgClearBtn');
+      var cancelBtn = document.getElementById('cancelBtn');
+      var saveBtn   = document.getElementById('saveBtn');
+
+      setTimeout(function() { search.focus(); }, 0);
+
+      search.addEventListener('input', function() {
+        var q = search.value.toLowerCase();
+        var items = list.querySelectorAll('.config-item');
+        items.forEach(function(el) {
+          var name = el.querySelector('span').textContent.toLowerCase();
+          if (q === '' || name.indexOf(q) !== -1) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        });
+      });
+
+      list.addEventListener('change', updateCfgCount);
+
+      clearBtn.addEventListener('click', function() {
+        list.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+          cb.checked = false;
+        });
+        updateCfgCount();
+      });
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+
+      saveBtn.addEventListener('click', function() {
+        var selected = [];
+        list.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
+          selected.push(cb.value);
+        });
+        send({ type: 'save', mode: 'config', payload: { visibleFields: selected } });
+      });
+    }
+
+    function updateCfgCount() {
+      var n  = document.querySelectorAll('#cfgList input[type="checkbox"]:checked').length;
+      var el = document.getElementById('cfgCount');
+      if (el) el.textContent = n + ' field' + (n === 1 ? '' : 's') + ' selected';
+    }
+
+    // =========================================================================
+    // EXPORT MODE
+    // =========================================================================
+
+    function renderExport() {
+      var n = exportStockpiles.length;
+      document.getElementById('app').innerHTML = [
+        '<div class="export-wrapper">',
+          '<h2>Export JSON</h2>',
+          '<p class="hint" style="margin-bottom:10px">',
+            n + ' stockpile' + (n === 1 ? '' : 's') + ' — copy the JSON below to back up your data.',
+          '</p>',
+          '<textarea class="json-output" id="jsonOutput" readonly></textarea>',
+          '<div class="copy-status" id="copyStatus"></div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-primary" id="copyBtn">Copy to Clipboard</button>',
+          '<button class="btn-secondary" id="closeBtn">Close</button>',
+        '</div>',
+      ].join('');
+
+      document.getElementById('jsonOutput').value = JSON.stringify(exportStockpiles, null, 2);
+      mountExport();
+    }
+
+    function mountExport() {
+      var copyBtn    = document.getElementById('copyBtn');
+      var closeBtn   = document.getElementById('closeBtn');
+      var copyStatus = document.getElementById('copyStatus');
+      var ta         = document.getElementById('jsonOutput');
+
+      copyBtn.addEventListener('click', function() {
+        ta.select();
+        ta.setSelectionRange(0, 99999);
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) {}
+        if (ok) {
+          copyStatus.textContent = 'Copied!';
+          setTimeout(function() { copyStatus.textContent = ''; }, 2000);
+        } else {
+          copyStatus.style.color = 'var(--red)';
+          copyStatus.textContent = 'Copy failed — select all and copy manually (Ctrl+A, Ctrl+C).';
+        }
+      });
+
+      closeBtn.addEventListener('click', function() { send({ type: 'close' }); });
+    }
+
+    // =========================================================================
+    // IMPORT MODE
+    // =========================================================================
+
+    function renderImport() {
+      document.getElementById('app').innerHTML = [
+        '<div class="import-wrapper">',
+          '<h2>Import JSON</h2>',
+          '<p class="hint" style="margin-bottom:10px">',
+            'Paste exported JSON. Merge adds/updates stockpiles by ID; replace deletes everything first.',
+          '</p>',
+          '<textarea class="json-output" id="importInput"',
+          '          placeholder="Paste JSON here…" spellcheck="false"></textarea>',
+          '<div class="replace-row">',
+            '<label>',
+              '<input type="checkbox" id="replaceChk">',
+              'Replace all existing stockpiles (destructive)',
+            '</label>',
+          '</div>',
+          '<div class="import-error" id="importError"></div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-secondary" id="cancelBtn">Cancel</button>',
+          '<button class="btn-primary"   id="importBtn" disabled>Import</button>',
+        '</div>',
+      ].join('');
+      mountImport();
+    }
+
+    function mountImport() {
+      var ta         = document.getElementById('importInput');
+      var importBtn  = document.getElementById('importBtn');
+      var cancelBtn  = document.getElementById('cancelBtn');
+      var replaceChk = document.getElementById('replaceChk');
+      var errorEl    = document.getElementById('importError');
+      var parsed     = null;
+
+      setTimeout(function() { ta.focus(); }, 0);
+
+      ta.addEventListener('input', function() {
+        var text = ta.value.trim();
+        errorEl.textContent = '';
+        errorEl.style.color = 'var(--red)';
+        parsed = null;
+        importBtn.disabled = true;
+        if (!text) return;
+        var data;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          errorEl.textContent = 'JSON parse error: ' + e.message;
+          return;
+        }
+        if (!Array.isArray(data)) {
+          errorEl.textContent = 'Error: expected a JSON array at the top level.';
+          return;
+        }
+        for (var i = 0; i < data.length; i++) {
+          var s = data[i];
+          if (!s || !s.id || !s.code || !s.region || !s.hex || !s.structure) {
+            errorEl.textContent = 'Error: item #' + i + ' is missing required fields (id, code, region, hex, structure).';
+            return;
+          }
+        }
+        parsed = data;
+        errorEl.style.color = 'var(--green)';
+        errorEl.textContent = data.length + ' stockpile' + (data.length === 1 ? '' : 's') + ' parsed OK.';
+        importBtn.disabled = false;
+      });
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+
+      importBtn.addEventListener('click', function() {
+        if (!parsed) return;
+        send({ type: 'save', mode: 'import', payload: {
+          stockpiles: parsed,
+          replace:    replaceChk.checked,
+        }});
+      });
+    }
+
+    // =========================================================================
+    // VIEW MODE (read-only sum)
+    // =========================================================================
+
+    function renderView() {
+      document.getElementById('app').innerHTML = [
+        '<div class="edit-wrapper">',
+          '<div class="category-bar" id="catBar"></div>',
+          '<div class="items-grid" id="itemsGrid"></div>',
+          '<div class="buttons">',
+            '<button class="btn-secondary" id="closeBtn">Close</button>',
+          '</div>',
+        '</div>',
+      ].join('');
+      buildCategoryBar();
+      buildViewGrid();
+      mountView();
+    }
+
+    function buildViewGrid() {
+      var catByName = {};
+      var imgByName = {};
+      allItems.forEach(function(item) {
+        var k = normKey(item.name);
+        catByName[k] = item.category;
+        imgByName[k] = item.imgUrl || '';
+      });
+
+      var renderedExtras = {};
+      var html = '';
+
+      allItems.forEach(function(item) {
+        var key        = normKey(item.name);
+        var displayCat = item.category;
+        if (item.category === 'Vehicles')                  displayCat = 'Vehicles Non-Crate';
+        else if (item.category === 'Shippable Structures') displayCat = 'Shippable Structures Non-Crate';
+        var count = viewItems[key] !== undefined ? viewItems[key] : (viewItems[item.name] || 0);
+        if (count > 0) html += makeViewCard(key, item.imgUrl, count, displayCat);
+
+        if (item.category === 'Vehicles' || item.category === 'Shippable Structures') {
+          var crateKey   = key + ' (Crate)';
+          var crateCount = viewItems[crateKey];
+          if (crateCount !== undefined && crateCount > 0) {
+            html += makeViewCard(crateKey, item.imgUrl, crateCount, item.category);
+            renderedExtras[crateKey] = true;
+          }
+        }
+      });
+
+      Object.keys(viewItems).forEach(function(storedName) {
+        if (catByName[normKey(storedName)]) return;
+        if (renderedExtras[storedName])     return;
+        var count = viewItems[storedName] || 0;
+        if (count <= 0) return;
+        html += makeViewCard(storedName, '', count, 'All');
+      });
+
+      document.getElementById('itemsGrid').innerHTML = html;
+      filterItems();
+    }
+
+    function makeViewCard(name, imgUrl, count, category) {
+      var imgTag = imgUrl
+        ? '<img src="' + esc(imgUrl) + '" alt="" loading="lazy">'
+        : '<div class="item-img-placeholder"></div>';
+      return '<div class="item-card" data-cat="' + esc(category) + '">' +
+             imgTag +
+             '<span class="item-name">' + esc(name) + '</span>' +
+             '<span class="view-count">' + count + '</span>' +
+             '</div>';
+    }
+
+    function mountView() {
+      var catBar   = document.getElementById('catBar');
+      var closeBtn = document.getElementById('closeBtn');
+      catBar.addEventListener('click', function(e) {
+        var btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        selectedCategory = btn.getAttribute('data-cat');
+        catBar.querySelectorAll('.cat-btn').forEach(function(b) {
+          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+        });
+        filterItems();
+      });
+      closeBtn.addEventListener('click', function() { send({ type: 'close' }); });
+    }
+
+        // =========================================================================
+    // FIR PARSER
+    // =========================================================================
+
+    // Parses "/stockpile copy" clipboard format.
+    // First line is metadata (stockpile path + date) — skipped.
+    // Each subsequent non-empty line: <name>,<count>
+    // The LAST comma separates name from count (names can contain commas).
+    function parseFIR(rawText) {
+      var catByName = {};
+      allItems.forEach(function(item) { catByName[normKey(item.name)] = item.category; });
+
+      var lines  = rawText.trim().split('\n');
+      var result = {};
+      for (var i = 1; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line) continue;
+        var lastComma = line.lastIndexOf(',');
+        if (lastComma < 0) continue;
+        var name     = normKey(line.substring(0, lastComma).trim());
+        var countStr = line.substring(lastComma + 1).trim();
+        var count    = parseInt(countStr, 10);
+        if (!name || isNaN(count) || count <= 0) continue;
+
+        var hasCrate = name.length > 8 && name.slice(-8) === ' (Crate)';
+        if (hasCrate) {
+          var base = name.slice(0, -8);
+          var cat  = catByName[base];
+          if (cat === 'Vehicles' || cat === 'Shippable Structures') {
+            result[name] = count;
+          } else {
+            result[base] = count;
+          }
+        } else {
+          result[name] = count;
+        }
+      }
+      return result;
+    }
+
+    // Flush current table inputs back into currentStockpile.items (in memory).
+    // Called before applyFIR so manual edits are preserved under FIR data.
+    function collectCurrentInputs() {
+      var inputs = document.querySelectorAll('#itemsTbody input[data-item-name]');
+      inputs.forEach(function(inp) {
+        var name  = inp.getAttribute('data-item-name');
+        var count = parseInt(inp.value) || 0;
+        if (count > 0) currentStockpile.items[name] = count;
+        else           delete currentStockpile.items[name];
+      });
+    }
+
+    // Apply parsed FIR data: merge into currentStockpile.items, rebuild table.
+    // Returns number of lines processed.
+    function applyFIR(text) {
+      collectCurrentInputs();
+      var parsed = parseFIR(text);
+      var n = 0;
+      for (var name in parsed) {
+        var count = parsed[name];
+        if (count > 0) currentStockpile.items[name] = count;
+        else           delete currentStockpile.items[name];
+        n++;
+      }
+      buildTable();
+      return n;
+    }
+
+    function countNonzero() {
+      var inputs = document.querySelectorAll('#itemsTbody input[data-item-name]');
+      var n = 0;
+      inputs.forEach(function(inp) { if ((parseInt(inp.value) || 0) > 0) n++; });
+      return n;
+    }
+
+
+
+    // =========================================================================
+    // VIEW REQUEST MODE (compare with stockpiles)
+    // =========================================================================
+
+    function renderViewRequest() {
+      document.getElementById('app').innerHTML = [
+        '<div class="edit-wrapper">',
+          '<div class="compare-bar" id="compareBar">',
+            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">',
+              '<span style="font-size:11px;font-weight:600;color:var(--subtext);text-transform:uppercase;letter-spacing:0.5px;flex:1">Compare with stockpiles:</span>',
+              '<button class="btn-sm btn-secondary" id="selAllBtn">All</button>',
+              '<button class="btn-sm btn-secondary" id="selNoneBtn">None</button>',
+            '</div>',
+            '<div class="compare-chips" id="compareChips"></div>',
+          '</div>',
+          '<div class="category-bar" id="catBar"></div>',
+          '<div class="items-grid" id="itemsGrid"></div>',
+          '<div class="buttons">',
+            '<button class="btn-danger" id="closeReqBtn">Close Request</button>',
+            '<button class="btn-secondary" id="closeBtn">Close</button>',
+          '</div>',
+        '</div>',
+      ].join('');
+      buildCompareChips();
+      buildCategoryBar();
+      buildCompareGrid();
+      mountViewRequest();
+    }
+
+    function buildCompareChips() {
+      var chips = document.getElementById('compareChips');
+      if (!chips) return;
+      if (allStockpiles.length === 0) {
+        chips.innerHTML = '<span style="font-size:11px;color:var(--muted)">No stockpiles added yet</span>';
+        return;
+      }
+      chips.innerHTML = allStockpiles.map(function(sp) {
+        var active = selectedStockpileIds[sp.id] ? ' active' : '';
+        var label  = esc(sp.code);
+        var title  = esc(sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code);
+        return '<button class="stockpile-chip' + active + '" data-id="' + esc(sp.id) + '" title="' + title + '">' + label + '</button>';
+      }).join('');
+    }
+
+    function buildCompareGrid() {
+      var covered     = {};
+      var anySelected = false;
+      allStockpiles.forEach(function(sp) {
+        if (!selectedStockpileIds[sp.id]) return;
+        anySelected = true;
+        var items = sp.items || {};
+        Object.keys(items).forEach(function(k) {
+          covered[k] = (covered[k] || 0) + (items[k] || 0);
+        });
+      });
+
+      var catByName = {};
+      allItems.forEach(function(item) { catByName[normKey(item.name)] = item.category; });
+
+      var renderedExtras = {};
+      var html = '';
+      var req  = currentViewRequest;
+
+      allItems.forEach(function(item) {
+        var key        = normKey(item.name);
+        var displayCat = item.category;
+        if (item.category === 'Vehicles')                  displayCat = 'Vehicles Non-Crate';
+        else if (item.category === 'Shippable Structures') displayCat = 'Shippable Structures Non-Crate';
+
+        var requested = req.items[key] !== undefined ? req.items[key] : (req.items[item.name] || 0);
+        if (requested > 0) {
+          html += makeCompareCard(key, item.imgUrl, requested, covered[key] || 0, displayCat, anySelected);
+        }
+
+        if (item.category === 'Vehicles' || item.category === 'Shippable Structures') {
+          var crateKey  = key + ' (Crate)';
+          var reqCrate  = req.items[crateKey];
+          if (reqCrate !== undefined && reqCrate > 0) {
+            html += makeCompareCard(crateKey, item.imgUrl, reqCrate, covered[crateKey] || 0, item.category, anySelected);
+            renderedExtras[crateKey] = true;
+          }
+        }
+      });
+
+      Object.keys(req.items).forEach(function(storedName) {
+        if (catByName[normKey(storedName)]) return;
+        if (renderedExtras[storedName])     return;
+        var requested = req.items[storedName] || 0;
+        if (requested <= 0) return;
+        html += makeCompareCard(storedName, '', requested, covered[storedName] || 0, 'All', anySelected);
+      });
+
+      document.getElementById('itemsGrid').innerHTML = html;
+      filterItems();
+    }
+
+    function makeCompareCard(name, imgUrl, requested, covered, category, anySelected) {
+      var imgTag = imgUrl
+        ? '<img src="' + esc(imgUrl) + '" alt="" loading="lazy">'
+        : '<div class="item-img-placeholder"></div>';
+      if (!anySelected) {
+        return '<div class="item-card" data-cat="' + esc(category) + '">' +
+               imgTag +
+               '<span class="item-name">' + esc(name) + '</span>' +
+               '<span class="view-count">' + requested + '</span>' +
+               '</div>';
+      }
+      var remaining = Math.max(0, requested - covered);
+      var done    = remaining === 0;
+      var cardCls = done ? ' compare-done' : '';
+      var cntCls  = done ? ' cmp-done'     : ' cmp-need';
+      return '<div class="item-card' + cardCls + '" data-cat="' + esc(category) + '">' +
+             imgTag +
+             '<span class="item-name">' + esc(name) + '</span>' +
+             '<span class="view-count' + cntCls + '">' + remaining + '</span>' +
+             '</div>';
+    }
+
+    function mountViewRequest() {
+      var catBar      = document.getElementById('catBar');
+      var chips       = document.getElementById('compareChips');
+      var selAll      = document.getElementById('selAllBtn');
+      var selNone     = document.getElementById('selNoneBtn');
+      var closeBtn    = document.getElementById('closeBtn');
+      var closeReqBtn = document.getElementById('closeReqBtn');
+
+      if (chips) {
+        chips.addEventListener('click', function(e) {
+          var chip = e.target.closest('.stockpile-chip');
+          if (!chip) return;
+          var id = chip.getAttribute('data-id');
+          selectedStockpileIds[id] = !selectedStockpileIds[id];
+          chip.classList.toggle('active', !!selectedStockpileIds[id]);
+          buildCompareGrid();
+        });
+      }
+
+      if (selAll) {
+        selAll.addEventListener('click', function() {
+          allStockpiles.forEach(function(sp) { selectedStockpileIds[sp.id] = true; });
+          buildCompareChips();
+          buildCompareGrid();
+        });
+      }
+
+      if (selNone) {
+        selNone.addEventListener('click', function() {
+          selectedStockpileIds = {};
+          buildCompareChips();
+          buildCompareGrid();
+        });
+      }
+
+      catBar.addEventListener('click', function(e) {
+        var btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        selectedCategory = btn.getAttribute('data-cat');
+        catBar.querySelectorAll('.cat-btn').forEach(function(b) {
+          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+        });
+        filterItems();
+      });
+
+      closeBtn.addEventListener('click', function() { send({ type: 'close' }); });
+
+      closeReqBtn.addEventListener('click', function() {
+        send({ type: 'close-request', id: currentViewRequest.id });
+      });
+    }
+
+    // =========================================================================
+    // ADD REQUEST MODE
+    // =========================================================================
+
+    function renderAddRequest() {
+      var spOptions = '<option value="all">All Stockpiles (sum)</option>' +
+        allStockpiles.map(function(sp) {
+          return '<option value="' + esc(sp.id) + '">' +
+                 esc(sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code) +
+                 '</option>';
+        }).join('');
+
+      document.getElementById('app').innerHTML =
+        '<div class="category-bar" id="catBar"></div>' +
+        '<div style="display:flex;flex:1;min-height:0;overflow:hidden">' +
+        '<div style="flex:0 0 580px;display:flex;flex-direction:column;min-height:0;overflow:hidden;border-right:1px solid var(--border)">' +
+          '<div style="padding:12px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0">' +
+            '<div class="field">' +
+              '<label>Request Name</label>' +
+              '<input type="text" id="reqName" placeholder="e.g. Urgent Ammo Resupply" autocomplete="off">' +
+            '</div>' +
+            '<div class="field" style="margin-bottom:0">' +
+              '<label>Description</label>' +
+              '<textarea id="reqDesc" style="width:100%;height:48px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:inherit;font-size:13px;padding:8px 10px;resize:none;outline:none;line-height:1.4" placeholder="Optional description…"></textarea>' +
+            '</div>' +
+          '</div>' +
+          '<div class="items-grid" id="itemsGrid"></div>' +
+          '<div class="buttons">' +
+            '<button class="btn-secondary" id="cancelBtn">Cancel</button>' +
+            '<button class="btn-primary" id="saveBtn" disabled>Save Request</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="edit-wrapper">' +
+          '<div style="padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:8px">' +
+            '<span style="font-size:11px;font-weight:600;color:var(--subtext);text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0">Stockpiles:</span>' +
+            '<select id="refSelect" style="flex:1;padding:5px 8px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:12px;font-family:inherit;outline:none;cursor:pointer">' +
+            spOptions +
+            '</select>' +
+          '</div>' +
+          '<div class="items-grid" id="refItemsGrid"></div>' +
+        '</div>' +
+        '</div>';
+
+      buildCategoryBar();
+      buildRequestItemsGrid();
+      buildRefGrid('all');
+      mountAddRequest();
+    }
+
+    function buildRequestItemsGrid() {
+      var html = '';
+      var renderedExtras = {};
+      allItems.forEach(function(item) {
+        var key        = normKey(item.name);
+        var displayCat = item.category;
+        if (item.category === 'Vehicles')                  displayCat = 'Vehicles Non-Crate';
+        else if (item.category === 'Shippable Structures') displayCat = 'Shippable Structures Non-Crate';
+        var count = currentRequest.items[key] || 0;
+        html += makeItemCard(key, item.imgUrl, count, displayCat, false);
+        if (item.category === 'Vehicles' || item.category === 'Shippable Structures') {
+          var crateKey   = key + ' (Crate)';
+          var crateCount = currentRequest.items[crateKey] || 0;
+          html += makeItemCard(crateKey, item.imgUrl, crateCount, item.category, false);
+          renderedExtras[crateKey] = true;
+        }
+      });
+      document.getElementById('itemsGrid').innerHTML = html;
+      filterItems();
+    }
+
+    function collectRequestInputs() {
+      var grid = document.getElementById('itemsGrid');
+      if (!grid || addRequestViewStock) return;
+      grid.querySelectorAll('input[data-item-name]').forEach(function(inp) {
+        var count = parseInt(inp.value) || 0;
+        var name  = inp.getAttribute('data-item-name');
+        if (count > 0) currentRequest.items[name] = count;
+        else           delete currentRequest.items[name];
+      });
+    }
+
+    function toggleRequestStockView(viewStock) {
+      addRequestViewStock = viewStock;
+      var toggleReqBtn   = document.getElementById('toggleReqBtn');
+      var toggleStockBtn = document.getElementById('toggleStockBtn');
+      if (toggleReqBtn)   toggleReqBtn.classList.toggle('active', !viewStock);
+      if (toggleStockBtn) toggleStockBtn.classList.toggle('active', viewStock);
+      if (viewStock) {
+        collectRequestInputs();
+        buildStockRefGrid();
+      } else {
+        buildRequestItemsGrid();
+      }
+    }
+
+    function buildStockRefGrid() {
+      var totalStock = {};
+      allStockpiles.forEach(function(sp) {
+        var items = sp.items || {};
+        Object.keys(items).forEach(function(k) {
+          totalStock[k] = (totalStock[k] || 0) + (items[k] || 0);
+        });
+      });
+
+      if (Object.keys(totalStock).length === 0) {
+        document.getElementById('itemsGrid').innerHTML =
+          '<p style="color:var(--muted);font-size:12px;padding:20px;text-align:center">No stockpiles added yet</p>';
+        return;
+      }
+
+      var catByName = {};
+      allItems.forEach(function(item) { catByName[normKey(item.name)] = item.category; });
+
+      var renderedExtras = {};
+      var html = '';
+
+      allItems.forEach(function(item) {
+        var key        = normKey(item.name);
+        var displayCat = item.category;
+        if (item.category === 'Vehicles')                  displayCat = 'Vehicles Non-Crate';
+        else if (item.category === 'Shippable Structures') displayCat = 'Shippable Structures Non-Crate';
+        var count = totalStock[key] || 0;
+        if (count > 0) html += makeViewCard(key, item.imgUrl, count, displayCat);
+
+        if (item.category === 'Vehicles' || item.category === 'Shippable Structures') {
+          var crateKey   = key + ' (Crate)';
+          var crateCount = totalStock[crateKey] || 0;
+          if (crateCount > 0) {
+            html += makeViewCard(crateKey, item.imgUrl, crateCount, item.category);
+            renderedExtras[crateKey] = true;
+          }
+        }
+      });
+
+      Object.keys(totalStock).forEach(function(storedName) {
+        if (catByName[normKey(storedName)]) return;
+        if (renderedExtras[storedName])     return;
+        var count = totalStock[storedName] || 0;
+        if (count <= 0) return;
+        html += makeViewCard(storedName, '', count, 'All');
+      });
+
+      document.getElementById('itemsGrid').innerHTML = html;
+      filterItems();
+    }
+
+    function mountAddRequest() {
+      var grid           = document.getElementById('itemsGrid');
+      var catBar         = document.getElementById('catBar');
+      var reqName        = document.getElementById('reqName');
+      var reqDesc        = document.getElementById('reqDesc');
+      var cancelBtn      = document.getElementById('cancelBtn');
+      var saveBtn        = document.getElementById('saveBtn');
+      var toggleReqBtn   = document.getElementById('toggleReqBtn');
+      var toggleStockBtn = document.getElementById('toggleStockBtn');
+
+      if (toggleReqBtn) {
+        toggleReqBtn.addEventListener('click', function() {
+          if (addRequestViewStock) toggleRequestStockView(false);
+        });
+      }
+      if (toggleStockBtn) {
+        toggleStockBtn.addEventListener('click', function() {
+          if (!addRequestViewStock) toggleRequestStockView(true);
+        });
+      }
+
+      setTimeout(function() { reqName.focus(); }, 0);
+
+      reqName.addEventListener('input', function() {
+        saveBtn.disabled = reqName.value.trim() === '';
+      });
+
+      catBar.addEventListener('click', function(e) {
+        var btn = e.target.closest('.cat-btn');
+        if (!btn) return;
+        selectedCategory = btn.getAttribute('data-cat');
+        catBar.querySelectorAll('.cat-btn').forEach(function(b) {
+          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+        });
+        filterItems();
+      });
+
+      grid.addEventListener('input', function(e) {
+        if (e.target.tagName !== 'INPUT') return;
+        var count = parseInt(e.target.value) || 0;
+        if (count > 0) e.target.classList.add('nonzero');
+        else           e.target.classList.remove('nonzero');
+      });
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+
+      saveBtn.addEventListener('click', function() {
+        var name = reqName.value.trim();
+        if (!name) return;
+        var items = {};
+        grid.querySelectorAll('input[data-item-name]').forEach(function(inp) {
+          var count = parseInt(inp.value) || 0;
+          if (count > 0) items[inp.getAttribute('data-item-name')] = count;
+        });
+        send({ type: 'save', mode: 'addrequest', payload: {
+          id:          uid(),
+          name:        name,
+          description: reqDesc.value.trim(),
+          items:       items,
+          createdAt:   Date.now(),
+          createdBy:   '',
+          closed:      false,
+        }});
+      });
+
+      var refSelect2 = document.getElementById('refSelect');
+      if (refSelect2) {
+        refSelect2.addEventListener('change', function() {
+          buildRefGrid(refSelect2.value);
+        });
+      }
+    }
+
+
+    function buildRefCatBar() {
+      var bar = document.getElementById('refCatBar');
+      if (!bar) return;
+      bar.innerHTML = allCategories.map(function(cat) {
+        var active = cat.name === selectedRefCategory ? ' active' : '';
+        return '<button class="cat-btn' + active + '" data-cat="' + esc(cat.name) + '" title="' + esc(cat.name) + '">' +
+               '<img src="' + esc(cat.imgUrl) + '" alt="" loading="lazy"></button>';
+      }).join('');
+    }
+
+    function buildRefGrid(spId) {
+      var refItems = {};
+      if (spId === 'all') {
+        allStockpiles.forEach(function(sp) {
+          var items = sp.items || {};
+          Object.keys(items).forEach(function(k) {
+            refItems[k] = (refItems[k] || 0) + (items[k] || 0);
+          });
+        });
+      } else {
+        for (var i = 0; i < allStockpiles.length; i++) {
+          if (allStockpiles[i].id === spId) { refItems = allStockpiles[i].items || {}; break; }
+        }
+      }
+      var catByName = {};
+      allItems.forEach(function(item) { catByName[normKey(item.name)] = item.category; });
+      var renderedExtras = {};
+      var html = '';
+      allItems.forEach(function(item) {
+        var key        = normKey(item.name);
+        var displayCat = item.category;
+        if (item.category === 'Vehicles')                  displayCat = 'Vehicles Non-Crate';
+        else if (item.category === 'Shippable Structures') displayCat = 'Shippable Structures Non-Crate';
+        var count = refItems[key] || 0;
+        if (count > 0) html += makeViewCard(key, item.imgUrl, count, displayCat);
+        if (item.category === 'Vehicles' || item.category === 'Shippable Structures') {
+          var crateKey   = key + ' (Crate)';
+          var crateCount = refItems[crateKey] || 0;
+          if (crateCount > 0) {
+            html += makeViewCard(crateKey, item.imgUrl, crateCount, item.category);
+            renderedExtras[crateKey] = true;
+          }
+        }
+      });
+      Object.keys(refItems).forEach(function(storedName) {
+        if (catByName[normKey(storedName)]) return;
+        if (renderedExtras[storedName])     return;
+        var count = refItems[storedName] || 0;
+        if (count <= 0) return;
+        html += makeViewCard(storedName, '', count, 'All');
+      });
+      var el = document.getElementById('refItemsGrid');
+      if (!el) return;
+      el.innerHTML = html || '<p style="color:var(--muted);font-size:12px;padding:20px;text-align:center">No items in stockpiles</p>';
+      filterItems();
+    }
+
+    function filterRefItems() {
+      document.querySelectorAll('#refItemsGrid .item-card').forEach(function(card) {
+        var cat = card.getAttribute('data-cat');
+        if (selectedRefCategory === 'All' || cat === selectedRefCategory) card.classList.remove('hidden');
+        else card.classList.add('hidden');
+      });
+    }
+
+        // ─── Utils ───────────────────────────────────────────────────────────────
+
+    // Normalize curly apostrophes to straight so FIR names match catalog keys.
+    function normKey(s) { return String(s).replace(/’/g, "'").replace(/‘/g, "'"); }
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function uid() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+  </script>
+</body>
+</html>

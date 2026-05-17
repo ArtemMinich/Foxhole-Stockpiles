@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const t=fs.readFileSync\\('widget-src/data/items.ts','utf8'\\); const m=t.match\\(/O.Brien V\\\\.110[^']+/\\); if\\(m\\) { const chars=[...m[0]].slice\\(0,15\\); console.log\\(chars.map\\(\\(c,i\\)=>i+':'+c.charCodeAt\\(0\\)\\).join\\(' '\\)\\); }\")",
+      "Bash(node -e ' *)",
+      "Bash(node patch-compare.js)",
+      "Bash(node patch-compare2.js)"
+    ]
+  }
+}
