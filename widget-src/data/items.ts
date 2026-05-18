@@ -985,11 +985,11 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'R-12b - “Salva” Flame Truck', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-12b_-_%E2%80%9CSalva%E2%80%9D_Flame_Truck', imgUrl: 'https://foxhole.wiki.gg/images/AmbulanceFlameC.png?b35874',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Dunne Dousing Engine 3r', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Dousing_Engine_3r', imgUrl: 'https://foxhole.wiki.gg/images/AmbulanceFlameW.png?825657',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Dunne Responder 3e', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Responder_3e', imgUrl: 'https://foxhole.wiki.gg/images/AmbulanceWar.png?26fcfa',
@@ -997,11 +997,11 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'O’Brien V.101 Freeman', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%E2%80%99Brien_V.101_Freeman', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarOffensiveWVehicleIcon.png?68c7e3',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'O’Brien v.200 Squire', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%27Brien_V.200_Squire', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCar2MultiWIcon.png?a1f572',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'O’Brien V.190 Knave', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%E2%80%99Brien_V.190_Knave', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarTwinWIcon.png?babc40',
@@ -1009,7 +1009,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'O’Brien V.113 Gravekeeper', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%E2%80%99Brien_V.113_Gravekeeper', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarATWVehicleIcon.png?1d7e7c',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T3 “Xiphos”', wikiUrl: 'https://foxhole.wiki.gg/wiki/T3_%E2%80%9CXiphos%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarVehicleIcon.png?308725',
@@ -1017,19 +1017,19 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'O’Brien V.130 Wild Jack', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%E2%80%99Brien_V.130_Wild_Jack', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarFlameWarVehicleIcon.png?97e970',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'O’Brien V.121 Highlander', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%E2%80%99Brien_V.121_Highlander', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarMobilityWarVehicleIcon.png?2097a1',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T5 “Percutio”', wikiUrl: 'https://foxhole.wiki.gg/wiki/T5_%E2%80%9CPercutio%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarOffensiveCVehicleIcon.png?16e573',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T8 “Gemini”', wikiUrl: 'https://foxhole.wiki.gg/wiki/T8_%E2%80%9CGemini%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarTwinCItemIcon.png?d31847',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'O’Brien V.110', wikiUrl: 'https://foxhole.wiki.gg/wiki/O%E2%80%99Brien_V.110', imgUrl: 'https://foxhole.wiki.gg/images/ArmoredCarWarVehicleIcon.png?4d72dc',
@@ -1049,7 +1049,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'BMS - Fabricator', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Fabricator', imgUrl: 'https://foxhole.wiki.gg/images/AdvancedConstructionVehicleIcon.png?2af6b2',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'BMS - Class 2 Mobile Auto-Crane', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Class_2_Mobile_Auto-Crane', imgUrl: 'https://foxhole.wiki.gg/images/CraneVehicleIcon.png?b08a43',
@@ -1057,7 +1057,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Noble Firebrand Mk. XVII', wikiUrl: 'https://foxhole.wiki.gg/wiki/Noble_Firebrand_Mk._XVII', imgUrl: 'https://foxhole.wiki.gg/images/DestroyerTankFlameWIcon.png?2d66aa',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Noble Widow MK. XIV', wikiUrl: 'https://foxhole.wiki.gg/wiki/Noble_Widow_MK._XIV', imgUrl: 'https://foxhole.wiki.gg/images/DestroyerTankWVehicleIcon.png?3fb853',
@@ -1065,11 +1065,11 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'GA6 “Cestus”', wikiUrl: 'https://foxhole.wiki.gg/wiki/GA6_%E2%80%9CCestus%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/FieldAT2CIcon.png?d06efd',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Duncan’s Coin 14.5mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Duncan%27s_Coin_14.5mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldAT2WIcon.png?99fa32',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'AA-2 "Battering Ram"', wikiUrl: 'https://foxhole.wiki.gg/wiki/AA-2_%22Battering_Ram%22', imgUrl: 'https://foxhole.wiki.gg/images/FieldAntiTankColVehicleIcon.png?6448f9',
@@ -1077,7 +1077,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Balfour Rampart 68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Rampart_68mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldCannonOffensiveWIcon.png?430b0d',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Collins Cannon 68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Collins_Cannon_68mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldAntiTankWarVehicleIcon.png?a945d3',
@@ -1085,7 +1085,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: '40-45 “Smelter”', wikiUrl: 'https://foxhole.wiki.gg/wiki/40-45_%E2%80%9CSmelter%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/FieldATOffensiveCIcon.png?90fc43',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Balfour Wolfhound 40mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Wolfhound_40mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldCannonWVehicleIcon.png?fd561f',
@@ -1137,7 +1137,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'HH-d “Peltast”', wikiUrl: 'https://foxhole.wiki.gg/wiki/HH-d_%E2%80%9CPeltast%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/HalfTrackArtilleryCIcon.png?308055',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'HH-a “Javelin”', wikiUrl: 'https://foxhole.wiki.gg/wiki/HH-a_%E2%80%9CJavelin%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/HalfTrackColVehicleIcon.png?b33db4',
@@ -1145,19 +1145,19 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'HH-b “Hoplite”', wikiUrl: 'https://foxhole.wiki.gg/wiki/HH-b_%E2%80%9CHoplite%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/HalfTrackColHeavyArmorVehicleIcon.png?64dcd6',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Niska-Rycker Mk. IX Skycaller', wikiUrl: 'https://foxhole.wiki.gg/wiki/Niska-Rycker_Mk._IX_Skycaller', imgUrl: 'https://foxhole.wiki.gg/images/HalftrackMultiWIcon.png?aefe37',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Niska Mk. II Blinder', wikiUrl: 'https://foxhole.wiki.gg/wiki/Niska_Mk._II_Blinder', imgUrl: 'https://foxhole.wiki.gg/images/HalfTrackOffensiveWarVehicleIcon.png?2dc541',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Niska Mk. III Scar Twin', wikiUrl: 'https://foxhole.wiki.gg/wiki/Niska_Mk._III_Scar_Twin', imgUrl: 'https://foxhole.wiki.gg/images/HalftrackTwinW.png?134c12',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Niska Mk. I Gun Motor Carriage', wikiUrl: 'https://foxhole.wiki.gg/wiki/Niska_Mk._I_Gun_Motor_Carriage', imgUrl: 'https://foxhole.wiki.gg/images/HalfTrackWarVehicleIcon.png?4c5a24',
@@ -1165,15 +1165,15 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'BMS - Scrap Hauler', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Scrap_Hauler', imgUrl: 'https://foxhole.wiki.gg/images/Harvester.png?47e415',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'AU-A150 Taurine Rigger', wikiUrl: 'https://foxhole.wiki.gg/wiki/AU-A150_Taurine_Rigger', imgUrl: 'https://foxhole.wiki.gg/images/HeavyTruckCVehicleIcon.png?c24873',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Cnute Cliffwrest', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cnute_Cliffwrest', imgUrl: 'https://foxhole.wiki.gg/images/HeavyTruckWItemIcon_copy.png?74521e',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'AB-8 “Acheron”', wikiUrl: 'https://foxhole.wiki.gg/wiki/AB-8_%E2%80%9CAcheron%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LandingCraftVehicleIcon.png?9d1a75',
@@ -1181,7 +1181,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'AB-11 “Doru”', wikiUrl: 'https://foxhole.wiki.gg/wiki/AB-11_%E2%80%9CDoru%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LandingCraftOffensiveVehicleIcon.png?ef3f7a',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Mulloy LPC', wikiUrl: 'https://foxhole.wiki.gg/wiki/Mulloy_LPC', imgUrl: 'https://foxhole.wiki.gg/images/LandingCraftWarVehicleIcon.png?3ebfb5',
@@ -1189,11 +1189,11 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: '945g “Stygian Bolt”', wikiUrl: 'https://foxhole.wiki.gg/wiki/945g_%E2%80%9CStygian_Bolt%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/FieldATHeavyCIcon.png?3c9db2',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Balfour Stockade 75mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Stockade_75mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldCannonHeavyWIcon.png?2d4ad5',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: '120-68 “Koronides” Field Gun', wikiUrl: 'https://foxhole.wiki.gg/wiki/120-68_%E2%80%9CKoronides%E2%80%9D_Field_Gun', imgUrl: 'https://foxhole.wiki.gg/images/FieldArtilleryColVehicleIcon.png?fc3da1',
@@ -1201,11 +1201,11 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: '40-250 “Alekto” Heavy Cannon', wikiUrl: 'https://foxhole.wiki.gg/wiki/40-250_%E2%80%9CAlekto%E2%80%9D_Heavy_Cannon', imgUrl: 'https://foxhole.wiki.gg/images/LargeFieldMortarCIcon.png?fbe6ac',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Rycker 4/3-F Wasp Nest', wikiUrl: 'https://foxhole.wiki.gg/wiki/Rycker_4/3-F_Wasp_Nest', imgUrl: 'https://foxhole.wiki.gg/images/FieldMultiWItemIcon.png?ab32ea',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'K-81e “Sombre”', wikiUrl: 'https://foxhole.wiki.gg/wiki/K-81e_%E2%80%9CSombre%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LightBoatInfantryCIcon.png?a30257',
@@ -1229,7 +1229,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Devitt-Caine Mk. IV MMR', wikiUrl: 'https://foxhole.wiki.gg/wiki/Devitt-Caine_Mk._IV_MMR', imgUrl: 'https://foxhole.wiki.gg/images/LightTankArtilleryWar.png?d9f92d',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'H-5 "Hatchet"', wikiUrl: 'https://foxhole.wiki.gg/wiki/H-5_%E2%80%9CHatchet%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LightTankColVehicleIcon.png?33670a',
@@ -1237,19 +1237,19 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Devitt Ironhide Mk. IV', wikiUrl: 'https://foxhole.wiki.gg/wiki/Devitt_Ironhide_Mk._IV', imgUrl: 'https://foxhole.wiki.gg/images/LightTankWarDefensiveVehicleIcon.png?a6ee34',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'H-19 “Vulcan”', wikiUrl: 'https://foxhole.wiki.gg/wiki/H-19_%E2%80%9CVulcan%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LightTankFlameCIcon.png?ba524c',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'H-8 “Kranesca”', wikiUrl: 'https://foxhole.wiki.gg/wiki/H-8_%E2%80%9CKranesca%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LightTankColMobilityVehicleIcon.png?2a274c',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'H-10 “Pelekys”', wikiUrl: 'https://foxhole.wiki.gg/wiki/H-10_%E2%80%9CPelekys%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/LightTankOffensiveCVehicleIcon.png?1427df',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Devitt Mk. III', wikiUrl: 'https://foxhole.wiki.gg/wiki/Devitt_Mk._III', imgUrl: 'https://foxhole.wiki.gg/images/LightTankWarVehicleIcon.png?6e7889',
@@ -1269,19 +1269,19 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Gallagher Thornfall Mk. VI', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gallagher_Thornfall_Mk._VI', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MediumTank2IndirectWIcon.png/256px-MediumTank2IndirectWIcon.png?a66136',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Gallagher Highwayman Mk. III', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gallagher_Highwayman_Mk._III', imgUrl: 'https://foxhole.wiki.gg/images/MediumTank2MultiWIcon.png?8c3462',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Gallagher Outlaw Mk. II', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gallagher_Outlaw_Mk._II', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MediumTank2RangeWIcon.png/256px-MediumTank2RangeWIcon.png?cfc25c',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: '86K-c “Ranseur”', wikiUrl: 'https://foxhole.wiki.gg/wiki/86K-c_%E2%80%9CRanseur%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/MediumTank2TwinCVehicleIcon.png?e175d6',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Gallagher Brigand Mk. I', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gallagher_Brigand_Mk._I', imgUrl: 'https://foxhole.wiki.gg/images/MediumTank2WIcon.png?914f8b',
@@ -1293,7 +1293,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Silverhand Lordscar - Mk. X', wikiUrl: 'https://foxhole.wiki.gg/wiki/Silverhand_Lordscar_-_Mk._X', imgUrl: 'https://foxhole.wiki.gg/images/MediumTankATWIcon.png?90b740',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: '85K-b “Falchion”', wikiUrl: 'https://foxhole.wiki.gg/wiki/85K-b_%E2%80%9CFalchion%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ColonialMediumTankIcon.png?5b6e6f',
@@ -1301,15 +1301,15 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: '85V-g "Talos"', wikiUrl: 'https://foxhole.wiki.gg/wiki/85V-g_%22Talos%22', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MediumTankLargeCIcon.png/256px-MediumTankLargeCIcon.png?984cfe',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: '85K-a “Spatha”', wikiUrl: 'https://foxhole.wiki.gg/wiki/85K-a_%E2%80%9CSpatha%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ColonialMediumTankOffensive.png?fc149a',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Silverhand Chieftain - Mk. VI', wikiUrl: 'https://foxhole.wiki.gg/wiki/Silverhand_Chieftain_-_Mk._VI', imgUrl: 'https://foxhole.wiki.gg/images/MediumTankSiegeWVehicleIcon.png?f510b9',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Silverhand - Mk. IV', wikiUrl: 'https://foxhole.wiki.gg/wiki/Silverhand_-_Mk._IV', imgUrl: 'https://foxhole.wiki.gg/images/WardenMediumTankIcon.png?d7ef24',
@@ -1321,7 +1321,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'HC-7 "Ballista"', wikiUrl: 'https://foxhole.wiki.gg/wiki/HC-7_%22Ballista%22', imgUrl: 'https://foxhole.wiki.gg/images/MortarTankVehicleIcon.png?c8328f',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: '03MM “Caster”', wikiUrl: 'https://foxhole.wiki.gg/wiki/03MM_%E2%80%9CCaster%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/MotorcycleVehicleIcon.png?c4e3e3',
@@ -1329,7 +1329,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: '00MS “Stinger”', wikiUrl: 'https://foxhole.wiki.gg/wiki/00MS_%E2%80%9CStinger%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/MotorcycleOffensiveVehicleIcon.png?d856a2',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Kivela Power Wheel 80-1', wikiUrl: 'https://foxhole.wiki.gg/wiki/Kivela_Power_Wheel_80-1', imgUrl: 'https://foxhole.wiki.gg/images/MotorcycleWIcon.png?9a7e7d',
@@ -1337,11 +1337,11 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'King Jester Mk. I-1', wikiUrl: 'https://foxhole.wiki.gg/wiki/King_Jester_Mk._I-1', imgUrl: 'https://foxhole.wiki.gg/images/ScoutTankMultiWIcon.png?94d0e6',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'King Gallant Mk. II', wikiUrl: 'https://foxhole.wiki.gg/wiki/King_Gallant_Mk._II', imgUrl: 'https://foxhole.wiki.gg/images/ScoutTankOffensiveWIcon.png?c1cbc2',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'King Spire Mk. I', wikiUrl: 'https://foxhole.wiki.gg/wiki/King_Spire_Mk._I', imgUrl: 'https://foxhole.wiki.gg/images/ScoutTankWIcon.png?a4ceb8',
@@ -1353,19 +1353,19 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'UV-24 “Icarus”', wikiUrl: 'https://foxhole.wiki.gg/wiki/UV-24_%E2%80%9CIcarus%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ScoutVehicleOffensiveVehicleIcon.png?907747',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Drummond Spitfire 100d', wikiUrl: 'https://foxhole.wiki.gg/wiki/Drummond_Spitfire_100d', imgUrl: 'https://foxhole.wiki.gg/images/ScoutVehicleOffensiveWarVehicleIcon.png?51f5b1',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'UV-5c “Odyssey”', wikiUrl: 'https://foxhole.wiki.gg/wiki/UV-5c_%E2%80%9COdyssey%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/ScoutVehicleUtilityCVehicleIcon.png?fab541',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Drummond Loscann 55c', wikiUrl: 'https://foxhole.wiki.gg/wiki/Drummond_Loscann_55c', imgUrl: 'https://foxhole.wiki.gg/images/ScoutVehicleAmphibiousWarVehicleIcon.png?643287',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Drummond 100a', wikiUrl: 'https://foxhole.wiki.gg/wiki/Drummond_100a', imgUrl: 'https://foxhole.wiki.gg/images/ScoutVehicleWarVehicleIcon.png?5f1e9b',
@@ -1377,15 +1377,15 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'T14 “Vesta” Tankette', wikiUrl: 'https://foxhole.wiki.gg/wiki/T14_%E2%80%9CVesta%E2%80%9D_Tankette', imgUrl: 'https://foxhole.wiki.gg/images/TanketteFlameCIcon.png?65db14',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T13 “Deioneus” Rocket Battery', wikiUrl: 'https://foxhole.wiki.gg/wiki/T13_%E2%80%9CDeioneus%E2%80%9D_Rocket_Battery', imgUrl: 'https://foxhole.wiki.gg/images/TanketteMultiCIcon.png?341c9d',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T20 “Ixion” Tankette', wikiUrl: 'https://foxhole.wiki.gg/wiki/T20_%E2%80%9CIxion%E2%80%9D_Tankette', imgUrl: 'https://foxhole.wiki.gg/images/TanketteOffensiveCVehicleIcon.png?d9a7f7',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Rooster - Lamploader', wikiUrl: 'https://foxhole.wiki.gg/wiki/Rooster_-_Lamploader', imgUrl: 'https://foxhole.wiki.gg/images/FuelTrailerIcon.png?aa3c7c',
@@ -1405,7 +1405,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Dunne Leatherback 2a', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Leatherback_2a', imgUrl: 'https://foxhole.wiki.gg/images/TruckDefensiveWIcon.png?f54211',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'RR-3 “Stolon” Tanker', wikiUrl: 'https://foxhole.wiki.gg/wiki/RR-3_%E2%80%9CStolon%E2%80%9D_Tanker', imgUrl: 'https://foxhole.wiki.gg/images/OilTankerIcon.png?1e5797',
@@ -1417,19 +1417,19 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'R-5b “Sisyphus” Hauler', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-5b_%E2%80%9CSisyphus%E2%80%9D_Hauler', imgUrl: 'https://foxhole.wiki.gg/images/TruckMobilityCVehicleIcon.png?bb5537',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Dunne Landrunner 12c', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Landrunner_12c', imgUrl: 'https://foxhole.wiki.gg/images/TruckMobilityWarVehicleIcon.png?a1f8b5',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'R-17 “Retiarius” Skirmisher', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-17_%E2%80%9CRetiarius%E2%80%9D_Skirmisher', imgUrl: 'https://foxhole.wiki.gg/images/TruckMultiCIcon.png?4c2772',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'R-9 “Speartip” Escort', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-9_%E2%80%9CSpeartip%E2%80%9D_Escort', imgUrl: 'https://foxhole.wiki.gg/images/TruckOffensiveVehicleIcon.png?4e6408',
-    category: FoxholeItemCategory.Vehicles
+    category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'R-5 “Atlas” Hauler', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-5_%E2%80%9CAtlas%E2%80%9D_Hauler', imgUrl: 'https://foxhole.wiki.gg/images/TruckUtilityVehicleIcon.png?b3a828',
@@ -1505,7 +1505,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Huber Starbreaker 94.5mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Huber_Starbreaker_94.5mm', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedATLargeWIcon.png?d1b02c',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Leary Shellbore 68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Leary_Shellbore_68mm', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedATIcon.png?94922d',
@@ -1513,7 +1513,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'DAE 2a-1 “Ruptura”', wikiUrl: 'https://foxhole.wiki.gg/wiki/DAE_2a-1_%E2%80%9CRuptura%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedCannonLargeC.png?ce3cf9',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: '50-500 “Thunderbolt” Cannon', wikiUrl: 'https://foxhole.wiki.gg/wiki/50-500_%E2%80%9CThunderbolt%E2%80%9D_Cannon', imgUrl: 'https://foxhole.wiki.gg/images/HeavyArtilleryCIcon.png?3a8f49',
@@ -1541,35 +1541,35 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'DAE 3b-2 “Hades’ Net”', wikiUrl: 'https://foxhole.wiki.gg/wiki/DAE_3b-2_%E2%80%9CHades%E2%80%99_Net%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedMultiCStructureIcon.png?9f2fe2',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Construction Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Construction_Parts', imgUrl: 'https://foxhole.wiki.gg/images/ConstructionPartsShippableIcon.png?876d60',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Underground Fortress Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Underground_Fortress_Parts', imgUrl: 'https://foxhole.wiki.gg/images/FortGarrisonStationIcon.png?7811a6',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Intelligence Center Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Intelligence_Center_Parts', imgUrl: 'https://foxhole.wiki.gg/images/IntelCenterShippableIcon.png?51f3d4',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Aircraft Radar Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Aircraft_Radar_Parts', imgUrl: 'https://foxhole.wiki.gg/images/FortLargeRadarShippbleIcon.png?6d4047',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Storm Cannon Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Storm_Cannon_Parts', imgUrl: 'https://foxhole.wiki.gg/images/StormCannonShippableIcon.png?8fa93a',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Structure Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Structure_Parts', imgUrl: 'https://foxhole.wiki.gg/images/StructureEquipmentShippableIcon.png?d8b26b',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Weather Station Parts', wikiUrl: 'https://foxhole.wiki.gg/wiki/Weather_Station_Parts', imgUrl: 'https://foxhole.wiki.gg/images/WeatherStationShippableIcon.png?c63892',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Liquid Container', wikiUrl: 'https://foxhole.wiki.gg/wiki/Liquid_Container', imgUrl: 'https://foxhole.wiki.gg/images/FuelTankIcon.png?ef063c',
@@ -1585,27 +1585,27 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'A0E-9 Rocket Booster', wikiUrl: 'https://foxhole.wiki.gg/wiki/A0E-9_Rocket_Booster', imgUrl: 'https://foxhole.wiki.gg/images/RocketPartBottomIcon.png?180318',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'A0E-9 Rocket Body', wikiUrl: 'https://foxhole.wiki.gg/wiki/A0E-9_Rocket_Body', imgUrl: 'https://foxhole.wiki.gg/images/RocketPartCenterIcon.png?854260',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'A0E-9 Rocket Warhead', wikiUrl: 'https://foxhole.wiki.gg/wiki/A0E-9_Rocket_Warhead', imgUrl: 'https://foxhole.wiki.gg/images/RocketPartTopIcon.png?9c907a',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Naval Hull Segments', wikiUrl: 'https://foxhole.wiki.gg/wiki/Naval_Hull_Segments', imgUrl: 'https://foxhole.wiki.gg/images/ShipPart1.png?7e4881',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Naval Shell Plating', wikiUrl: 'https://foxhole.wiki.gg/wiki/Naval_Shell_Plating', imgUrl: 'https://foxhole.wiki.gg/images/ShipPart2.png?5ff1f5',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Naval Turbine Components', wikiUrl: 'https://foxhole.wiki.gg/wiki/Naval_Turbine_Components', imgUrl: 'https://foxhole.wiki.gg/images/ShipPart3.png?7d0832',
-    category: FoxholeItemCategory.ShippableStructures
+    category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Shipping Container', wikiUrl: 'https://foxhole.wiki.gg/wiki/Shipping_Container', imgUrl: 'https://foxhole.wiki.gg/images/ShippingContainerStructureIcon.png?284fa2',

@@ -275,7 +275,8 @@ function Widget() {
           )
           figma.showUI(__html__, { width: 700, height: 500, title: "Add / Update Stockpile" })
           figma.ui.postMessage({ mode: "add", existingKeys, allItems: FOXHOLE_ITEMS })
-          figma.ui.onmessage = (msg) => {
+          figma.ui.onmessage = (msg: any) => {
+            if (msg.type === 'open-url') { figma.openExternal(msg.url); return; }
             if (msg.type === "save" && msg.mode === "add") {
               const incoming = msg.payload as Stockpile
               const all = stockpiles.values()
@@ -313,7 +314,8 @@ function Widget() {
         return new Promise<void>((resolve) => {
           figma.showUI(__html__, { width: 1600, height: 750, title: "Add Request" })
           figma.ui.postMessage({ mode: "addrequest", allItems: FOXHOLE_ITEMS, allCategories: FOXHOLE_ITEMS_CATEGORIES, allStockpiles: stockpiles.values() })
-          figma.ui.onmessage = function(msg) {
+          figma.ui.onmessage = function(msg: any) {
+            if (msg.type === 'open-url') { figma.openExternal(msg.url); return; }
             if (msg.type === "save" && msg.mode === "addrequest") {
               const r = msg.payload as Request
               const createdBy = figma.currentUser ? figma.currentUser.name : ""
@@ -330,7 +332,8 @@ function Widget() {
           const data = stockpiles.values()
           figma.showUI(__html__, { width: 700, height: 560, title: "Export JSON" })
           figma.ui.postMessage({ mode: "export", stockpiles: data })
-          figma.ui.onmessage = function(_msg: unknown) {
+          figma.ui.onmessage = function(msg: any) {
+            if (msg && msg.type === 'open-url') { figma.openExternal(msg.url); return; }
             figma.closePlugin()
             resolve()
           }
@@ -341,7 +344,8 @@ function Widget() {
         return new Promise<void>((resolve) => {
           figma.showUI(__html__, { width: 700, height: 500, title: "Import JSON" })
           figma.ui.postMessage({ mode: "import" })
-          figma.ui.onmessage = function(msg) {
+          figma.ui.onmessage = function(msg: any) {
+            if (msg.type === 'open-url') { figma.openExternal(msg.url); return; }
             if (msg.type === "save" && msg.mode === "import") {
               const incoming = msg.payload.stockpiles as Stockpile[]
               const replace  = msg.payload.replace as boolean
@@ -382,9 +386,19 @@ function Widget() {
           summed[k] = (summed[k] || 0) + (s.items[k] || 0)
         }
       }
+      const spList: Array<{id: string; code: string; region: string; hex: string; structure: string}> = []
+      for (let i = 0; i < leaves.length; i++) {
+        const s = leaves[i]
+        spList.push({ id: s.id, code: s.code, region: s.region, hex: s.hex, structure: s.structure })
+      }
       figma.showUI(__html__, { width: 700, height: 800, title: title })
-      figma.ui.postMessage({ mode: "view", title: title, items: summed, allItems: FOXHOLE_ITEMS, allCategories: FOXHOLE_ITEMS_CATEGORIES })
-      figma.ui.onmessage = function(_msg: unknown) {
+      figma.ui.postMessage({ mode: "view", title: title, items: summed, allItems: FOXHOLE_ITEMS, allCategories: FOXHOLE_ITEMS_CATEGORIES, stockpiles: spList })
+      figma.ui.onmessage = function(msg: any) {
+        if (msg && msg.type === 'open-url') { figma.openExternal(msg.url); return; }
+        if (msg && msg.type === 'delete-stockpile') {
+          const ids: string[] = msg.ids || (msg.id ? [msg.id] : [])
+          for (let i = 0; i < ids.length; i++) { stockpiles.delete(ids[i]) }
+        }
         figma.closePlugin()
         resolve()
       }
@@ -400,7 +414,8 @@ function Widget() {
         allItems:      FOXHOLE_ITEMS,
         allCategories: FOXHOLE_ITEMS_CATEGORIES,
       })
-      figma.ui.onmessage = function(msg) {
+      figma.ui.onmessage = function(msg: any) {
+        if (msg.type === 'open-url') { figma.openExternal(msg.url); return; }
         if (msg.type === "close-request" && msg.id) {
           const existing = requests.get(msg.id)
           if (existing) {
