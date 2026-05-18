@@ -449,7 +449,7 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Absol Anti-Aircraft Rounds', wikiUrl: 'https://foxhole.wiki.gg/wiki/Absol_Anti-Aircraft_Rounds', imgUrl: '',
-    category: FoxholeItemCategory.All
+    category: FoxholeItemCategory.HeavyAmmunition
   },
   {
     name: '120mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/120mm', imgUrl: 'https://foxhole.wiki.gg/images/LightArtilleryAmmoItemIcon.png?c00707',
