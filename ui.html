@@ -7,15 +7,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #1e1e2e;
-      --surface: #313244;
-      --border:  #45475a;
-      --text:    #cdd6f4;
-      --subtext: #a6adc8;
-      --muted:   #6c7086;
-      --accent:  #cba6f7;
-      --green:   #a6e3a1;
-      --red:     #f38ba8;
+      --bg:      #121124;
+      --surface: #2A3958;
+      --border:  #454B39;
+      --text:    #F8FBFA;
+      --subtext: #707276;
+      --muted:   #4E4534;
+      --accent:  #F19301;
+      --green:   #D7A93F;
+      --red:     #F19301;
     }
 
     html, body {
@@ -109,7 +109,7 @@
     .btn-primary:disabled   { background: var(--border); color: var(--muted); cursor: not-allowed; }
     .btn-secondary          { background: var(--surface); color: var(--subtext); border: 1px solid var(--border); }
     .btn-secondary:hover    { opacity: 0.8; }
-    .btn-danger             { background: #45475a; color: var(--red); border: 1px solid var(--red); }
+    .btn-danger             { background: #490E10; color: #F8FBFA; border: 1px solid #671318; }
 
     /* ── Preview chips (add mode) ── */
     .preview {
@@ -228,12 +228,12 @@
     thead th.col-count { width: 90px; text-align: right; }
 
     tbody tr {
-      border-bottom: 1px solid #2a2a3c;
+      border-bottom: 1px solid var(--surface);
       transition: background 0.1s;
     }
     tbody tr:hover { background: var(--surface); }
     tbody tr.hidden { display: none; }
-    tbody tr.extra  { background: #2a2a1e; }
+    tbody tr.extra  { background: #4E4534; }
 
     td.col-name {
       padding: 6px 12px;
@@ -282,7 +282,7 @@
     /* ── FIR panel ── */
     .fir-panel {
       padding: 10px 16px 12px;
-      background: #23233a;
+      background: #1A1E35;
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
@@ -319,7 +319,7 @@
     .fir-status.ok  { color: var(--green); }
     .fir-status.err { color: var(--red); }
     .btn-sm { padding: 4px 10px; font-size: 11px; }
-    .btn-fir { background: #2a2a45; color: var(--accent); border: 1px solid var(--accent); }
+    .btn-fir { background: #2A3958; color: var(--accent); border: 1px solid var(--accent); }
     .btn-fir:hover { opacity: 0.85; }
 
     /* ── Config mode ── */
@@ -357,7 +357,7 @@
       gap: 10px;
       padding: 6px 12px;
       cursor: pointer;
-      border-bottom: 1px solid #2a2a3c;
+      border-bottom: 1px solid var(--surface);
       font-size: 12px;
     }
     .config-item:last-child { border-bottom: none; }
@@ -471,7 +471,7 @@
       transition: border-color 0.1s;
     }
     .cat-btn:hover { border-color: var(--subtext); }
-    .cat-btn.active { border-color: var(--accent); background: rgba(203,166,247,0.12); }
+    .cat-btn.active { border-color: var(--accent); background: rgba(241,147,1,0.12); }
     .cat-btn img { width: 30px; height: 30px; object-fit: contain; }
 
     /* ── Items grid ── */
@@ -554,10 +554,16 @@
     }
     .compare-chips {
       display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+    .chip-group {
+      display: flex;
       flex-wrap: wrap;
       gap: 4px;
-      max-height: 78px;
-      overflow-y: auto;
+      align-items: center;
     }
     .stockpile-chip {
       padding: 3px 9px;
@@ -570,8 +576,12 @@
       transition: border-color 0.1s, color 0.1s;
       white-space: nowrap;
     }
-    .stockpile-chip.active { border-color: var(--green); color: var(--green); }
-    .stockpile-chip:hover  { opacity: 0.8; }
+    .stockpile-chip.active  { border-color: var(--green); color: var(--green); }
+    .stockpile-chip.partial { border-color: var(--green); color: var(--subtext); border-style: dashed; }
+    .stockpile-chip:hover   { opacity: 0.8; }
+    .stockpile-chip.region-chip { font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .stockpile-chip.region-chip.active  { background: rgba(215,169,63,0.10); }
+    .stockpile-chip.region-chip.partial { background: rgba(215,169,63,0.05); }
     .chip-del { margin-left: 5px; opacity: 0.45; font-size: 12px; line-height: 1; vertical-align: middle; }
     .chip-del:hover { opacity: 1; color: var(--red); }
 
@@ -1348,20 +1358,49 @@
       mountViewRequest();
     }
 
-    function buildCompareChips() {
-      var chips = document.getElementById('compareChips');
-      if (!chips) return;
+    function groupStockpilesByRegion(stockpiles) {
+      var groups = {};
+      var order  = [];
+      stockpiles.forEach(function(sp) {
+        if (!groups[sp.region]) { groups[sp.region] = []; order.push(sp.region); }
+        groups[sp.region].push(sp);
+      });
+      return { groups: groups, order: order };
+    }
+
+    function toggleRegion(region) {
+      var sps = allStockpiles.filter(function(sp) { return sp.region === region; });
+      var allSel = sps.every(function(sp) { return selectedStockpileIds[sp.id]; });
+      sps.forEach(function(sp) { selectedStockpileIds[sp.id] = !allSel; });
+    }
+
+    function buildGroupedChips(containerId) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
       if (allStockpiles.length === 0) {
-        chips.innerHTML = '<span style="font-size:11px;color:var(--muted)">No stockpiles added yet</span>';
+        container.innerHTML = '<span style="font-size:11px;color:var(--muted)">No stockpiles added yet</span>';
         return;
       }
-      chips.innerHTML = allStockpiles.map(function(sp) {
-        var active = selectedStockpileIds[sp.id] ? ' active' : '';
-        var label  = esc(sp.code);
-        var title  = esc(sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code);
-        return '<button class="stockpile-chip' + active + '" data-id="' + esc(sp.id) + '" title="' + title + '">' + label + '</button>';
-      }).join('');
+      var grouped = groupStockpilesByRegion(allStockpiles);
+      var html = '';
+      grouped.order.forEach(function(region) {
+        var sps = grouped.groups[region];
+        var selCount = sps.filter(function(sp) { return selectedStockpileIds[sp.id]; }).length;
+        var regionCls = selCount === sps.length ? ' active' : (selCount > 0 ? ' partial' : '');
+        html += '<div class="chip-group">';
+        html += '<button class="stockpile-chip region-chip' + regionCls + '" data-region="' + esc(region) + '">' + esc(region) + '</button>';
+        sps.forEach(function(sp) {
+          var active = selectedStockpileIds[sp.id] ? ' active' : '';
+          var title  = esc(sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code);
+          html += '<button class="stockpile-chip' + active + '" data-id="' + esc(sp.id) + '" title="' + title + '">' + esc(sp.code) + '</button>';
+        });
+        html += '</div>';
+      });
+      container.innerHTML = html;
     }
+
+    function buildCompareChips() { buildGroupedChips('compareChips'); }
+
 
     function buildCompareGrid() {
       var covered     = {};
@@ -1451,9 +1490,12 @@
         chips.addEventListener('click', function(e) {
           var chip = e.target.closest('.stockpile-chip');
           if (!chip) return;
+          var region = chip.getAttribute('data-region');
+          if (region) { toggleRegion(region); buildCompareChips(); buildCompareGrid(); return; }
           var id = chip.getAttribute('data-id');
+          if (!id) return;
           selectedStockpileIds[id] = !selectedStockpileIds[id];
-          chip.classList.toggle('active', !!selectedStockpileIds[id]);
+          buildCompareChips();
           buildCompareGrid();
         });
       }
@@ -1710,9 +1752,12 @@
         refChips2.addEventListener('click', function(e) {
           var chip = e.target.closest('.stockpile-chip');
           if (!chip) return;
+          var region = chip.getAttribute('data-region');
+          if (region) { toggleRegion(region); buildRefChips(); buildRefGrid(); return; }
           var id = chip.getAttribute('data-id');
+          if (!id) return;
           selectedStockpileIds[id] = !selectedStockpileIds[id];
-          chip.classList.toggle('active', !!selectedStockpileIds[id]);
+          buildRefChips();
           buildRefGrid();
         });
       }
@@ -1743,20 +1788,7 @@
       }).join('');
     }
 
-    function buildRefChips() {
-      var chips = document.getElementById('refChips');
-      if (!chips) return;
-      if (allStockpiles.length === 0) {
-        chips.innerHTML = '<span style="font-size:11px;color:var(--muted)">No stockpiles added yet</span>';
-        return;
-      }
-      chips.innerHTML = allStockpiles.map(function(sp) {
-        var active = selectedStockpileIds[sp.id] ? ' active' : '';
-        var label  = esc(sp.code);
-        var title  = esc(sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code);
-        return '<button class="stockpile-chip' + active + '" data-id="' + esc(sp.id) + '" title="' + title + '">' + label + '</button>';
-      }).join('');
-    }
+    function buildRefChips() { buildGroupedChips('refChips'); }
 
     function buildRefGrid() {
       var refItems = {};
@@ -1764,13 +1796,6 @@
       if (anySelected) {
         allStockpiles.forEach(function(sp) {
           if (!selectedStockpileIds[sp.id]) return;
-          var items = sp.items || {};
-          Object.keys(items).forEach(function(k) {
-            refItems[k] = (refItems[k] || 0) + (items[k] || 0);
-          });
-        });
-      } else {
-        allStockpiles.forEach(function(sp) {
           var items = sp.items || {};
           Object.keys(items).forEach(function(k) {
             refItems[k] = (refItems[k] || 0) + (items[k] || 0);
@@ -1808,7 +1833,7 @@
       });
       var el = document.getElementById('refItemsGrid');
       if (!el) return;
-      el.innerHTML = html || '<p style="color:var(--muted);font-size:12px;padding:20px;text-align:center">No items in stockpiles</p>';
+      el.innerHTML = html || '<p style="color:var(--muted);font-size:12px;padding:20px;text-align:center">' + (anySelected ? 'No items in selected stockpiles' : 'Select stockpiles above to compare') + '</p>';
       filterItems();
     }
 

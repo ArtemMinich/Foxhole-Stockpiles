@@ -1,5 +1,6 @@
 import { FOXHOLE_ITEMS } from './data/items'
 import { FOXHOLE_ITEMS_CATEGORIES } from './data/category'
+import { C } from './theme'
 
 const { widget } = figma
 const {
@@ -96,7 +97,7 @@ function renderSumFields(sum: Record<string, number>, fields: string[]) {
   return (
     <AutoLayout direction="vertical" spacing={1} padding={{ left: 6 }}>
       {nonZero.map((f) => (
-        <Text key={f} fontSize={10} fill="#6C7086">
+        <Text key={f} fontSize={10} fill={C.muted}>
           {f + ': ' + sum[f]}
         </Text>
       ))}
@@ -123,16 +124,16 @@ function renderLeaves(leaves: Stockpile[], opts: RenderOpts) {
         return (
           <AutoLayout key={s.id} direction="vertical" spacing={1}>
             <AutoLayout direction="horizontal" spacing={6} verticalAlignItems="center">
-              <Text fontSize={11} fill="#A6E3A1" onClick={() => opts.onViewSum([s], s.region + ' › ' + s.hex + ' › ' + s.structure + ' › ' + s.code)}>
+              <Text fontSize={11} fill={C.text} onClick={() => opts.onViewSum([s], s.region + ' › ' + s.hex + ' › ' + s.structure + ' › ' + s.code)}>
                 {s.code}
               </Text>
               {tsLine
-                ? <Text fontSize={9} fill="#45475A">{tsLine}</Text>
+                ? <Text fontSize={9} fill={C.muted}>{tsLine}</Text>
                 : null
               }
             </AutoLayout>
             {fields.map((f) => (
-              <Text key={f} fontSize={10} fill="#585B70">
+              <Text key={f} fontSize={10} fill={C.muted}>
                 {f + ': ' + s.items[f]}
               </Text>
             ))}
@@ -154,10 +155,10 @@ function renderStructures(structMap: StructureMap, opts: RenderOpts, hexKey: str
         return (
           <AutoLayout key={structure} direction="vertical" spacing={2}>
             <AutoLayout direction="horizontal" spacing={4} verticalAlignItems="center">
-              <Text fontSize={11} fontWeight={600} fill="#74C7EC" onClick={() => opts.toggleNode(structKey)}>
+              <Text fontSize={11} fontWeight={600} fill={C.structure} onClick={() => opts.toggleNode(structKey)}>
                 {isCollapsed ? '▸' : '▾'}
               </Text>
-              <Text fontSize={11} fontWeight={600} fill="#74C7EC" onClick={() => opts.onViewSum(leaves, viewTitle)}>
+              <Text fontSize={11} fontWeight={600} fill={C.structure} onClick={() => opts.onViewSum(leaves, viewTitle)}>
                 {structure}
               </Text>
             </AutoLayout>
@@ -181,10 +182,10 @@ function renderHexes(hexMap: HexMap, opts: RenderOpts, regionKey: string) {
         return (
           <AutoLayout key={hex} direction="vertical" spacing={3}>
             <AutoLayout direction="horizontal" spacing={4} verticalAlignItems="center">
-              <Text fontSize={12} fontWeight={600} fill="#89B4FA" onClick={() => opts.toggleNode(hexKey)}>
+              <Text fontSize={12} fontWeight={600} fill={C.hex} onClick={() => opts.toggleNode(hexKey)}>
                 {isCollapsed ? '▸' : '▾'}
               </Text>
-              <Text fontSize={12} fontWeight={600} fill="#89B4FA" onClick={() => opts.onViewSum(leaves, regionKey + ' › ' + hex)}>
+              <Text fontSize={12} fontWeight={600} fill={C.hex} onClick={() => opts.onViewSum(leaves, regionKey + ' › ' + hex)}>
                 {hex}
               </Text>
             </AutoLayout>
@@ -208,10 +209,10 @@ function renderTree(tree: RegionMap, opts: RenderOpts) {
         return (
           <AutoLayout key={region} direction="vertical" spacing={4}>
             <AutoLayout direction="horizontal" spacing={4} verticalAlignItems="center">
-              <Text fontSize={13} fontWeight={700} fill="#CBA6F7" onClick={() => opts.toggleNode(regionKey)}>
+              <Text fontSize={13} fontWeight={700} fill={C.region} onClick={() => opts.toggleNode(regionKey)}>
                 {isCollapsed ? '▸' : '▾'}
               </Text>
-              <Text fontSize={13} fontWeight={700} fill="#CBA6F7" onClick={() => opts.onViewSum(leaves, region)}>
+              <Text fontSize={13} fontWeight={700} fill={C.region} onClick={() => opts.onViewSum(leaves, region)}>
                 {region}
               </Text>
             </AutoLayout>
@@ -235,16 +236,16 @@ function renderRequests(reqs: Request[], onView: (r: Request) => Promise<void>) 
         return (
           <AutoLayout key={r.id} direction="vertical" spacing={1}>
             <AutoLayout direction="horizontal" spacing={6} verticalAlignItems="center">
-              <Text fontSize={11} fill="#F38BA8" onClick={() => onView(r)}>
+              <Text fontSize={11} fill={C.requestItem} onClick={() => onView(r)}>
                 {r.name}
               </Text>
               {metaLine
-                ? <Text fontSize={9} fill="#45475A">{metaLine}</Text>
+                ? <Text fontSize={9} fill={C.muted}>{metaLine}</Text>
                 : null
               }
             </AutoLayout>
             {r.description
-              ? <Text fontSize={10} fill="#585B70">{r.description}</Text>
+              ? <Text fontSize={10} fill={C.muted}>{r.description}</Text>
               : null
             }
           </AutoLayout>
@@ -437,22 +438,22 @@ function Widget() {
       direction="vertical"
       padding={16}
       spacing={12}
-      fill="#1E1E2E"
+      fill={C.bg}
       cornerRadius={12}
       minWidth={340}
     >
       <AutoLayout direction="horizontal" spacing={6} verticalAlignItems="center">
-        <Text fontSize={16} fill="#585B70" onClick={() => setRootCollapsed(!rootCollapsed)}>
+        <Text fontSize={16} fill={C.muted} onClick={() => setRootCollapsed(!rootCollapsed)}>
           {rootCollapsed ? "▸" : "▾"}
         </Text>
-        <Text fontSize={16} fontWeight={700} fill="#CDD6F4" onClick={() => onViewSum(all, "Foxhole Stockpiles")}>
-          {"Foxhole Stockpiles"}
+        <Text fontSize={16} fontWeight={700} fill={C.text} onClick={() => onViewSum(all, "UDC Stockpiles")}>
+          {"UDC Stockpiles"}
         </Text>
       </AutoLayout>
 
       {rootCollapsed ? null : all.length === 0
         ? (
-          <Text fontSize={12} fill="#6C7086">
+          <Text fontSize={12} fill={C.muted}>
             {"No stockpiles — use ⋮ menu → \"Add stockpile\""}
           </Text>
         )
@@ -460,17 +461,17 @@ function Widget() {
       }
 
       <AutoLayout direction="horizontal" spacing={6} verticalAlignItems="center">
-        <Text fontSize={14} fill="#585B70" onClick={() => setReqCollapsed(!reqCollapsed)}>
+        <Text fontSize={14} fill={C.muted} onClick={() => setReqCollapsed(!reqCollapsed)}>
           {reqCollapsed ? '▸' : '▾'}
         </Text>
-        <Text fontSize={14} fontWeight={700} fill="#F38BA8">
+        <Text fontSize={14} fontWeight={700} fill={C.request}>
           {'Requests'}
         </Text>
       </AutoLayout>
 
       {reqCollapsed ? null : allRequests.length === 0
         ? (
-          <Text fontSize={12} fill="#6C7086">
+          <Text fontSize={12} fill={C.muted}>
             {'No requests — use ⋮ menu → "Add request"'}
           </Text>
         )
