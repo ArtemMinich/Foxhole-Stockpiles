@@ -601,9 +601,20 @@
     var currentStockpile = null;
     var allItems         = [];
     var allCategories    = [];
-    var selectedCategory = 'All';
+    var selectedCategory = ['All'];
+    var currentScale = 1;
+    var editMaps = [];
+    var storageTypes = [];
+    var currentMapData = null;
+    var currentMapIsNew = false;
+    var currentDefaultIcons = {};
+    var currentDefaultRouteLineId = '';
+    var currentMapStockpiles = [];
+    var currentMapRoutes = [];
+    var pendingSelectionTarget = null;
     var visibleFields    = [];
     var exportStockpiles = [];
+    var exportMaps = [];
     var viewItems       = {};
     var viewStockpiles  = [];
     var currentTitle = '';
@@ -618,6 +629,21 @@
     window.onmessage = function(event) {
       var msg = event.data.pluginMessage;
       if (!msg) return;
+      if (msg.type === 'selection-id') {
+        if (pendingSelectionTarget && pendingSelectionTarget.selector) {
+          var targetEl = document.querySelector(pendingSelectionTarget.selector);
+          if (targetEl) targetEl.value = msg.nodeId;
+        } else if (pendingSelectionTarget && pendingSelectionTarget.sectionId && pendingSelectionTarget.type) {
+          var rows = document.querySelectorAll('#' + pendingSelectionTarget.sectionId + ' .icon-row');
+          rows.forEach(function(row) {
+            if (row.getAttribute('data-type') !== pendingSelectionTarget.type) return;
+            var inp = row.querySelector('.icon-input');
+            if (inp) inp.value = msg.nodeId;
+          });
+        }
+        pendingSelectionTarget = null;
+        return;
+      }
       currentMode = msg.mode;
 
       if (currentMode === 'add') {
@@ -628,7 +654,7 @@
         currentStockpile = msg.stockpile;
         allItems         = msg.allItems || [];
         allCategories    = msg.allCategories || [];
-        selectedCategory = 'All';
+        selectedCategory = ['All'];
         renderEdit();
       } else if (currentMode === 'config') {
         allItems      = msg.allItems || [];
@@ -636,6 +662,7 @@
         renderConfig();
       } else if (currentMode === 'export') {
         exportStockpiles = msg.stockpiles || [];
+        exportMaps       = msg.maps       || [];
         renderExport();
       } else if (currentMode === 'view') {
         viewItems        = msg.items         || {};
@@ -643,7 +670,7 @@
         currentTitle     = msg.title         || '';
         allItems         = msg.allItems      || [];
         allCategories    = msg.allCategories || [];
-        selectedCategory = 'All';
+        selectedCategory = ['All'];
         renderView();
       }  else if (currentMode === 'import') {
         renderImport();
@@ -652,14 +679,38 @@
         allStockpiles        = msg.allStockpiles || [];
         allItems             = msg.allItems      || [];
         allCategories        = msg.allCategories || [];
-        selectedCategory     = 'All';
+        selectedCategory     = ['All'];
         selectedStockpileIds = {};
         renderViewRequest();
+      } else if (currentMode === 'mapdetail') {
+        storageTypes         = msg.storageTypes  || [];
+        currentMapIsNew      = !!msg.isNew;
+        currentMapStockpiles = msg.allStockpiles || [];
+        currentDefaultRouteLineId = msg.defaultRouteLineId || '';
+        var srcMap           = msg.map || {};
+        currentMapData       = Object.assign({ icons: {}, routes: [] }, srcMap, { icons: Object.assign({}, srcMap.icons || {}) });
+        currentMapRoutes     = (srcMap.routes || []).map(function(r) {
+          return Object.assign({}, r, { routeLineId: r.routeLineId || srcMap.routeLineId || currentDefaultRouteLineId || '' });
+        });
+        renderMapDetail();
+      } else if (currentMode === 'settings') {
+        currentScale        = msg.scale        || 1;
+        currentDefaultIcons = Object.assign({}, msg.defaultIcons || {});
+        currentDefaultRouteLineId = msg.defaultRouteLineId || '';
+        storageTypes        = msg.storageTypes || [];
+        renderSettings();
+      } else if (currentMode === 'maps') {
+        editMaps     = (msg.maps || []).map(function(m) { return Object.assign({ icons: {} }, m, { icons: Object.assign({}, m.icons || {}) }); });
+        storageTypes = msg.storageTypes || [];
+        renderMaps();
+      } else if (currentMode === 'resize') {
+        currentScale = msg.currentScale || 1;
+        renderResize();
       } else if (currentMode === 'addrequest') {
         allItems         = msg.allItems      || [];
         allCategories    = msg.allCategories || [];
         allStockpiles    = msg.allStockpiles || [];
-        selectedCategory = 'All';
+        selectedCategory = ['All'];
         currentRequest   = { id: uid(), name: '', description: '', items: {}, createdAt: 0, createdBy: '' };
         renderAddRequest();
       }
@@ -667,6 +718,16 @@
 
     function send(data) {
       parent.postMessage({ pluginMessage: data }, '*');
+    }
+
+    function pickSelectionInto(selector) {
+      pendingSelectionTarget = { selector: selector };
+      send({ type: 'get-selection' });
+    }
+
+    function pickSelectionIntoIcon(sectionId, type) {
+      pendingSelectionTarget = { sectionId: sectionId, type: type };
+      send({ type: 'get-selection' });
     }
 
     document.addEventListener('dblclick', function(e) {
@@ -713,6 +774,14 @@
       var structure = parts[2].trim();
       var code      = parts.slice(3).join(' - ').trim();
       if (!region || !hex || !structure || !code) return null;
+      // Extract optional coordinates: "... - X: 0.1722732 Y: 0.4367275"
+      var x = null, y = null;
+      var coordMatch = code.match(/ - X: ([\d.]+) Y: ([\d.]+)$/);
+      if (coordMatch) {
+        x = parseFloat(coordMatch[1]);
+        y = parseFloat(coordMatch[2]);
+        code = code.slice(0, code.length - coordMatch[0].length).trim();
+      }
       // Parse "2026.05.17-10.40.28"
       var ts = 0;
       var m  = datePart.match(/^(\d{4})\.(\d{2})\.(\d{2})-(\d{2})\.(\d{2})\.(\d{2})$/);
@@ -722,7 +791,7 @@
           parseInt(m[4]), parseInt(m[5]), parseInt(m[6])
         ).getTime();
       }
-      return { region: region, hex: hex, structure: structure, code: code, ts: ts };
+      return { region: region, hex: hex, structure: structure, code: code, x: x, y: y, ts: ts };
     }
 
     function mountAdd() {
@@ -771,6 +840,7 @@
         pending = {
           id: uid(), region: header.region, hex: header.hex,
           structure: header.structure, code: header.code,
+          x: header.x, y: header.y,
           items: items, lastUpdated: header.ts || 0, lastEditedBy: '',
         };
         saveBtn.disabled = false;
@@ -815,10 +885,29 @@
       var bar = document.getElementById('catBar');
       if (!bar) return;
       bar.innerHTML = allCategories.map(function(cat) {
-        var active = cat.name === selectedCategory ? ' active' : '';
+        var active = selectedCategory.indexOf(cat.name) !== -1 ? ' active' : '';
         return '<button class="cat-btn' + active + '" data-cat="' + esc(cat.name) + '" title="' + esc(cat.name) + '">'+
                '<img src="' + esc(cat.imgUrl) + '" alt="" loading="lazy"></button>';
       }).join('');
+    }
+
+    function toggleCategory(catName) {
+      if (catName === 'All') {
+        selectedCategory = ['All'];
+        return;
+      }
+      var allIdx = selectedCategory.indexOf('All');
+      if (allIdx !== -1) {
+        selectedCategory = [catName];
+        return;
+      }
+      var idx = selectedCategory.indexOf(catName);
+      if (idx !== -1) {
+        selectedCategory.splice(idx, 1);
+        if (selectedCategory.length === 0) selectedCategory = ['All'];
+      } else {
+        selectedCategory.push(catName);
+      }
     }
 
     function buildItemsGrid() {
@@ -884,7 +973,7 @@
     function filterItems() {
       document.querySelectorAll('#itemsGrid .item-card, #refItemsGrid .item-card').forEach(function(card) {
         var cat = card.getAttribute('data-cat');
-        if (selectedCategory === 'All' || cat === selectedCategory) card.classList.remove('hidden');
+        if (selectedCategory.indexOf('All') !== -1 || selectedCategory.indexOf(cat) !== -1) card.classList.remove('hidden');
         else card.classList.add('hidden');
       });
     }
@@ -897,9 +986,9 @@
       catBar.addEventListener('click', function(e) {
         var btn = e.target.closest('.cat-btn');
         if (!btn) return;
-        selectedCategory = btn.getAttribute('data-cat');
+        toggleCategory(btn.getAttribute('data-cat'));
         catBar.querySelectorAll('.cat-btn').forEach(function(b) {
-          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+          b.classList.toggle('active', selectedCategory.indexOf(b.getAttribute('data-cat')) !== -1);
         });
         filterItems();
       });
@@ -1017,11 +1106,14 @@
 
     function renderExport() {
       var n = exportStockpiles.length;
+      var m = exportMaps.length;
       document.getElementById('app').innerHTML = [
         '<div class="export-wrapper">',
           '<h2>Export JSON</h2>',
           '<p class="hint" style="margin-bottom:10px">',
-            n + ' stockpile' + (n === 1 ? '' : 's') + ' — copy the JSON below to back up your data.',
+            n + ' stockpile' + (n === 1 ? '' : 's') +
+            (m > 0 ? ', ' + m + ' map' + (m === 1 ? '' : 's') : '') +
+            ' — copy the JSON below to back up your data.',
           '</p>',
           '<textarea class="json-output" id="jsonOutput" readonly></textarea>',
           '<div class="copy-status" id="copyStatus"></div>',
@@ -1032,7 +1124,8 @@
         '</div>',
       ].join('');
 
-      document.getElementById('jsonOutput').value = JSON.stringify(exportStockpiles, null, 2);
+      var payload = { stockpiles: exportStockpiles, maps: exportMaps };
+      document.getElementById('jsonOutput').value = JSON.stringify(payload, null, 2);
       mountExport();
     }
 
@@ -1106,26 +1199,29 @@
         importBtn.disabled = true;
         if (!text) return;
         var data;
-        try {
-          data = JSON.parse(text);
-        } catch (e) {
-          errorEl.textContent = 'JSON parse error: ' + e.message;
-          return;
+        try { data = JSON.parse(text); } catch (e) {
+          errorEl.textContent = 'JSON parse error: ' + e.message; return;
         }
-        if (!Array.isArray(data)) {
-          errorEl.textContent = 'Error: expected a JSON array at the top level.';
-          return;
+        var spList, mapList;
+        if (Array.isArray(data)) {
+          spList  = data;
+          mapList = null;
+        } else if (data && Array.isArray(data.stockpiles)) {
+          spList  = data.stockpiles;
+          mapList = Array.isArray(data.maps) ? data.maps : null;
+        } else {
+          errorEl.textContent = 'Error: expected array or { stockpiles, maps } object.'; return;
         }
-        for (var i = 0; i < data.length; i++) {
-          var s = data[i];
+        for (var i = 0; i < spList.length; i++) {
+          var s = spList[i];
           if (!s || !s.id || !s.code || !s.region || !s.hex || !s.structure) {
-            errorEl.textContent = 'Error: item #' + i + ' is missing required fields (id, code, region, hex, structure).';
-            return;
+            errorEl.textContent = 'Error: stockpile #' + i + ' missing required fields.'; return;
           }
         }
-        parsed = data;
+        parsed = { stockpiles: spList, maps: mapList };
         errorEl.style.color = 'var(--green)';
-        errorEl.textContent = data.length + ' stockpile' + (data.length === 1 ? '' : 's') + ' parsed OK.';
+        errorEl.textContent = spList.length + ' stockpile' + (spList.length === 1 ? '' : 's') +
+          (mapList ? ', ' + mapList.length + ' map' + (mapList.length === 1 ? '' : 's') : '') + ' parsed OK.';
         importBtn.disabled = false;
       });
 
@@ -1134,7 +1230,8 @@
       importBtn.addEventListener('click', function() {
         if (!parsed) return;
         send({ type: 'save', mode: 'import', payload: {
-          stockpiles: parsed,
+          stockpiles: parsed.stockpiles,
+          maps:       parsed.maps,
           replace:    replaceChk.checked,
         }});
       });
@@ -1145,8 +1242,17 @@
     // =========================================================================
 
     function renderView() {
+      var sp = viewStockpiles.length === 1 ? viewStockpiles[0] : null;
+      var coordsBar = '';
+      if (sp && sp.x != null && sp.y != null) {
+        coordsBar = '<div style="padding:5px 14px;background:#1A1E35;border-bottom:1px solid var(--border);' +
+                    'font-size:11px;color:var(--subtext);flex-shrink:0;font-family:Consolas,Monaco,monospace">' +
+                    'X: ' + sp.x + '  Y: ' + sp.y +
+                    '</div>';
+      }
       document.getElementById('app').innerHTML = [
         '<div class="edit-wrapper">',
+          coordsBar,
           '<div class="category-bar" id="catBar"></div>',
           '<div class="items-grid" id="itemsGrid"></div>',
           '<div class="buttons">',
@@ -1243,9 +1349,9 @@
       catBar.addEventListener('click', function(e) {
         var btn = e.target.closest('.cat-btn');
         if (!btn) return;
-        selectedCategory = btn.getAttribute('data-cat');
+        toggleCategory(btn.getAttribute('data-cat'));
         catBar.querySelectorAll('.cat-btn').forEach(function(b) {
-          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+          b.classList.toggle('active', selectedCategory.indexOf(b.getAttribute('data-cat')) !== -1);
         });
         filterItems();
       });
@@ -1519,9 +1625,9 @@
       catBar.addEventListener('click', function(e) {
         var btn = e.target.closest('.cat-btn');
         if (!btn) return;
-        selectedCategory = btn.getAttribute('data-cat');
+        toggleCategory(btn.getAttribute('data-cat'));
         catBar.querySelectorAll('.cat-btn').forEach(function(b) {
-          b.classList.toggle('active', b.getAttribute('data-cat') === selectedCategory);
+          b.classList.toggle('active', selectedCategory.indexOf(b.getAttribute('data-cat')) !== -1);
         });
         filterItems();
       });
@@ -1843,6 +1949,470 @@
         if (selectedRefCategory === 'All' || cat === selectedRefCategory) card.classList.remove('hidden');
         else card.classList.add('hidden');
       });
+    }
+
+    // =========================================================================
+    // MAP DETAIL MODE (add / edit single map)
+    // =========================================================================
+
+    function buildIconRowsHtml(icons, sectionId) {
+      return storageTypes.map(function(t) {
+        var v = (icons || {})[t] || '';
+        return '<div class="icon-row" data-type="' + esc(t) + '" style="display:flex;align-items:center;gap:6px;margin-bottom:6px">' +
+          '<span style="font-size:11px;color:var(--subtext);width:130px;flex-shrink:0">' + esc(t) + '</span>' +
+          '<input class="icon-input" value="' + esc(v) + '" placeholder="link / node-id" ' +
+            'style="flex:1;padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:11px;font-family:inherit;outline:none">' +
+          '<button class="btn-sm btn-secondary icon-pick-btn" data-section="' + esc(sectionId) + '" data-type="' + esc(t) + '" title="З виділення">⊡</button>' +
+        '</div>';
+      }).join('');
+    }
+
+    function bindIconPickButtons(sectionId) {
+      document.querySelectorAll('#' + sectionId + ' .icon-pick-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          pickSelectionIntoIcon(sectionId, btn.getAttribute('data-type'));
+        });
+      });
+    }
+
+    function collectIconsFromSection(sectionId) {
+      var icons = {};
+      document.querySelectorAll('#' + sectionId + ' .icon-row').forEach(function(row) {
+        var t = row.getAttribute('data-type');
+        var inp = row.querySelector('.icon-input');
+        if (!t || !inp) return;
+        var v = parseFigmaNodeId(inp.value.trim());
+        if (v) icons[t] = v;
+      });
+      return icons;
+    }
+
+    function missingIconTypes(icons) {
+      return storageTypes.filter(function(t) { return !(icons || {})[t]; });
+    }
+
+    function missingIconsWarningHtml(icons, prefix) {
+      var missing = missingIconTypes(icons);
+      if (missing.length === 0) return '';
+      return '<div class="error-msg" style="min-height:auto;margin-top:6px;color:var(--red)">' +
+        esc(prefix + ': ' + missing.join(', ')) +
+        '</div>';
+    }
+
+    function buildRouteRowHtml(idx, route) {
+      var selectStyle = 'flex:1;padding:5px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:11px;font-family:inherit;outline:none;min-width:0';
+      var inputStyle = 'flex:1;padding:5px 8px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:11px;font-family:inherit;outline:none;min-width:0';
+      var fromOpts = '<option value="">— Виберіть склад —</option>' + currentMapStockpiles.map(function(s) {
+        var sel = route.fromId === s.id ? ' selected' : '';
+        return '<option value="' + esc(s.id) + '"' + sel + '>' + esc(s.label) + '</option>';
+      }).join('');
+      var toOpts = '<option value="">— Виберіть склад —</option>' + currentMapStockpiles.map(function(s) {
+        var disabled = route.fromId === s.id ? ' disabled' : '';
+        var sel = route.toId === s.id ? ' selected' : '';
+        return '<option value="' + esc(s.id) + '"' + sel + disabled + '>' + esc(s.label) + '</option>';
+      }).join('');
+      return '<div class="route-row" data-idx="' + idx + '" style="border:1px solid var(--border);border-radius:6px;padding:6px;margin-bottom:6px">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+          '<select class="route-from" data-idx="' + idx + '" style="' + selectStyle + '">' + fromOpts + '</select>' +
+          '<span style="color:var(--subtext);font-size:14px;flex-shrink:0">→</span>' +
+          '<select class="route-to" data-idx="' + idx + '" style="' + selectStyle + '">' + toOpts + '</select>' +
+          '<button class="btn-sm btn-danger route-del-btn" data-idx="' + idx + '" title="Видалити">✕</button>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:6px;margin-top:6px">' +
+          '<span style="font-size:10px;color:var(--subtext);width:62px;flex-shrink:0">Line</span>' +
+          '<input class="route-line" data-idx="' + idx + '" value="' + esc(route.routeLineId || '') + '" placeholder="Figma link / node-id" style="' + inputStyle + '">' +
+          '<button class="btn-sm btn-secondary route-line-sel-btn" data-idx="' + idx + '" title="З виділення">⊡</button>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function collectRoutesFromDOM() {
+      document.querySelectorAll('#mdRoutesSection .route-row').forEach(function(row) {
+        var idx = parseInt(row.getAttribute('data-idx'));
+        if (isNaN(idx) || idx < 0 || idx >= currentMapRoutes.length) return;
+        var fromEl = row.querySelector('.route-from');
+        var toEl = row.querySelector('.route-to');
+        var lineEl = row.querySelector('.route-line');
+        if (fromEl) currentMapRoutes[idx].fromId = fromEl.value;
+        if (toEl) currentMapRoutes[idx].toId = toEl.value;
+        if (lineEl) currentMapRoutes[idx].routeLineId = lineEl.value.trim();
+      });
+    }
+
+    function rebuildRoutesSection() {
+      var el = document.getElementById('mdRoutesSection');
+      if (!el) return;
+      var html = currentMapRoutes.length === 0
+        ? '<p style="color:var(--subtext);font-size:11px;padding:4px 0">Маршрутів немає. Натисни «+ Add route».</p>'
+        : currentMapRoutes.map(function(r, i) { return buildRouteRowHtml(i, r); }).join('');
+      el.innerHTML = html;
+
+      el.querySelectorAll('.route-from').forEach(function(sel) {
+        sel.addEventListener('change', function() {
+          var idx = parseInt(sel.getAttribute('data-idx'));
+          currentMapRoutes[idx].fromId = sel.value;
+          if (currentMapRoutes[idx].fromId === currentMapRoutes[idx].toId) currentMapRoutes[idx].toId = '';
+          rebuildRoutesSection();
+        });
+      });
+      el.querySelectorAll('.route-to').forEach(function(sel) {
+        sel.addEventListener('change', function() {
+          var idx = parseInt(sel.getAttribute('data-idx'));
+          if (sel.value === currentMapRoutes[idx].fromId) { sel.value = ''; return; }
+          currentMapRoutes[idx].toId = sel.value;
+        });
+      });
+      el.querySelectorAll('.route-del-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          collectRoutesFromDOM();
+          var idx = parseInt(btn.getAttribute('data-idx'));
+          currentMapRoutes.splice(idx, 1);
+          rebuildRoutesSection();
+        });
+      });
+      el.querySelectorAll('.route-line-sel-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          collectRoutesFromDOM();
+          pickSelectionInto('#mdRoutesSection .route-row[data-idx="' + btn.getAttribute('data-idx') + '"] .route-line');
+        });
+      });
+    }
+
+    function renderMapDetail() {
+      var m    = currentMapData || { id: '', name: '', nodeId: '', icons: {} };
+      var isNew = currentMapIsNew;
+      var noStockpiles = currentMapStockpiles.length === 0;
+
+      document.getElementById('app').innerHTML = [
+        '<div style="flex:1;overflow-y:auto;padding:16px 16px 0">',
+          '<div class="field">',
+            '<label>Name</label>',
+            '<input id="mdName" type="text" value="' + esc(m.name) + '" autocomplete="off">',
+          '</div>',
+          '<div class="field">',
+            '<label>Map Node</label>',
+            '<div style="display:flex;align-items:center;gap:6px">',
+              '<input id="mdNodeId" value="' + esc(m.nodeId || '') + '" placeholder="Figma link або node-id" style="flex:1;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:inherit;outline:none">',
+              '<button class="btn-sm btn-secondary" id="mdNodePickBtn" title="З виділення">⊡</button>',
+            '</div>',
+          '</div>',
+          '<div class="field">',
+            '<label>Icons</label>',
+            '<div id="mdIconsSection">' + buildIconRowsHtml(m.icons, 'mdIconsSection') + '</div>',
+            missingIconsWarningHtml(m.icons, 'No icons set, fallback markers will be used for'),
+          '</div>',
+          '<div class="field">',
+            '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">',
+              '<label style="margin:0">Routes</label>',
+              noStockpiles
+                ? '<span style="font-size:10px;color:var(--subtext)">Спочатку додай склади</span>'
+                : '<button class="btn-sm btn-secondary" id="mdAddRouteBtn">+ Add route</button>',
+            '</div>',
+            '<div id="mdRoutesSection"></div>',
+            '<div id="mdRoutesError" class="error-msg" style="min-height:auto"></div>',
+          '</div>',
+        '</div>',
+        '<div class="buttons">',
+          isNew ? '' : '<button class="btn-danger" id="mdDeleteBtn">Delete</button>',
+          '<button class="btn-secondary" id="mdCancelBtn">Cancel</button>',
+          '<button class="btn-primary" id="mdSaveBtn">Save</button>',
+        '</div>',
+      ].join('');
+
+      var nameEl    = document.getElementById('mdName');
+      var nodeIdEl  = document.getElementById('mdNodeId');
+      var saveBtn   = document.getElementById('mdSaveBtn');
+      var cancelBtn = document.getElementById('mdCancelBtn');
+      var deleteBtn = document.getElementById('mdDeleteBtn');
+      var addRouteBtn = document.getElementById('mdAddRouteBtn');
+      var errorEl   = document.getElementById('mdRoutesError');
+
+      rebuildRoutesSection();
+      bindIconPickButtons('mdIconsSection');
+
+      document.getElementById('mdNodePickBtn').addEventListener('click', function() { pickSelectionInto('#mdNodeId'); });
+
+      if (addRouteBtn) {
+        addRouteBtn.addEventListener('click', function() {
+          collectRoutesFromDOM();
+          currentMapRoutes.push({ id: uid(), fromId: '', toId: '', routeLineId: currentDefaultRouteLineId || '' });
+          rebuildRoutesSection();
+        });
+      }
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+
+      saveBtn.addEventListener('click', function() {
+        errorEl.textContent = '';
+        collectRoutesFromDOM();
+        var validRoutes = [];
+        for (var i = 0; i < currentMapRoutes.length; i++) {
+          var r = currentMapRoutes[i];
+          if (!r.fromId || !r.toId) { errorEl.textContent = 'Маршрут #' + (i+1) + ': виберіть обидва склади.'; return; }
+          if (r.fromId === r.toId) { errorEl.textContent = 'Маршрут #' + (i+1) + ': from і to не можуть співпадати.'; return; }
+          var routeLineId = currentDefaultRouteLineId || '';
+          if (r.routeLineId) {
+            routeLineId = parseFigmaNodeId(r.routeLineId);
+            if (!routeLineId) { errorEl.textContent = 'Маршрут #' + (i+1) + ': невалідний line node-id.'; return; }
+          }
+          validRoutes.push({ id: r.id, fromId: r.fromId, toId: r.toId, routeLineId: routeLineId });
+        }
+        send({ type: 'save-mapdetail', isNew: isNew, map: Object.assign({}, m, {
+          name:   nameEl.value.trim() || m.name,
+          nodeId: parseFigmaNodeId(nodeIdEl.value.trim()) || m.nodeId || '',
+          icons:  collectIconsFromSection('mdIconsSection'),
+          routes: validRoutes,
+        })});
+      });
+
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', function() { send({ type: 'delete-map', id: m.id }); });
+      }
+
+      setTimeout(function() { nameEl.focus(); }, 0);
+    }
+
+    function renderDefaultIcons() {
+      document.getElementById('app').innerHTML = [
+        '<div style="flex:1;overflow-y:auto;padding:16px 16px 0">',
+          '<p class="hint" style="margin-bottom:12px">Ці іконки автоматично підставляються при створенні нової карти.</p>',
+          '<div id="diSection">' + buildIconRowsHtml(currentDefaultIcons, 'diSection') + '</div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-secondary" id="diCancelBtn">Cancel</button>',
+          '<button class="btn-primary"   id="diSaveBtn">Save</button>',
+        '</div>',
+      ].join('');
+
+      document.getElementById('diCancelBtn').addEventListener('click', function() { send({ type: 'close' }); });
+      bindIconPickButtons('diSection');
+      document.getElementById('diSaveBtn').addEventListener('click', function() {
+        send({ type: 'save-defaulticons', icons: collectIconsFromSection('diSection') });
+      });
+    }
+
+    // =========================================================================
+    // MAPS MODE
+    // =========================================================================
+
+    function parseFigmaNodeId(input) {
+      if (!input) return null;
+      var s = input.trim();
+      var urlMatch = s.match(/[?&]node-id=([0-9A-Za-z%-]+)/);
+      if (urlMatch) return decodeURIComponent(urlMatch[1]).replace('-', ':');
+      if (/^[0-9]+-[0-9]+$/.test(s)) return s.replace('-', ':');
+      if (/^[0-9]+:[0-9]+$/.test(s)) return s;
+      return null;
+    }
+
+    function renderMaps() {
+      document.getElementById('app').innerHTML =
+        '<div style="display:flex;flex-direction:column;height:100%;overflow:hidden">' +
+          '<div style="padding:12px 16px 8px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:8px">' +
+            '<span style="font-size:13px;font-weight:600;color:var(--accent);flex:1">Map Overlays</span>' +
+            '<button class="btn-sm btn-primary" id="addMapBtn">+ Add map</button>' +
+          '</div>' +
+          '<div id="mapsListEl" style="flex:1;overflow-y:auto;padding:8px 16px"></div>' +
+          '<div class="buttons">' +
+            '<button class="btn-secondary" id="cancelMapsBtn">Cancel</button>' +
+            '<button class="btn-primary" id="saveMapsBtn">Save &amp; Redraw</button>' +
+          '</div>' +
+        '</div>';
+
+      rebuildMapsList();
+
+      document.getElementById('addMapBtn').addEventListener('click', function() {
+        editMaps.push({ id: uid(), name: 'Map ' + (editMaps.length + 1), nodeId: '', icons: {} });
+        rebuildMapsList();
+      });
+
+      document.getElementById('cancelMapsBtn').addEventListener('click', function() {
+        send({ type: 'close' });
+      });
+
+      document.getElementById('saveMapsBtn').addEventListener('click', function() {
+        collectMapsFromDOM();
+        var invalid = editMaps.filter(function(m) { return !parseFigmaNodeId(m.nodeId); });
+        if (invalid.length > 0) {
+          alert('Деякі карти мають невалідний node-id: ' + invalid.map(function(m){ return m.name; }).join(', '));
+          return;
+        }
+        send({ type: 'save-maps', maps: editMaps });
+      });
+
+      window.addEventListener('message', function(ev) {
+        var msg = ev.data && ev.data.pluginMessage;
+        if (!msg || msg.type !== 'selection-id') return;
+        var el = document.getElementById('mapsListEl');
+        if (!el) return;
+        var pending = (el.getAttribute('data-pending-sel') || '').split(':');
+        var idx = parseInt(pending[0]);
+        if (isNaN(idx) || idx < 0 || idx >= editMaps.length) return;
+        if (pending[1] === 'icon') {
+          var t = decodeURIComponent(pending.slice(2).join(':'));
+          editMaps[idx].icons = editMaps[idx].icons || {};
+          editMaps[idx].icons[t] = msg.nodeId;
+        } else {
+          editMaps[idx].nodeId = msg.nodeId;
+        }
+        el.setAttribute('data-pending-sel', '');
+        rebuildMapsList();
+      });
+    }
+
+    function collectMapsFromDOM() {
+      var rows = document.querySelectorAll('#mapsListEl .map-row');
+      rows.forEach(function(row) {
+        var idx = parseInt(row.getAttribute('data-idx'));
+        if (isNaN(idx) || idx < 0 || idx >= editMaps.length) return;
+        editMaps[idx].name = row.querySelector('.map-name').value || editMaps[idx].name;
+        var raw    = row.querySelector('.map-nodeid').value.trim();
+        var parsed = parseFigmaNodeId(raw);
+        if (parsed) editMaps[idx].nodeId = parsed;
+        editMaps[idx].icons = editMaps[idx].icons || {};
+        row.querySelectorAll('.icon-row').forEach(function(iconRow) {
+          var t   = iconRow.getAttribute('data-type');
+          var inp = iconRow.querySelector('.icon-input');
+          if (!t || !inp) return;
+          var v = parseFigmaNodeId(inp.value.trim());
+          if (v) editMaps[idx].icons[t] = v;
+        });
+      });
+    }
+
+    function rebuildMapsList() {
+      var el = document.getElementById('mapsListEl');
+      if (!el) return;
+      if (editMaps.length === 0) {
+        el.innerHTML = '<p style="color:var(--subtext);font-size:12px;padding:20px;text-align:center">No maps — add one above</p>';
+        return;
+      }
+      el.innerHTML = editMaps.map(function(m, i) {
+        var nodeLabel = m.nodeId ? '<span style="color:var(--green);font-size:10px">✓ ' + esc(m.nodeId) + '</span>' : '<span style="color:var(--red);font-size:10px">not bound</span>';
+        var iconsHtml = storageTypes.map(function(t) {
+          var v = (m.icons || {})[t] || '';
+          return '<div class="icon-row" data-type="' + esc(t) + '" style="display:flex;align-items:center;gap:5px;margin-top:4px">' +
+            '<span style="font-size:10px;color:var(--subtext);width:130px;flex-shrink:0">' + esc(t) + '</span>' +
+            '<input class="icon-input" value="' + esc(v) + '" placeholder="link / node-id" ' +
+              'style="flex:1;padding:3px 7px;background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:11px;font-family:inherit;outline:none">' +
+            '<button class="btn-sm btn-secondary icon-sel-btn" data-idx="' + i + '" data-type="' + esc(t) + '" title="З виділення">⊡</button>' +
+            '<button class="btn-sm btn-danger icon-clr-btn" data-idx="' + i + '" data-type="' + esc(t) + '" title="Очистити">✕</button>' +
+          '</div>';
+        }).join('');
+        return '<div class="map-row" data-idx="' + i + '" style="border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px">' +
+          '<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">' +
+            '<input class="map-name" value="' + esc(m.name) + '" style="flex:1;padding:5px 8px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:13px;font-family:inherit;outline:none">' +
+            '<button class="btn-sm btn-danger map-del-btn" data-idx="' + i + '">✕</button>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px">' +
+            '<input class="map-nodeid" value="' + esc(m.nodeId || '') + '" placeholder="Figma link або node-id" ' +
+              'style="flex:1;padding:5px 8px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:12px;font-family:inherit;outline:none">' +
+            '<button class="btn-sm btn-secondary map-sel-btn" data-idx="' + i + '" title="З виділення">⊡</button>' +
+          '</div>' +
+          '<div style="margin-top:4px;margin-bottom:6px">' + nodeLabel + '</div>' +
+          '<div style="font-size:10px;font-weight:600;color:var(--subtext);text-transform:uppercase;letter-spacing:0.5px;margin-top:6px">Іконки</div>' +
+          iconsHtml +
+        '</div>';
+      }).join('');
+
+      el.querySelectorAll('.map-sel-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          collectMapsFromDOM();
+          el.setAttribute('data-pending-sel', btn.getAttribute('data-idx') + ':nodeid');
+          send({ type: 'get-selection' });
+        });
+      });
+
+      el.querySelectorAll('.icon-sel-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          collectMapsFromDOM();
+          el.setAttribute('data-pending-sel', btn.getAttribute('data-idx') + ':icon:' + encodeURIComponent(btn.getAttribute('data-type')));
+          send({ type: 'get-selection' });
+        });
+      });
+
+      el.querySelectorAll('.icon-clr-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          collectMapsFromDOM();
+          var idx = parseInt(btn.getAttribute('data-idx'));
+          var t   = btn.getAttribute('data-type');
+          if (editMaps[idx] && editMaps[idx].icons) delete editMaps[idx].icons[t];
+          rebuildMapsList();
+        });
+      });
+
+      el.querySelectorAll('.map-del-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          collectMapsFromDOM();
+          editMaps.splice(parseInt(btn.getAttribute('data-idx')), 1);
+          rebuildMapsList();
+        });
+      });
+    }
+
+    // =========================================================================
+    // RESIZE MODE
+    // =========================================================================
+
+    function renderSettings() {
+      document.getElementById('app').innerHTML = [
+        '<div style="flex:1;overflow-y:auto;padding:16px 16px 0">',
+          '<div class="field">',
+            '<label>Scale</label>',
+            '<input id="stScale" type="number" min="0.1" max="200" step="0.1" value="' + currentScale + '" ',
+              'style="width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border);',
+              'border-radius:6px;color:var(--text);font-size:16px;font-family:inherit;text-align:center;outline:none;',
+              '-moz-appearance:textfield;appearance:textfield">',
+            '<div id="stScalePreview" style="margin-top:5px;font-size:11px;color:var(--subtext);text-align:center">',
+              'Основний текст: 16 × ' + currentScale + ' = ' + Math.round(16 * currentScale) + 'px',
+            '</div>',
+          '</div>',
+          '<div class="field" style="margin-top:14px">',
+            '<label>Default Icons</label>',
+            '<div id="stIconsSection">' + buildIconRowsHtml(currentDefaultIcons, 'stIconsSection') + '</div>',
+            missingIconsWarningHtml(currentDefaultIcons, 'Default icons are not set for'),
+          '</div>',
+          '<div class="field" style="margin-top:14px">',
+            '<label>Default route line</label>',
+            '<div style="display:flex;align-items:center;gap:6px">',
+              '<input id="stRouteLineId" value="' + esc(currentDefaultRouteLineId || '') + '" placeholder="Figma link / node-id" style="flex:1;padding:8px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:inherit;outline:none">',
+              '<button class="btn-sm btn-secondary" id="stRouteLinePickBtn" title="З виділення">⊡</button>',
+            '</div>',
+          '</div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-secondary" id="stCancelBtn">Cancel</button>',
+          '<button class="btn-primary"   id="stSaveBtn">Save</button>',
+        '</div>',
+      ].join('');
+
+      var scaleEl   = document.getElementById('stScale');
+      var preview   = document.getElementById('stScalePreview');
+      var routeLineEl = document.getElementById('stRouteLineId');
+      var saveBtn   = document.getElementById('stSaveBtn');
+      var cancelBtn = document.getElementById('stCancelBtn');
+      var routeLinePickBtn = document.getElementById('stRouteLinePickBtn');
+
+      scaleEl.addEventListener('input', function() {
+        var v = parseFloat(scaleEl.value) || 1;
+        preview.textContent = 'Основний текст: 16 × ' + v + ' = ' + Math.round(16 * v) + 'px';
+      });
+      bindIconPickButtons('stIconsSection');
+      routeLinePickBtn.addEventListener('click', function() { pickSelectionInto('#stRouteLineId'); });
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+
+      saveBtn.addEventListener('click', function() {
+        var sc = Math.max(0.1, Math.min(200, parseFloat(scaleEl.value) || 1));
+        send({
+          type: 'save-settings',
+          scale: sc,
+          defaultIcons: collectIconsFromSection('stIconsSection'),
+          defaultRouteLineId: parseFigmaNodeId(routeLineEl.value.trim()) || ''
+        });
+      });
+
+      setTimeout(function() { scaleEl.focus(); scaleEl.select(); }, 0);
     }
 
         // ─── Utils ───────────────────────────────────────────────────────────────
