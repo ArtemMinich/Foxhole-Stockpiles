@@ -9,6 +9,14 @@ export type FoxholeStorageTypeInfo = {
   imgUrl: string;
 };
 
+export const FOXHOLE_STORAGE_TYPE_ALIASES: Record<string, FoxholeStorageType> = {
+  "Storage Depot": FoxholeStorageType.StorageDepot,
+  "Складское помещение": FoxholeStorageType.StorageDepot,
+  "Seaport": FoxholeStorageType.Seaport,
+  "Морской порт": FoxholeStorageType.Seaport,
+  "Aircraft Depot": FoxholeStorageType.AircraftDepot,
+};
+
 export const FOXHOLE_STORAGE_TYPES: FoxholeStorageTypeInfo[] = [
   { 
     name: FoxholeStorageType.StorageDepot, 

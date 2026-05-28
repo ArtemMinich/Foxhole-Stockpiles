@@ -1,7 +1,7 @@
 import { FOXHOLE_ITEMS } from './data/items'
-import { FOXHOLE_ITEMS_CATEGORIES } from './data/category'
+import { FOXHOLE_ITEMS_CATEGORIES, FoxholeItemCategory } from './data/category'
 import { HEX_LAYOUT } from './data/hexLayout'
-import { FoxholeStorageType } from './data/storage-type'
+import { FOXHOLE_STORAGE_TYPE_ALIASES, FoxholeStorageType } from './data/storage-type'
 import ROAD_GRAPH_RAW from './data/roadGraph.json'
 import { C } from './theme'
 
@@ -229,11 +229,11 @@ type RoutePoint = {
 function routePointKey(sp: Stockpile): string {
   const x = sp.x == null ? '' : String(sp.x)
   const y = sp.y == null ? '' : String(sp.y)
-  return sp.region + '|' + sp.hex + '|' + sp.structure + '|' + x + '|' + y
+  return sp.region + '|' + sp.hex + '|' + normalizeImportedStorageType(sp.structure) + '|' + x + '|' + y
 }
 
 function routePointLabel(sp: Stockpile): string {
-  return sp.region + ' > ' + sp.hex + ' > ' + sp.structure
+  return sp.region + ' > ' + sp.hex + ' > ' + normalizeImportedStorageType(sp.structure)
 }
 
 function routePointFromStockpile(sp: Stockpile): RoutePoint | null {
@@ -266,11 +266,88 @@ type Stockpile = {
   hex: string
   structure: string
   code: string
+  password?: string
   x?: number
   y?: number
   items: Record<string, number>
   lastUpdated: number
   lastEditedBy: string
+}
+
+const ITEM_ALIAS_BY_NAME: Record<string, string> = {}
+const ITEM_CATEGORY_BY_NAME: Record<string, FoxholeItemCategory> = {}
+for (let i = 0; i < FOXHOLE_ITEMS.length; i++) {
+  const item = FOXHOLE_ITEMS[i]
+  const itemName = normItemKey(item.name)
+  ITEM_ALIAS_BY_NAME[itemName] = itemName
+  ITEM_CATEGORY_BY_NAME[itemName] = item.category
+  if (item.nameRus) ITEM_ALIAS_BY_NAME[normItemKey(item.nameRus)] = itemName
+}
+
+function normItemKey(value: string): string {
+  return String(value)
+    .replace(/’/g, "'")
+    .replace(/‘/g, "'")
+    .replace(/\s+\(Ящик\)$/i, ' (Crate)')
+}
+
+function normalizeImportedItemName(value: string): string {
+  const name = normItemKey(value)
+  const crateSuffix = ' (Crate)'
+  const hasCrate = name.length > crateSuffix.length && name.slice(-crateSuffix.length) === crateSuffix
+  const base = hasCrate ? name.slice(0, -crateSuffix.length) : name
+  const canonicalBase = ITEM_ALIAS_BY_NAME[base] || base
+  return hasCrate ? canonicalBase + crateSuffix : canonicalBase
+}
+
+function normalizeImportedItems(items: Record<string, number> | undefined): Record<string, number> {
+  const result: Record<string, number> = {}
+  if (!items) return result
+  const keys = Object.keys(items)
+  for (let i = 0; i < keys.length; i++) {
+    const rawName = keys[i]
+    const rawCount = items[rawName]
+    if (typeof rawCount !== 'number' || rawCount <= 0) continue
+    const normalizedName = normalizeImportedItemName(rawName)
+    const crateSuffix = ' (Crate)'
+    const hasCrate = normalizedName.length > crateSuffix.length && normalizedName.slice(-crateSuffix.length) === crateSuffix
+    if (hasCrate) {
+      const base = normalizedName.slice(0, -crateSuffix.length)
+      const cat = ITEM_CATEGORY_BY_NAME[base]
+      if (cat === FoxholeItemCategory.Vehicles || cat === FoxholeItemCategory.ShippableStructures) {
+        result[normalizedName] = (result[normalizedName] || 0) + rawCount
+      } else {
+        result[base] = (result[base] || 0) + rawCount
+      }
+    } else {
+      result[normalizedName] = (result[normalizedName] || 0) + rawCount
+    }
+  }
+  return result
+}
+
+function normalizeImportedStorageType(value: string): string {
+  const raw = String(value || '').trim()
+  if (!raw) return raw
+  if (FOXHOLE_STORAGE_TYPE_ALIASES[raw]) return FOXHOLE_STORAGE_TYPE_ALIASES[raw]
+  const lower = raw.toLocaleLowerCase()
+  const aliases = Object.keys(FOXHOLE_STORAGE_TYPE_ALIASES)
+  for (let i = 0; i < aliases.length; i++) {
+    const alias = aliases[i]
+    if (alias.toLocaleLowerCase() === lower) return FOXHOLE_STORAGE_TYPE_ALIASES[alias]
+  }
+  return raw
+}
+
+function normalizeImportedStockpile(stockpile: Stockpile): Stockpile {
+  const password = stockpile.password ? String(stockpile.password).replace(/\D/g, '') : ''
+  const normalized = Object.assign({}, stockpile, {
+    structure: normalizeImportedStorageType(stockpile.structure),
+    items: normalizeImportedItems(stockpile.items),
+  })
+  if (password) normalized.password = password
+  else delete normalized.password
+  return normalized
 }
 
 type Request = {
@@ -290,7 +367,7 @@ type HexMap       = Record<string, StructureMap>
 type RegionMap    = Record<string, HexMap>
 
 type RenderOpts = {
-  onViewSum:     (leaves: Stockpile[], title: string) => Promise<void>
+  onViewSum:     (leaves: Stockpile[], title: string, showPassword?: boolean) => Promise<void>
   visibleFields: string[]
   collapsed:     Record<string, boolean>
   toggleNode:    (key: string) => void
@@ -303,11 +380,28 @@ function s(n: number, sc: number): number {
 
 function buildTree(all: Stockpile[]): RegionMap {
   const tree: RegionMap = {}
+  const seen: Record<string, Stockpile> = {}
   for (const sp of all) {
+    const structure = normalizeImportedStorageType(sp.structure)
+    const dedupeKey = sp.region + '|' + sp.hex + '|' + structure + '|' + sp.code
+    let normalizedSp = seen[dedupeKey]
+    if (normalizedSp) {
+      const itemKeys = Object.keys(sp.items || {})
+      for (let i = 0; i < itemKeys.length; i++) {
+        const itemKey = itemKeys[i]
+        normalizedSp.items[itemKey] = Math.max(normalizedSp.items[itemKey] || 0, sp.items[itemKey] || 0)
+      }
+      if (!normalizedSp.password && sp.password) normalizedSp.password = sp.password
+      if (normalizedSp.x == null && sp.x != null) normalizedSp.x = sp.x
+      if (normalizedSp.y == null && sp.y != null) normalizedSp.y = sp.y
+      continue
+    }
+    normalizedSp = Object.assign({}, sp, { structure: structure, items: Object.assign({}, sp.items || {}) })
+    seen[dedupeKey] = normalizedSp
     if (!tree[sp.region])                       tree[sp.region] = {}
     if (!tree[sp.region][sp.hex])               tree[sp.region][sp.hex] = {}
-    if (!tree[sp.region][sp.hex][sp.structure]) tree[sp.region][sp.hex][sp.structure] = []
-    tree[sp.region][sp.hex][sp.structure].push(sp)
+    if (!tree[sp.region][sp.hex][structure]) tree[sp.region][sp.hex][structure] = []
+    tree[sp.region][sp.hex][structure].push(normalizedSp)
   }
   return tree
 }
@@ -374,7 +468,7 @@ function renderLeaves(leaves: Stockpile[], opts: RenderOpts) {
         return (
           <AutoLayout key={sp.id} direction="vertical" spacing={s(1, sc)}>
             <AutoLayout direction="horizontal" spacing={s(6, sc)} verticalAlignItems="center">
-              <Text fontSize={s(11, sc)} fill={C.text} onClick={() => opts.onViewSum([sp], sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code)}>
+              <Text fontSize={s(11, sc)} fill={C.text} onClick={() => opts.onViewSum([sp], sp.region + ' › ' + sp.hex + ' › ' + sp.structure + ' › ' + sp.code, true)}>
                 {sp.code}
               </Text>
               {tsLine
@@ -690,8 +784,9 @@ function Widget() {
       for (let gi = 0; gi < groups.length; gi++) {
         const g        = groups[gi]
         const first    = g.items[0]
+        const structure = normalizeImportedStorageType(first.structure)
         const frameH   = lineH * g.items.length
-        const iconId   = mapIcons[first.structure] || ''
+        const iconId   = mapIcons[structure] || ''
         const codes    = g.items.map(function(s) { return s.code }).sort().join(',')
         const checkKey = iconId + '|' + codes
         const markerKey = map.id + ':' + g.posKey
@@ -740,9 +835,9 @@ function Widget() {
           }
         }
         if (!iconNode) {
-          const color      = markerColor(first.structure)
-          const isSeaport  = first.structure === FoxholeStorageType.Seaport
-          const isAircraft = first.structure === FoxholeStorageType.AircraftDepot
+          const color      = markerColor(structure)
+          const isSeaport  = structure === FoxholeStorageType.Seaport
+          const isAircraft = structure === FoxholeStorageType.AircraftDepot
           const shape      = (isSeaport || isAircraft) ? figma.createRectangle() : figma.createEllipse()
           const inner      = iconSize * 0.85
           shape.resize(inner, inner)
@@ -991,6 +1086,7 @@ function Widget() {
       { itemType: "action", propertyName: "addmap",      tooltip: "Add map" },
       { itemType: "action", propertyName: "export",      tooltip: "Export JSON" },
       { itemType: "action", propertyName: "import",      tooltip: "Import JSON" },
+      { itemType: "action", propertyName: "discord",     tooltip: "Import Discord stockpiles" },
       { itemType: "separator" },
       { itemType: "action", propertyName: "settings",     tooltip: "Settings" },
     ],
@@ -998,10 +1094,10 @@ function Widget() {
       if (propertyName === "add") {
         return new Promise<void>((resolve) => {
           const existingKeys = stockpiles.values().map((sp) =>
-            sp.region + '|' + sp.hex + '|' + sp.structure + '|' + sp.code
+            sp.region + '|' + sp.hex + '|' + normalizeImportedStorageType(sp.structure) + '|' + sp.code
           )
           figma.showUI(__html__, { width: 700, height: 500, title: "Add / Update Stockpile" })
-          figma.ui.postMessage({ mode: "add", existingKeys, allItems: FOXHOLE_ITEMS })
+          figma.ui.postMessage({ mode: "add", existingKeys, allItems: FOXHOLE_ITEMS, storageTypeAliases: FOXHOLE_STORAGE_TYPE_ALIASES })
           figma.ui.onmessage = async (msg: any) => {
             if (msg.type === 'open-url') { figma.openExternal(msg.url); return; }
             if (msg.type === "save" && msg.mode === "add") {
@@ -1011,22 +1107,25 @@ function Widget() {
               for (let i = 0; i < all.length; i++) {
                 const sp = all[i]
                 if (sp.code === incoming.code && sp.region === incoming.region
-                    && sp.hex === incoming.hex && sp.structure === incoming.structure) {
+                    && sp.hex === incoming.hex && normalizeImportedStorageType(sp.structure) === normalizeImportedStorageType(incoming.structure)) {
                   existing = sp; break
                 }
               }
               const editedBy = figma.currentUser ? figma.currentUser.name : ""
               if (existing) {
+                const nextPassword = incoming.password !== undefined && incoming.password !== '' ? incoming.password : existing.password
                 stockpiles.set(existing.id, Object.assign({}, existing, {
                   region:       incoming.region,
                   hex:          incoming.hex,
-                  structure:    incoming.structure,
+                  structure:    normalizeImportedStorageType(incoming.structure),
+                  password:     nextPassword,
                   items:        incoming.items,
                   lastUpdated:  incoming.lastUpdated,
                   lastEditedBy: editedBy,
                 }))
               } else {
                 stockpiles.set(incoming.id, Object.assign({}, incoming, {
+                  structure: normalizeImportedStorageType(incoming.structure),
                   lastEditedBy: editedBy,
                 }))
               }
@@ -1088,7 +1187,7 @@ function Widget() {
                 for (let i = 0; i < keys.length; i++) stockpiles.delete(keys[i])
               }
               for (let i = 0; i < incoming.length; i++) {
-                stockpiles.set(incoming[i].id, incoming[i])
+                stockpiles.set(incoming[i].id, normalizeImportedStockpile(incoming[i]))
               }
               const activeMaps = incomingMaps || maps
               if (incomingMaps) setMaps(incomingMaps)
@@ -1096,6 +1195,41 @@ function Widget() {
                 const r = await redrawMarkers(activeMaps, nodeIndex, iconMeta)
                 setNodeIndex(r.idx); setIconMeta(r.meta)
                 const rIdx = await redrawRoutes(activeMaps, routeIdx, r.idx)
+                setRouteIdx(rIdx)
+              }
+            }
+            figma.closePlugin()
+            resolve()
+          }
+        })
+      }
+
+      if (propertyName === "discord") {
+        return new Promise<void>((resolve) => {
+          figma.showUI(__html__, { width: 700, height: 500, title: "Import Discord Stockpiles" })
+          figma.ui.postMessage({ mode: "discord", storageTypeAliases: FOXHOLE_STORAGE_TYPE_ALIASES })
+          figma.ui.onmessage = async function(msg: any) {
+            if (msg.type === 'open-url') { figma.openExternal(msg.url); return; }
+            if (msg.type === "save" && msg.mode === "discord") {
+              const incoming = msg.payload.stockpiles as Stockpile[]
+              const existing: Record<string, boolean> = {}
+              const all = stockpiles.values()
+              for (let i = 0; i < all.length; i++) {
+                const sp = all[i]
+                existing[sp.region + '|' + sp.hex + '|' + normalizeImportedStorageType(sp.structure) + '|' + sp.code] = true
+              }
+              const editedBy = figma.currentUser ? figma.currentUser.name : ""
+              for (let i = 0; i < incoming.length; i++) {
+                const sp = normalizeImportedStockpile(incoming[i])
+                const key = sp.region + '|' + sp.hex + '|' + normalizeImportedStorageType(sp.structure) + '|' + sp.code
+                if (existing[key]) continue
+                existing[key] = true
+                stockpiles.set(sp.id, Object.assign({}, sp, { lastEditedBy: editedBy }))
+              }
+              if (maps.length > 0) {
+                const r = await redrawMarkers(maps, nodeIndex, iconMeta)
+                setNodeIndex(r.idx); setIconMeta(r.meta)
+                const rIdx = await redrawRoutes(maps, routeIdx, r.idx)
                 setRouteIdx(rIdx)
               }
             }
@@ -1160,7 +1294,7 @@ function Widget() {
     setCollapsed(next)
   }
 
-  const onViewSum = (leaves: Stockpile[], title: string): Promise<void> =>
+  const onViewSum = (leaves: Stockpile[], title: string, showPassword?: boolean): Promise<void> =>
     new Promise<void>((resolve) => {
       const summed: Record<string, number> = {}
       for (let i = 0; i < leaves.length; i++) {
@@ -1169,13 +1303,13 @@ function Widget() {
           summed[k] = (summed[k] || 0) + (sp.items[k] || 0)
         }
       }
-      const spList: Array<{id: string; code: string; region: string; hex: string; structure: string; x?: number; y?: number}> = []
+      const spList: Array<{id: string; code: string; region: string; hex: string; structure: string; password?: string; x?: number; y?: number}> = []
       for (let i = 0; i < leaves.length; i++) {
         const sp = leaves[i]
-        spList.push({ id: sp.id, code: sp.code, region: sp.region, hex: sp.hex, structure: sp.structure, x: sp.x, y: sp.y })
+        spList.push({ id: sp.id, code: sp.code, region: sp.region, hex: sp.hex, structure: normalizeImportedStorageType(sp.structure), password: sp.password, x: sp.x, y: sp.y })
       }
       figma.showUI(__html__, { width: 700, height: 800, title: title })
-      figma.ui.postMessage({ mode: "view", title: title, items: summed, allItems: FOXHOLE_ITEMS, allCategories: FOXHOLE_ITEMS_CATEGORIES, stockpiles: spList })
+      figma.ui.postMessage({ mode: "view", title: title, items: summed, allItems: FOXHOLE_ITEMS, allCategories: FOXHOLE_ITEMS_CATEGORIES, stockpiles: spList, showPassword: !!showPassword })
       figma.ui.onmessage = async function(msg: any) {
         if (msg && msg.type === 'open-url') { figma.openExternal(msg.url); return; }
         if (msg && msg.type === 'delete-stockpile') {
@@ -1186,6 +1320,19 @@ function Widget() {
             setNodeIndex(r.idx); setIconMeta(r.meta)
             const rIdx = await redrawRoutes(maps, routeIdx, r.idx)
             setRouteIdx(rIdx)
+          }
+        }
+        if (msg && msg.type === 'save-stockpile-password') {
+          const all = stockpiles.values()
+          for (let i = 0; i < all.length; i++) {
+            const sp = all[i]
+            if (sp.id !== msg.id) continue
+            const password = String(msg.password || '').replace(/\D/g, '')
+            const updated = Object.assign({}, sp)
+            if (password) updated.password = password
+            else delete updated.password
+            stockpiles.set(sp.id, updated)
+            break
           }
         }
         figma.closePlugin()

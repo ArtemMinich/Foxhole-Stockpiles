@@ -164,6 +164,37 @@
       margin-bottom: 10px;
     }
 
+    .stockpile-password-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #1A1E35;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .stockpile-password-row label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--subtext);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      flex-shrink: 0;
+    }
+    .stockpile-password-input {
+      min-width: 0;
+      flex: 1;
+      height: 28px;
+      padding: 4px 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font: 12px Consolas, Monaco, monospace;
+      outline: none;
+    }
+    .stockpile-password-input:focus { border-color: var(--accent); }
+
     .toolbar {
       display: flex;
       align-items: center;
@@ -605,6 +636,7 @@
     var currentScale = 1;
     var editMaps = [];
     var storageTypes = [];
+    var storageTypeAliases = {};
     var currentMapData = null;
     var currentMapIsNew = false;
     var currentDefaultIcons = {};
@@ -617,6 +649,7 @@
     var exportMaps = [];
     var viewItems       = {};
     var viewStockpiles  = [];
+    var viewShowPassword = false;
     var currentTitle = '';
     var currentRequest     = null;
     var addRequestViewStock = false;
@@ -647,8 +680,9 @@
       currentMode = msg.mode;
 
       if (currentMode === 'add') {
-        existingKeys = msg.existingKeys || [];
-        allItems     = msg.allItems     || [];
+        existingKeys        = msg.existingKeys || [];
+        allItems            = msg.allItems     || [];
+        storageTypeAliases  = msg.storageTypeAliases || {};
         renderAdd();
       } else if (currentMode === 'edit') {
         currentStockpile = msg.stockpile;
@@ -667,6 +701,7 @@
       } else if (currentMode === 'view') {
         viewItems        = msg.items         || {};
         viewStockpiles   = msg.stockpiles    || [];
+        viewShowPassword = !!msg.showPassword;
         currentTitle     = msg.title         || '';
         allItems         = msg.allItems      || [];
         allCategories    = msg.allCategories || [];
@@ -674,6 +709,9 @@
         renderView();
       }  else if (currentMode === 'import') {
         renderImport();
+      } else if (currentMode === 'discord') {
+        storageTypeAliases = msg.storageTypeAliases || {};
+        renderDiscordImport();
       } else if (currentMode === 'viewrequest') {
         currentViewRequest   = msg.request       || {};
         allStockpiles        = msg.allStockpiles || [];
@@ -736,8 +774,15 @@
       if (!card) return;
       var nameEl = card.querySelector('.item-name');
       if (!nameEl) return;
-      var name = nameEl.textContent.replace(/ (Crate)$/, '');
-      var url = 'https://foxhole.wiki.gg/wiki/' + name.replace(/ /g, '_');
+      var name = normKey(nameEl.textContent.replace(/ \(Crate\)$/, '').replace(/\(unlisted\)$/, '').trim());
+      var url = '';
+      for (var i = 0; i < allItems.length; i++) {
+        if (normKey(allItems[i].name) === name) {
+          url = allItems[i].wikiUrl || '';
+          break;
+        }
+      }
+      if (!url) return;
       send({ type: 'open-url', url: url });
     });
 
@@ -751,6 +796,10 @@
           '<textarea id="firInput" class="json-output"',
           '          placeholder="Speaking Woods - Tine - Seaport - SW-TN1,2026.05.17-10.40.28&#10;&quot;Dusk&quot; ce.III (Crate),0&#10;7.92mm (Crate),15&#10;..."',
           '          spellcheck="false"></textarea>',
+          '<div class="stockpile-password-row" style="padding-left:0;padding-right:0;background:transparent;border-bottom:none">',
+            '<label for="passwordInput">Password</label>',
+            '<input id="passwordInput" class="stockpile-password-input" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="optional">',
+          '</div>',
           '<div id="parsePreview" style="margin-top:8px;min-height:32px"></div>',
           '<div class="error-msg" id="errorMsg"></div>',
         '</div>',
@@ -771,7 +820,7 @@
       if (parts.length < 4) return null;
       var region    = parts[0].trim();
       var hex       = parts[1].trim();
-      var structure = parts[2].trim();
+      var structure = normalizeStorageType(parts[2].trim());
       var code      = parts.slice(3).join(' - ').trim();
       if (!region || !hex || !structure || !code) return null;
       // Extract optional coordinates: "... - X: 0.1722732 Y: 0.4367275"
@@ -794,10 +843,22 @@
       return { region: region, hex: hex, structure: structure, code: code, x: x, y: y, ts: ts };
     }
 
+    function normalizeStorageType(value) {
+      var raw = (value || '').trim();
+      if (!raw) return raw;
+      if (storageTypeAliases[raw]) return storageTypeAliases[raw];
+      var lower = raw.toLocaleLowerCase();
+      for (var alias in storageTypeAliases) {
+        if (alias.toLocaleLowerCase() === lower) return storageTypeAliases[alias];
+      }
+      return raw;
+    }
+
     function mountAdd() {
       var ta        = document.getElementById('firInput');
       var preview   = document.getElementById('parsePreview');
       var errorEl   = document.getElementById('errorMsg');
+      var passwordEl = document.getElementById('passwordInput');
       var saveBtn   = document.getElementById('saveBtn');
       var cancelBtn = document.getElementById('cancelBtn');
       var pending   = null;
@@ -840,6 +901,7 @@
         pending = {
           id: uid(), region: header.region, hex: header.hex,
           structure: header.structure, code: header.code,
+          password: passwordEl.value.trim() || undefined,
           x: header.x, y: header.y,
           items: items, lastUpdated: header.ts || 0, lastEditedBy: '',
         };
@@ -848,6 +910,10 @@
 
       ta.addEventListener('input', update);
       ta.addEventListener('paste', function() { setTimeout(update, 0); });
+      passwordEl.addEventListener('input', function() {
+        passwordEl.value = passwordEl.value.replace(/\D/g, '');
+        if (pending) pending.password = passwordEl.value || undefined;
+      });
       ta.addEventListener('keydown', function(e) {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !saveBtn.disabled) saveBtn.click();
         if (e.key === 'Escape') cancelBtn.click();
@@ -1238,6 +1304,105 @@
     }
 
     // =========================================================================
+    // DISCORD STOCKPILE IMPORT MODE
+    // =========================================================================
+
+    function renderDiscordImport() {
+      document.getElementById('app').innerHTML = [
+        '<div class="import-wrapper">',
+          '<h2>Import Discord Stockpiles</h2>',
+          '<p class="hint" style="margin-bottom:10px">',
+            'Paste the Discord markdown table. Existing stockpiles are skipped.',
+          '</p>',
+          '<textarea class="json-output" id="discordInput"',
+          '          placeholder="| Регіон | Місто | Тип Складу | Назва Складу | Пароль Складу |&#10;|---|---|---|---|---|&#10;| Basin Sionnatch | Cuttail Station | Seaport | UKR-BS-CS1 | 725822 |" spellcheck="false"></textarea>',
+          '<div class="import-error" id="discordError"></div>',
+        '</div>',
+        '<div class="buttons">',
+          '<button class="btn-secondary" id="cancelBtn">Cancel</button>',
+          '<button class="btn-primary"   id="importBtn" disabled>Import</button>',
+        '</div>',
+      ].join('');
+      mountDiscordImport();
+    }
+
+    function mountDiscordImport() {
+      var ta = document.getElementById('discordInput');
+      var importBtn = document.getElementById('importBtn');
+      var cancelBtn = document.getElementById('cancelBtn');
+      var errorEl = document.getElementById('discordError');
+      var parsed = null;
+
+      setTimeout(function() { ta.focus(); }, 0);
+
+      ta.addEventListener('input', function() {
+        parsed = parseDiscordStockpiles(ta.value);
+        importBtn.disabled = parsed.stockpiles.length === 0;
+        errorEl.style.color = parsed.stockpiles.length > 0 ? 'var(--green)' : 'var(--red)';
+        errorEl.textContent = parsed.stockpiles.length > 0
+          ? parsed.stockpiles.length + ' stockpile' + (parsed.stockpiles.length === 1 ? '' : 's') + ' parsed.'
+          : 'No stockpiles parsed.';
+      });
+
+      cancelBtn.addEventListener('click', function() { send({ type: 'close' }); });
+      importBtn.addEventListener('click', function() {
+        if (!parsed || parsed.stockpiles.length === 0) return;
+        send({ type: 'save', mode: 'discord', payload: { stockpiles: parsed.stockpiles } });
+      });
+    }
+
+    function parseDiscordStockpiles(text) {
+      var rows = [];
+      var current = { region: '', hex: '', structure: '' };
+      var lines = String(text || '').split('\n');
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        if (!line || line.charAt(0) !== '|') continue;
+        if (/^\|[\s:\-|\u2014]+\|?$/.test(line)) continue;
+        var cells = line.split('|').slice(1, -1).map(function(cell) { return cell.trim(); });
+        if (cells.length < 3) continue;
+        if (/регіон|region/i.test(cells[0])) continue;
+
+        var region = '';
+        var hex = '';
+        var structure = '';
+        var code = '';
+        var password = '';
+
+        if (cells.length >= 5) {
+          region = cells[0] || current.region;
+          hex = cells[1] || current.hex;
+          structure = cells[2] || current.structure;
+          code = cells[3];
+          password = cells[4];
+        } else {
+          region = current.region;
+          hex = current.hex;
+          structure = current.structure;
+          code = cells[cells.length - 2];
+          password = cells[cells.length - 1];
+        }
+
+        structure = normalizeStorageType(structure);
+        password = String(password || '').replace(/\D/g, '');
+        if (!region || !hex || !structure || !code) continue;
+        current = { region: region, hex: hex, structure: structure };
+        rows.push({
+          id: uid(),
+          region: region,
+          hex: hex,
+          structure: structure,
+          code: code,
+          password: password || undefined,
+          items: {},
+          lastUpdated: 0,
+          lastEditedBy: '',
+        });
+      }
+      return { stockpiles: rows };
+    }
+
+    // =========================================================================
     // VIEW MODE (read-only sum)
     // =========================================================================
 
@@ -1250,9 +1415,17 @@
                     'X: ' + sp.x + '  Y: ' + sp.y +
                     '</div>';
       }
+      var passwordBar = sp && viewShowPassword
+        ? '<div class="stockpile-password-row">' +
+            '<label for="viewPasswordInput">Password</label>' +
+            '<input id="viewPasswordInput" class="stockpile-password-input" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" value="' + esc(sp.password || '') + '" placeholder="optional">' +
+            '<button class="btn-sm btn-secondary" id="savePasswordBtn">Save</button>' +
+          '</div>'
+        : '';
       document.getElementById('app').innerHTML = [
         '<div class="edit-wrapper">',
           coordsBar,
+          passwordBar,
           '<div class="category-bar" id="catBar"></div>',
           '<div class="items-grid" id="itemsGrid"></div>',
           '<div class="buttons">',
@@ -1337,8 +1510,21 @@
       var catBar   = document.getElementById('catBar');
       var closeBtn = document.getElementById('closeBtn');
       var spChips  = document.getElementById('viewSpChips');
+      var passwordInput = document.getElementById('viewPasswordInput');
+      var savePasswordBtn = document.getElementById('savePasswordBtn');
 
       var deleteSpBtn = document.getElementById('deleteSpBtn');
+
+      if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+          passwordInput.value = passwordInput.value.replace(/\D/g, '');
+        });
+      }
+      if (savePasswordBtn && passwordInput && viewStockpiles.length === 1) {
+        savePasswordBtn.addEventListener('click', function() {
+          send({ type: 'save-stockpile-password', id: viewStockpiles[0].id, password: passwordInput.value });
+        });
+      }
 
       if (deleteSpBtn) {
         deleteSpBtn.addEventListener('click', function() {
@@ -1368,7 +1554,13 @@
     // The LAST comma separates name from count (names can contain commas).
     function parseFIR(rawText) {
       var catByName = {};
-      allItems.forEach(function(item) { catByName[normKey(item.name)] = item.category; });
+      var itemAliasByName = {};
+      allItems.forEach(function(item) {
+        var itemName = normKey(item.name);
+        catByName[itemName] = item.category;
+        itemAliasByName[itemName] = itemName;
+        if (item.nameRus) itemAliasByName[normKey(item.nameRus)] = itemName;
+      });
 
       var lines  = rawText.trim().split('\n');
       var result = {};
@@ -1377,7 +1569,7 @@
         if (!line) continue;
         var lastComma = line.lastIndexOf(',');
         if (lastComma < 0) continue;
-        var name     = normKey(line.substring(0, lastComma).trim());
+        var name     = normalizeItemName(line.substring(0, lastComma).trim(), itemAliasByName);
         var countStr = line.substring(lastComma + 1).trim();
         var count    = parseInt(countStr, 10);
         if (!name || isNaN(count) || count <= 0) continue;
@@ -1396,6 +1588,15 @@
         }
       }
       return result;
+    }
+
+    function normalizeItemName(value, itemAliasByName) {
+      var name = normKey(value);
+      var crateSuffix = ' (Crate)';
+      var hasCrate = name.length > crateSuffix.length && name.slice(-crateSuffix.length) === crateSuffix;
+      var base = hasCrate ? name.slice(0, -crateSuffix.length) : name;
+      var canonicalBase = itemAliasByName[base] || base;
+      return hasCrate ? canonicalBase + crateSuffix : canonicalBase;
     }
 
     // Flush current table inputs back into currentStockpile.items (in memory).
@@ -2417,8 +2618,13 @@
 
         // ─── Utils ───────────────────────────────────────────────────────────────
 
-    // Normalize curly apostrophes to straight so FIR names match catalog keys.
-    function normKey(s) { return String(s).replace(/’/g, "'").replace(/‘/g, "'"); }
+    // Normalize clipboard names so FIR entries match catalog keys.
+    function normKey(s) {
+      return String(s)
+        .replace(/’/g, "'")
+        .replace(/‘/g, "'")
+        .replace(/\s+\(Ящик\)$/i, ' (Crate)');
+    }
 
     function esc(s) {
       return String(s)

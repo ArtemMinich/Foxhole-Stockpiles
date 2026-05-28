@@ -2,6 +2,7 @@ import { FoxholeItemCategory } from "./category";
 
 export type FoxholeItem = {
   name: string;
+  nameRus?: string;
   wikiUrl: string;
   imgUrl: string;
   inCrate?: number;
@@ -11,981 +12,1180 @@ export type FoxholeItem = {
 export const FOXHOLE_ITEMS: FoxholeItem[] = [
   {
     name: '“Dusk” ce.III', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CDusk%E2%80%9D_ce.III', imgUrl: 'https://foxhole.wiki.gg/images/AssaultRifleHeavyCItemIcon.png?6655c8',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '“Dusk” ce.III',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Booker Storm Rifle Model 838', wikiUrl: 'https://foxhole.wiki.gg/wiki/Booker_Storm_Rifle_Model_838', imgUrl: 'https://foxhole.wiki.gg/images/AssaultRifleHeavyWItemIcon.png?e70de5',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Штурмовая винтовка Booker Model 838',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Aalto Storm Rifle 24', wikiUrl: 'https://foxhole.wiki.gg/wiki/Aalto_Storm_Rifle_24', imgUrl: 'https://foxhole.wiki.gg/images/AssaultRifleItemIcon.png?732100',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Штурмовая винтовка Aalto 24',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: '7.92mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/7.92mm', imgUrl: 'https://foxhole.wiki.gg/images/AssaultRifleAmmoItemIcon.png?e79005',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '7.92-мм',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 30
   },
   {
     name: 'Catara mo.II', wikiUrl: 'https://foxhole.wiki.gg/wiki/Catara_mo.II', imgUrl: 'https://foxhole.wiki.gg/images/LightMachineGunIcon.png?7de463',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Catara mo.II',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'KRN886-127 Gast Machine Gun', wikiUrl: 'https://foxhole.wiki.gg/wiki/KRN886-127_Gast_Machine_Gun', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MGCItemIcon.png/100px-MGCItemIcon.png?a5481f',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'KRN886-127 Gast Machine Gun',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 5
   },
   {
     name: 'Malone MK.2', wikiUrl: 'https://foxhole.wiki.gg/wiki/Malone_MK.2', imgUrl: 'https://foxhole.wiki.gg/images/MGWItemIcon.png?1529e1',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Malone MK.2',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 5
   },
   {
     name: 'Bomastone Grenade', wikiUrl: 'https://foxhole.wiki.gg/wiki/Bomastone_Grenade', imgUrl: 'https://foxhole.wiki.gg/images/thumb/GrenadeCItemIcon.png/100px-GrenadeCItemIcon.png?42b939',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Граната Bomastone',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 25
   },
   {
     name: 'A3 Harpa Fragmentation Grenade', wikiUrl: 'https://foxhole.wiki.gg/wiki/A3_Harpa_Fragmentation_Grenade', imgUrl: 'https://foxhole.wiki.gg/images/GrenadeItemIcon.png?39b76d',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Осколочная граната A3 Harpa',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Ferro 879', wikiUrl: 'https://foxhole.wiki.gg/wiki/Ferro_879', imgUrl: 'https://foxhole.wiki.gg/images/PistolItemIcon.png?26eb4b',
-    category: FoxholeItemCategory.SmallArms
+    nameRus: 'Ferro 879',
+      category: FoxholeItemCategory.SmallArms
   },
   {
     name: 'Cascadier 873', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cascadier_873', imgUrl: 'https://foxhole.wiki.gg/images/PistolLightWItemIcon.png?87f946',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Cascadier 873',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 40
   },
   {
     name: 'Ahti Model 2', wikiUrl: 'https://foxhole.wiki.gg/wiki/Ahti_Model_2', imgUrl: 'https://foxhole.wiki.gg/images/PistolWItemIcon.png?35b6dd',
-    category: FoxholeItemCategory.SmallArms
+    nameRus: 'Ahti Model 2',
+      category: FoxholeItemCategory.SmallArms
   },
   {
     name: '8mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/8mm', imgUrl: 'https://foxhole.wiki.gg/images/PistolAmmoItemIcon.png?e45fcc',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '8-мм',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 40
   },
   {
     name: 'Cometa T2-9', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cometa_T2-9', imgUrl: 'https://foxhole.wiki.gg/images/RevolverItemIcon.png?977458',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Cometa T2-9',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 30
   },
   {
     name: 'The Hangman 757', wikiUrl: 'https://foxhole.wiki.gg/wiki/The_Hangman_757', imgUrl: 'https://foxhole.wiki.gg/images/RevolvingRifleWItemIcon.png?411f7f',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Хангман 757',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: '.44', wikiUrl: 'https://foxhole.wiki.gg/wiki/.44', imgUrl: 'https://foxhole.wiki.gg/images/RevolverAmmoItemIcon.png?b190ce',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '.44 Mag',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 40
   },
   {
     name: 'Catena rt.IV Auto-Rifle', wikiUrl: 'https://foxhole.wiki.gg/wiki/Catena_rt.IV_Auto-Rifle', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleAutomaticCIcon.png/100px-RifleAutomaticCIcon.png?35190a',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Автоматическая винтовка Catena rt.IV',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'Sampo Auto-Rifle 77', wikiUrl: 'https://foxhole.wiki.gg/wiki/Sampo_Auto-Rifle_77', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleAutomaticW.png/100px-RifleAutomaticW.png?126d74',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Автоматическая винтовка Sampo 77',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Argenti r.II Rifle', wikiUrl: 'https://foxhole.wiki.gg/wiki/Argenti_r.II_Rifle', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleCItemIcon.png/100px-RifleCItemIcon.png?72bbf1',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Винтовка Argenti r.II',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Volta r.I Repeater', wikiUrl: 'https://foxhole.wiki.gg/wiki/Volta_r.I_Repeater', imgUrl: 'https://foxhole.wiki.gg/images/RifleHeavyCItemIcon.png?fa98dc',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Volta r.I Repeater',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'Fuscina pi.I', wikiUrl: 'https://foxhole.wiki.gg/wiki/Fuscina_pi.I', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleLightCItemIcon.png/100px-RifleLightCItemIcon.png?ef8350',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Fuscina pi.I',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Blakerow 871', wikiUrl: 'https://foxhole.wiki.gg/wiki/Blakerow_871', imgUrl: 'https://foxhole.wiki.gg/images/CarbineItemIcon.png?d343a2',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Blakerow 871',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'KRR2-790 Omen', wikiUrl: 'https://foxhole.wiki.gg/wiki/KRR2-790_Omen', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleLongC.png/100px-RifleLongC.png?638ba1',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'KRR2-790 Omen',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'Clancy Cinder M3', wikiUrl: 'https://foxhole.wiki.gg/wiki/Clancy_Cinder_M3', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleLongW.png/100px-RifleLongW.png?1a4b01',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Clancy Cinder M3',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'No.2B Hawthorne', wikiUrl: 'https://foxhole.wiki.gg/wiki/No.2B_Hawthorne', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleShortWIcon.png/100px-RifleShortWIcon.png?7c0d03',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'No.2B Hawthorne',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'No.2 Loughcaster', wikiUrl: 'https://foxhole.wiki.gg/wiki/No.2_Loughcaster', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RifleW.png/100px-RifleW.png?771bf6',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'No.2 Loughcaster',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'KRR3-792 Auger', wikiUrl: 'https://foxhole.wiki.gg/wiki/KRR3-792_Auger', imgUrl: 'https://foxhole.wiki.gg/images/SniperRifleCItemIcon.png?17b090',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'KRR3-792 Auger',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 5
   },
   {
     name: 'Clancy-Raca M4', wikiUrl: 'https://foxhole.wiki.gg/wiki/Clancy-Raca_M4', imgUrl: 'https://foxhole.wiki.gg/images/SniperRifleItemIcon.png?3a4c7d',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Clancy-Raca M4',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 3
   },
   {
     name: '7.62mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/7.62mm', imgUrl: 'https://foxhole.wiki.gg/images/RifleAmmoItemIcon.png?6e2a55',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '7.62-мм',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 40
   },
   {
     name: 'KRF1-750 Dragonfly', wikiUrl: 'https://foxhole.wiki.gg/wiki/KRF1-750_Dragonfly', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ShotgunCItemIcon.png/100px-ShotgunCItemIcon.png?c5661b',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'KRF1-750 Dragonfly',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'No.4 The Pillory Scattergun', wikiUrl: 'https://foxhole.wiki.gg/wiki/No.4_The_Pillory_Scattergun', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ShotgunWItemIcon.png/100px-ShotgunWItemIcon.png?be8c44',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'No.4 The Pillory Scattergun',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'Buckshot', wikiUrl: 'https://foxhole.wiki.gg/wiki/Buckshot', imgUrl: 'https://foxhole.wiki.gg/images/ShotgunAmmoItemIcon.png?c082cc',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Дробь',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 40
   },
   {
     name: '“The Pitch Gun” mc.V', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CThe_Pitch_Gun%E2%80%9D_mc.V', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SMGCItemIcon.png/100px-SMGCItemIcon.png?a9b9ab',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '“The Pitch Gun” mc.V',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: '“Lionclaw” mc.VIII', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CLionclaw%E2%80%9D_mc.VIII', imgUrl: 'https://foxhole.wiki.gg/images/SMGHeavyCItemIcon.png?7e9698',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '“Lionclaw” mc.VIII',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'No.1 “The Liar” Submachinegun', wikiUrl: 'https://foxhole.wiki.gg/wiki/No.1_%E2%80%9CThe_Liar%E2%80%9D_Submachine_Gun', imgUrl: 'https://foxhole.wiki.gg/images/SMGHeavyWItemIcon.png?b32528',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Пистолет-пулемет No.1 “The Liar”',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Fiddler Submachine Gun Model 868', wikiUrl: 'https://foxhole.wiki.gg/wiki/Fiddler_Submachine_Gun_Model_868', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SubMachineGunIcon.png/100px-SubMachineGunIcon.png?2748f2',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Пистолет-пулемет Fiddler Model 868',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: '9mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/9mm', imgUrl: 'https://foxhole.wiki.gg/images/SubMachineGunAmmoIcon.png?823243',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '9-мм',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 40
   },
   {
     name: '228 Satterley Heavy Storm Rifle', wikiUrl: 'https://foxhole.wiki.gg/wiki/228_Satterley_Heavy_Storm_Rifle', imgUrl: 'https://foxhole.wiki.gg/images/ATRifleAssaultWIcontga.png?8f2968',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: '228 Satterley Heavy Storm Rifle',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Booker Greyhound Model 910', wikiUrl: 'https://foxhole.wiki.gg/wiki/Booker_Greyhound_Model_910', imgUrl: 'https://foxhole.wiki.gg/images/ATRifleAutomaticWItemIcon.png?1da780',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Booker Greyhound Model 910',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 3
   },
   {
     name: '“Dawn” Ve.II', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CDawn%E2%80%9D_Ve.II', imgUrl: 'https://foxhole.wiki.gg/images/ATRifleLightCIcon.png?fb320c',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: '“Dawn” Ve.II',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 3
   },
   {
     name: '“Quickhatch” Rt.I', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CQuickhatch%E2%80%9D_Rt.I', imgUrl: 'https://foxhole.wiki.gg/images/ATRifleSniperCIcontga.png?689394',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: '“Quickhatch” Rt.I',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 3
   },
   {
     name: '“Typhon” ra.XII', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CTyphon%E2%80%9D_ra.XII', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ATRifleTCIcon.png/100px-ATRifleTCIcon.png?b9c954',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: '“Typhon” ra.XII',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Neville Anti-Tank Rifle', wikiUrl: 'https://foxhole.wiki.gg/wiki/Neville_Anti-Tank_Rifle', imgUrl: 'https://foxhole.wiki.gg/images/ATRifleItemIcon.png?58ec0d',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Противотанковое ружье Neville',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 3
   },
   {
     name: '14.5mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/14.5mm', imgUrl: 'https://foxhole.wiki.gg/images/ATRifleAmmoItemIcon.png?48a8d6',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: '14.5mm',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'Venom c.II 35', wikiUrl: 'https://foxhole.wiki.gg/wiki/Venom_c.II_35', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ATRPGCItemIcon.png/100px-ATRPGCItemIcon.png?d1e77c',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Venom c.II 35',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Bane 45', wikiUrl: 'https://foxhole.wiki.gg/wiki/Bane_45', imgUrl: 'https://foxhole.wiki.gg/images/ATRpgItemIcon.png?d35704',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Bane 45',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Carnyx Anti-Tank Rocket Launcher', wikiUrl: 'https://foxhole.wiki.gg/wiki/Carnyx_Anti-Tank_Rocket_Launcher', imgUrl: 'https://foxhole.wiki.gg/images/ATRPGHeavyWIcon.png?1c5289',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'РПГ "Carnyx"',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'AP/RPG', wikiUrl: 'https://foxhole.wiki.gg/wiki/AP/RPG', imgUrl: 'https://foxhole.wiki.gg/images/ATRpgAmmoItemIcon.png?7e0381',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Бронебойный/РПГ',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: 'Mounted Bonesaw MK.3', wikiUrl: 'https://foxhole.wiki.gg/wiki/Mounted_Bonesaw_MK.3', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ATMortarWTripodItemIcon.png/100px-ATMortarWTripodItemIcon.png?49cb62',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Станковый Bonesaw MK.3',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Bonesaw MK.3', wikiUrl: 'https://foxhole.wiki.gg/wiki/Bonesaw_MK.3', imgUrl: 'https://foxhole.wiki.gg/images/ATMortarItemIcon.png?2b41ad',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Bonesaw MK.3',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'ARC/RPG', wikiUrl: 'https://foxhole.wiki.gg/wiki/ARC/RPG', imgUrl: 'https://foxhole.wiki.gg/images/ATMortarAmmoItemIcon.png?fa7398',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Бронебойный навесной/РПГ',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: '“Molten Wind” v.II Flame Torch', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CMolten_Wind%E2%80%9D_v.II_Flame_Torch', imgUrl: 'https://foxhole.wiki.gg/images/thumb/FlamegunCICon.png/100px-FlamegunCICon.png?7fc955',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Огнемет “Molten Wind” v.II',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'Willow’s Bane Model 845', wikiUrl: 'https://foxhole.wiki.gg/wiki/Willow%E2%80%99s_Bane_Model_845', imgUrl: 'https://foxhole.wiki.gg/images/thumb/FlamegunWICon.png/100px-FlamegunWICon.png?ef2f59',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Willow’s Bane Model 845',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'KLG901-2 Lunaire F', wikiUrl: 'https://foxhole.wiki.gg/wiki/KLG901-2_Lunaire_F', imgUrl: 'https://foxhole.wiki.gg/images/thumb/GrenadeLauncherCItemIcon.png/100px-GrenadeLauncherCItemIcon.png?7660c7',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'KLG901-2 Lunaire F',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Mounted Fissura gd.I', wikiUrl: 'https://foxhole.wiki.gg/wiki/Mounted_Fissura_gd.I', imgUrl: 'https://foxhole.wiki.gg/images/thumb/GrenadeLauncherTCIcon.png/100px-GrenadeLauncherTCIcon.png?d398e7',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Станковый Fissura gd.I',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Tremola Grenade GPb-1', wikiUrl: 'https://foxhole.wiki.gg/wiki/Tremola_Grenade_GPb-1', imgUrl: 'https://foxhole.wiki.gg/images/thumb/HELaunchedGrenadeItemIcon.png/100px-HELaunchedGrenadeItemIcon.png?3aa138',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Граната Tremola Gpb-1',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 20
   },
   {
     name: 'PT-815 Smoke Grenade', wikiUrl: 'https://foxhole.wiki.gg/wiki/PT-815_Smoke_Grenade', imgUrl: 'https://foxhole.wiki.gg/images/Smokegrenadeicon1.png?d837dc',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Дымовая граната PT-815',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 15
   },
   {
     name: 'Green Ash Grenade', wikiUrl: 'https://foxhole.wiki.gg/wiki/Green_Ash_Grenade', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DeadlyGas01Icon.png/100px-DeadlyGas01Icon.png?ac61eb',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: 'Газовая граната',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 10
   },
   {
     name: 'Lamentum mm.IV', wikiUrl: 'https://foxhole.wiki.gg/wiki/Lamentum_mm.IV', imgUrl: 'https://foxhole.wiki.gg/images/thumb/HeavyMachineGunIcon.png/100px-HeavyMachineGunIcon.png?888142',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Lamentum mm.IV',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Malone Ratcatcher MK.1', wikiUrl: 'https://foxhole.wiki.gg/wiki/Malone_Ratcatcher_MK.1', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MGHeavyTWItemIcon.png/100px-MGHeavyTWItemIcon.png?6db3a9',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Malone Ratcatcher MK.1',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: '12.7mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/12.7mm', imgUrl: 'https://foxhole.wiki.gg/images/MachineGunAmmoIcon.png?e151f7',
-    category: FoxholeItemCategory.SmallArms,
+    nameRus: '12.7-мм',
+      category: FoxholeItemCategory.SmallArms,
     inCrate: 20
   },
   {
     name: 'Daucus isg.III', wikiUrl: 'https://foxhole.wiki.gg/wiki/Daucus_isg.III', imgUrl: 'https://foxhole.wiki.gg/images/InfantrySupportGunItemIcon.png?e19c0a',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Daucus isg.III',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: '30mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/30mm', imgUrl: 'https://foxhole.wiki.gg/images/MiniTankAmmoItemIcon.png?9e6416',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: '30мм',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 20
   },
   {
     name: 'Cremari Mortar', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cremari_Mortar', imgUrl: 'https://foxhole.wiki.gg/images/MortarItemIcon.png?76316a',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Миномёт Cremari',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Incendiary Mortar Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/Incendiary_Mortar_Shell', imgUrl: 'https://foxhole.wiki.gg/images/MortarAmmoIconFlame.png?c4727b',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Зажигательный минометный снаряд',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: 'Flare Mortar Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/Flare_Mortar_Shell', imgUrl: 'https://foxhole.wiki.gg/images/MortarAmmoIconFlare.png?f47f7e',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Осветительный Минометный Снаряд',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: 'Shrapnel Mortar Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/Shrapnel_Mortar_Shell', imgUrl: 'https://foxhole.wiki.gg/images/MortarAmmoIconShrapnel.png?4a6a36',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Осколочный минометный снаряд',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: 'Mortar Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/Mortar_Shell', imgUrl: 'https://foxhole.wiki.gg/images/MortarAmmoIcon.png?683a3e',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Минометный Снаряд',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: 'BF5 White Ash Flask Grenade', wikiUrl: 'https://foxhole.wiki.gg/wiki/BF5_White_Ash_Flask_Grenade', imgUrl: 'https://foxhole.wiki.gg/images/ATGrenadeWIcon.png?656e1c',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Граната BF5 White Ash Flask',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'B2 Varsi Anti-Tank Grenade', wikiUrl: 'https://foxhole.wiki.gg/wiki/B2_Varsi_Anti-Tank_Grenade', imgUrl: 'https://foxhole.wiki.gg/images/ATLaunchedGrenadeWIcon.png?82d65f',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'B2 Varsi Anti-Tank Grenade',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate:20
   },
   {
     name: 'Ignifist 30', wikiUrl: 'https://foxhole.wiki.gg/wiki/Ignifist_30', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ATRPGLightCItemIcon.png/100px-ATRPGLightCItemIcon.png?3307d3',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Ignifist 30',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'Mammon 91-b', wikiUrl: 'https://foxhole.wiki.gg/wiki/Mammon_91-b', imgUrl: 'https://foxhole.wiki.gg/images/HEGrenadeItemIcon.png?a22b79',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Mammon 91-b',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 20
   },
   {
     name: 'Anti-Tank Sticky Bomb', wikiUrl: 'https://foxhole.wiki.gg/wiki/Anti-Tank_Sticky_Bomb', imgUrl: 'https://foxhole.wiki.gg/images/StickyBombIcon.png?af5c47',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Противотанковая липкая бомба',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'Cutler Foebreaker', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cutler_Foebreaker', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ATRPGTWIcon.png/100px-ATRPGTWIcon.png?1fed2f',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Cutler Foebreaker',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'Cutler Launcher 4', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cutler_Launcher_4', imgUrl: 'https://foxhole.wiki.gg/images/RpgItemIcon.png?d7d19d',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Cutler Launcher 4',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 5
   },
   {
     name: 'RPG', wikiUrl: 'https://foxhole.wiki.gg/wiki/RPG', imgUrl: 'https://foxhole.wiki.gg/images/RpgAmmoItemIcon.png?fbe568',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'РПГ',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 15
   },
   {
     name: '950-70b Anti-Aircraft Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/950-70b_Anti-Aircraft_Shell', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AAAmmoIcon.png/100px-AAAmmoIcon.png?ba1e25',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '950-70b Anti-Aircraft Shell',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '20mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/20mm', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AircraftAmmoIcon.png/100px-AircraftAmmoIcon.png?e750fb',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '20мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '94.5mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/94.5mm', imgUrl: 'https://foxhole.wiki.gg/images/ATLargeAmmoIcon.png?53ed83',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '94.5мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: '75mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/75mm', imgUrl: 'https://foxhole.wiki.gg/images/BattleTankAmmoItemIcon.png?e87a58',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '75-мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: 'Mark II Raidbreaker', wikiUrl: 'https://foxhole.wiki.gg/wiki/Mark_II_Raidbreaker', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AerialBombsIcon.png/100px-AerialBombsIcon.png?d72886',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: 'Mark II Raidbreaker',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: 'Shatter Missile', wikiUrl: 'https://foxhole.wiki.gg/wiki/Shatter_Missile', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DemolitionRocketAmmoIcon.png/100px-DemolitionRocketAmmoIcon.png?f2c4e2',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: 'Shatter Missile',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: 'Model-7 “Evie”', wikiUrl: 'https://foxhole.wiki.gg/wiki/Model-7_%E2%80%9CEvie%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/DepthChargeIcon.png?50e9f3',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: 'Model-7 “Evie”',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: '912 Shrike Rounds', wikiUrl: 'https://foxhole.wiki.gg/wiki/912_Shrike_Rounds', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DiveBomberAmmoIcon.png/100px-DiveBomberAmmoIcon.png?546924',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '912 Shrike Rounds',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '4C-Fire Rocket', wikiUrl: 'https://foxhole.wiki.gg/wiki/4C-Fire_Rocket', imgUrl: 'https://foxhole.wiki.gg/images/thumb/FlameRocketAmmoIcon.png/100px-FlameRocketAmmoIcon.png?935eac',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '4C-Зажигательная ракета',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: 'Flame Ammo', wikiUrl: 'https://foxhole.wiki.gg/wiki/Flame_Ammo', imgUrl: 'https://foxhole.wiki.gg/images/FlameAmmoIcon.png?eb71d1',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: 'Огнемётное топливо',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: '150mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/150mm', imgUrl: 'https://foxhole.wiki.gg/images/HeavyArtilleryAmmoItemIcon.png?4552df',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '150-мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '3C-High Explosive Rocket', wikiUrl: 'https://foxhole.wiki.gg/wiki/3C-High_Explosive_Rocket', imgUrl: 'https://foxhole.wiki.gg/images/thumb/HERocketAmmoIcon.png/100px-HERocketAmmoIcon.png?463901',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '3C-Фугасная ракета',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: 'Absol Anti-Aircraft Rounds', wikiUrl: 'https://foxhole.wiki.gg/wiki/Absol_Anti-Aircraft_Rounds', imgUrl: '',
-    category: FoxholeItemCategory.HeavyAmmunition
+    nameRus: 'Absol Anti-Aircraft Rounds',
+      category: FoxholeItemCategory.HeavyAmmunition
   },
   {
     name: '120mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/120mm', imgUrl: 'https://foxhole.wiki.gg/images/LightArtilleryAmmoItemIcon.png?c00707',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '120-мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '300mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/300mm', imgUrl: 'https://foxhole.wiki.gg/images/LRArtilleryAmmoItemIcon.png?3cadc1',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '300-мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 1
   },
   {
     name: 'Quillback Torpedo', wikiUrl: 'https://foxhole.wiki.gg/wiki/Quillback_Torpedo', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MiniTorpedoAmmoIcon.png/100px-MiniTorpedoAmmoIcon.png?a2023e',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: 'Quillback Torpedo',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '250mm "Purity" Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/250mm_%E2%80%9CPurity%E2%80%9D_Shell', imgUrl: 'https://foxhole.wiki.gg/images/MortarTankIcon.png?b9d9a6',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '250mm "Purity" Shell',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '250mm "Fury" Shell', wikiUrl: 'https://foxhole.wiki.gg/wiki/250mm_%E2%80%9CFury%E2%80%9D_Shell', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MortarTankAmmoBRIcon.png/100px-MortarTankAmmoBRIcon.png?b17356',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '250mm "Fury" Shell',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: 'E681-B Hullbreaker Mine', wikiUrl: 'https://foxhole.wiki.gg/wiki/E681-B_Hullbreaker_Mine', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SurfaceMineIcon.png/100px-SurfaceMineIcon.png?7eae64',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: 'E681-B Hullbreaker Mine',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 5
   },
   {
     name: '68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/68mm', imgUrl: 'https://foxhole.wiki.gg/images/ATAmmoIcon.png?996336',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '68мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 20
   },
   {
     name: '40mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/40mm', imgUrl: 'https://foxhole.wiki.gg/images/LightTankAmmoItemIcon.png?88a2c5',
-    category: FoxholeItemCategory.HeavyAmmunition,
+    nameRus: '40-мм',
+      category: FoxholeItemCategory.HeavyAmmunition,
     inCrate: 20
   },
   {
     name: 'Legion Vexillum', wikiUrl: 'https://foxhole.wiki.gg/wiki/Legion_Vexillum', imgUrl: 'https://foxhole.wiki.gg/images/thumb/BannerTCItemIcon.png/100px-BannerTCItemIcon.png?d673b6',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Флаг Колонистов',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'War Ensign', wikiUrl: 'https://foxhole.wiki.gg/wiki/War_Ensign', imgUrl: 'https://foxhole.wiki.gg/images/thumb/BannerTWItemIcon.png/100px-BannerTWItemIcon.png?d84fa7',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Флаг Варденов',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Barbed Wire', wikiUrl: 'https://foxhole.wiki.gg/wiki/Barbed_Wire_(Material)', imgUrl: 'https://foxhole.wiki.gg/images/BarbedWireMaterialItemIcon.png?98fe9d',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Колючая проволока',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Buckhorn CCQ-18', wikiUrl: 'https://foxhole.wiki.gg/wiki/Buckhorn_CCQ-18', imgUrl: 'https://foxhole.wiki.gg/images/BayonetIcon.png?63a155',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Buckhorn CCQ-18',
+      category: FoxholeItemCategory.Utility,
     inCrate: 20
   },
   {
     name: 'Binoculars', wikiUrl: 'https://foxhole.wiki.gg/wiki/Binoculars', imgUrl: 'https://foxhole.wiki.gg/images/BinocularsItemIcon.png?a7e8fd',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Бинокль',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Hydra’s Whisper', wikiUrl: 'https://foxhole.wiki.gg/wiki/Hydra%27s_Whisper', imgUrl: 'https://foxhole.wiki.gg/images/BangaloreItemIcon.png?26b1fe',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Hydra’s Whisper',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Havoc Charge', wikiUrl: 'https://foxhole.wiki.gg/wiki/Havoc_Charge', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ExplosiveTripodIcon.png/100px-ExplosiveTripodIcon.png?1756d4',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Хавок Заряд',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: '“Molten Wind” v.II Ammo', wikiUrl: 'https://foxhole.wiki.gg/wiki/%E2%80%9CMolten_Wind%E2%80%9D_v.II_Ammo', imgUrl: 'https://foxhole.wiki.gg/images/thumb/FlamePackCIcon.png/100px-FlamePackCIcon.png?108df5',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Топливо “Molten Wind” v.II',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Willow', wikiUrl: 'https://foxhole.wiki.gg/wiki/Willow', imgUrl: 'https://foxhole.wiki.gg/images/thumb/FlamegunWICon.png/100px-FlamegunWICon.png?ef2f59',
-    category: FoxholeItemCategory.HeavyArms,
+    nameRus: 'Топливо для Willow\'s Bane',
+      category: FoxholeItemCategory.HeavyArms,
     inCrate: 10
   },
   {
     name: 'Crow’s Foot Mine', wikiUrl: 'https://foxhole.wiki.gg/wiki/Crow%E2%80%99s_Foot_Mine', imgUrl: 'https://foxhole.wiki.gg/images/thumb/InfantryMineIcon.png/100px-InfantryMineIcon.png?5d4414',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Crow’s Foot Mine',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Listening Kit', wikiUrl: 'https://foxhole.wiki.gg/wiki/Listening_Kit', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ListeningKitIcon.png/100px-ListeningKitIcon.png?914257',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Набор для прослушивания',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Falias Raiding Club', wikiUrl: 'https://foxhole.wiki.gg/wiki/Falias_Raiding_Club', imgUrl: 'https://foxhole.wiki.gg/images/thumb/TrenchMaceWIcon.png/100px-TrenchMaceWIcon.png?6557d6',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Falias Raiding Club',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Metal Beam', wikiUrl: 'https://foxhole.wiki.gg/wiki/Metal_Beam', imgUrl: 'https://foxhole.wiki.gg/images/MetalBeamMaterialItemIcon.png?67ca32',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Металлическая балка',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Paratrooper’s Ruck', wikiUrl: 'https://foxhole.wiki.gg/wiki/Paratrooper%E2%80%99s_Ruck', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ParatrooperBackpackItemIcon.png/100px-ParatrooperBackpackItemIcon.png?2b7e48',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Paratrooper’s Ruck',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Radio Backpack', wikiUrl: 'https://foxhole.wiki.gg/wiki/Radio_Backpack', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RadioBackpackItemIcon.png/100px-RadioBackpackItemIcon.png?500f17',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Радиорюкзак',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Sandbag', wikiUrl: 'https://foxhole.wiki.gg/wiki/Sandbag', imgUrl: 'https://foxhole.wiki.gg/images/SandbagMaterialItemIcon.png?b6368b',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Мешок с песком',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Havoc Charge Detonator', wikiUrl: 'https://foxhole.wiki.gg/wiki/Havoc_Charge#Charge_Detonator-0', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SatchelChargeTIcon.png/100px-SatchelChargeTIcon.png?52fd9c',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Детонатор Хавок Заряда',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Alligator Charge', wikiUrl: 'https://foxhole.wiki.gg/wiki/Alligator_Charge', imgUrl: 'https://foxhole.wiki.gg/images/SatchelCharge.png?3fa682',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Alligator Charge',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Shovel', wikiUrl: 'https://foxhole.wiki.gg/wiki/Shovel', imgUrl: 'https://foxhole.wiki.gg/images/ShovelIcon.png?a9b229',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Лопата',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Sledge Hammer', wikiUrl: 'https://foxhole.wiki.gg/wiki/Sledge_Hammer', imgUrl: 'https://foxhole.wiki.gg/images/SledgeHammerItemIcon.png?a27ee2',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Кувалда',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Eleos Infantry Dagger', wikiUrl: 'https://foxhole.wiki.gg/wiki/Eleos_Infantry_Dagger', imgUrl: 'https://foxhole.wiki.gg/images/thumb/StilSwordCIcon.png/100px-StilSwordCIcon.png?fa1111',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Eleos Infantry Dagger',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Abisme AT-99 Mine', wikiUrl: 'https://foxhole.wiki.gg/wiki/Abisme_AT-99', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AntiTankMineItemIcon.png/100px-AntiTankMineItemIcon.png?2c9f3b',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Abisme AT-99 Mine',
+      category: FoxholeItemCategory.Utility,
     inCrate: 10
   },
   {
     name: 'Tripod', wikiUrl: 'https://foxhole.wiki.gg/wiki/Tripod', imgUrl: 'https://foxhole.wiki.gg/images/DeployableTripodItemIcon.png?d38754',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Тренога',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'E680-S Rudder Lock', wikiUrl: 'https://foxhole.wiki.gg/wiki/E680-S_Rudder_Lock', imgUrl: 'https://foxhole.wiki.gg/images/SeaMineIcon.png?a23df3',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'E680-S Rudder Lock',
+      category: FoxholeItemCategory.Utility,
     inCrate: 1
   },
   {
     name: 'Wind Sock', wikiUrl: 'https://foxhole.wiki.gg/wiki/Wind_Sock', imgUrl: 'https://foxhole.wiki.gg/images/thumb/WindsockItemIcon.png/100px-WindsockItemIcon.png?cb4dc0',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Ветроуказатель',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Hammer', wikiUrl: 'https://foxhole.wiki.gg/wiki/Hammer', imgUrl: 'https://foxhole.wiki.gg/images/HammerIcon.png?f169bc',
-    category: FoxholeItemCategory.Utility
+    nameRus: 'Молоток',
+      category: FoxholeItemCategory.Utility
   },
   {
     name: 'Wrench', wikiUrl: 'https://foxhole.wiki.gg/wiki/Wrench', imgUrl: 'https://foxhole.wiki.gg/images/WorkWrench.png?3c724b',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Гаечный ключ',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Water Bucket', wikiUrl: 'https://foxhole.wiki.gg/wiki/Water_Bucket', imgUrl: 'https://foxhole.wiki.gg/images/thumb/LoreBucket.png/100px-LoreBucket.png?2b4a97',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Ведро для воды',
+      category: FoxholeItemCategory.Utility,
     inCrate: 50
   },
   {
     name: 'Water', wikiUrl: 'https://foxhole.wiki.gg/wiki/Water', imgUrl: 'https://foxhole.wiki.gg/images/WaterIcon.png?17ecd7',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Вода',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Gas Mask', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gas_Mask', imgUrl: 'https://foxhole.wiki.gg/images/thumb/GasmaskIcon.png/100px-GasmaskIcon.png?ea70f3',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Противогаз',
+      category: FoxholeItemCategory.Utility,
     inCrate: 20
   },
   {
     name: 'Gas Mask Filter', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gas_Mask_Filter', imgUrl: 'https://foxhole.wiki.gg/images/GasMaskFilterIcon.png?e2e59f',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Фильтр для противогаза',
+      category: FoxholeItemCategory.Utility,
     inCrate: 20
   },
   {
     name: 'The Ospreay', wikiUrl: 'https://foxhole.wiki.gg/wiki/The_Ospreay', imgUrl: 'https://foxhole.wiki.gg/images/GrenadeAdapterIcon.png?f49f4f',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Подствольный гранатомёт',
+      category: FoxholeItemCategory.Utility,
     inCrate: 20
   },
   {
     name: 'Radio', wikiUrl: 'https://foxhole.wiki.gg/wiki/Radio', imgUrl: 'https://foxhole.wiki.gg/images/RadioItemIcon.png?8a6cee',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Рация',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Liaison Transmitter', wikiUrl: 'https://foxhole.wiki.gg/wiki/Liaison_Transmitter', imgUrl: 'https://foxhole.wiki.gg/images/RadioAircraftItemIcon.png?624df4',
-    category: FoxholeItemCategory.Utility,
+    nameRus: 'Liaison Transmitter',
+      category: FoxholeItemCategory.Utility,
     inCrate: 5
   },
   {
     name: 'Bandages', wikiUrl: 'https://foxhole.wiki.gg/wiki/Bandages', imgUrl: 'https://foxhole.wiki.gg/images/BandagesItemIcon.png?e356da',
-    category: FoxholeItemCategory.Medical,
+    nameRus: 'Бинты',
+      category: FoxholeItemCategory.Medical,
     inCrate: 50
   },
   {
     name: 'First Aid Kit', wikiUrl: 'https://foxhole.wiki.gg/wiki/First_Aid_Kit', imgUrl: 'https://foxhole.wiki.gg/images/thumb/FirstAidKitItem.png/100px-FirstAidKitItem.png?d7f02e',
-    category: FoxholeItemCategory.Medical,
+    nameRus: 'Набор Первой Помощи',
+      category: FoxholeItemCategory.Medical,
     inCrate: 10
   },
   {
     name: 'Trauma Kit', wikiUrl: 'https://foxhole.wiki.gg/wiki/Trauma_Kit', imgUrl: 'https://foxhole.wiki.gg/images/TraumaKitItemIcon.png?c81ea0',
-    category: FoxholeItemCategory.Medical,
+    nameRus: 'Реанимационный набор',
+      category: FoxholeItemCategory.Medical,
     inCrate: 10
   },
   {
     name: 'Blood Plasma', wikiUrl: 'https://foxhole.wiki.gg/wiki/Blood_Plasma', imgUrl: 'https://foxhole.wiki.gg/images/BloodPlasmaItemIcon.png?3f8716',
-    category: FoxholeItemCategory.Medical,
+    nameRus: 'Плазма',
+      category: FoxholeItemCategory.Medical,
     inCrate: 50
   },
   {
     name: 'Soldier Supplies', wikiUrl: 'https://foxhole.wiki.gg/wiki/Soldier_Supplies', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ClothItemIcon.png/100px-ClothItemIcon.png?e85f2a',
-    category: FoxholeItemCategory.Medical,
+    nameRus: 'Солдатское снаряжение',
+      category: FoxholeItemCategory.Medical,
     inCrate: 10
   },
   {
     name: 'Diesel', wikiUrl: 'https://foxhole.wiki.gg/wiki/Diesel', imgUrl: 'https://foxhole.wiki.gg/images/ResourceFuelIcon.png?a1fe12',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Дизель',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Unstable Substances', wikiUrl: 'https://foxhole.wiki.gg/wiki/Unstable_Substances', imgUrl: 'https://foxhole.wiki.gg/images/FacilityMaterials10Icon.png?308d3c',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Нестабильные материалы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Thermal Shielding', wikiUrl: 'https://foxhole.wiki.gg/wiki/Thermal_Shielding', imgUrl: 'https://foxhole.wiki.gg/images/FacilityMaterials11Icon.png?4303a7',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Теплозащитные экраны',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Processed Construction Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Processed_Construction_Materials', imgUrl: 'https://foxhole.wiki.gg/images/ProcessedConstructionMaterialsIcon.png?eea77f',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Обработанные строительные материалы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Steel Construction Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Steel_Construction_Materials', imgUrl: 'https://foxhole.wiki.gg/images/SteelConstructionMaterialsIcon.png?79894c',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Сталь',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Assembly Materials I', wikiUrl: 'https://foxhole.wiki.gg/wiki/Assembly_Materials_I', imgUrl: 'https://foxhole.wiki.gg/images/AssemblyMaterials1Icon.png?d9f547',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Сборочные материалы I',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Assembly Materials II', wikiUrl: 'https://foxhole.wiki.gg/wiki/Assembly_Materials_II', imgUrl: 'https://foxhole.wiki.gg/images/AssemblyMaterials2Icon.png?dbb2da',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Сборочные материалы II',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Assembly Materials III', wikiUrl: 'https://foxhole.wiki.gg/wiki/Assembly_Materials_III', imgUrl: 'https://foxhole.wiki.gg/images/AssemblyMaterials3Icon.png?6f1a56',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Сборочные материалы III',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Assembly Materials IV', wikiUrl: 'https://foxhole.wiki.gg/wiki/Assembly_Materials_IV', imgUrl: 'https://foxhole.wiki.gg/images/AssemblyMaterials4Icon.png?37281f',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Сборочные материалы IV',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Assembly Materials V', wikiUrl: 'https://foxhole.wiki.gg/wiki/Assembly_Materials_V', imgUrl: 'https://foxhole.wiki.gg/images/AssemblyMaterials5Icon.png?98d3d7',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Сборочные материалы V',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Rare Alloys', wikiUrl: 'https://foxhole.wiki.gg/wiki/Rare_Alloys', imgUrl: 'https://foxhole.wiki.gg/images/FacilityMaterials09Icon.png?8e2b3e',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Редкие сплавы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Heavy Oil', wikiUrl: 'https://foxhole.wiki.gg/wiki/Heavy_Oil', imgUrl: 'https://foxhole.wiki.gg/images/FacilityOil1Icon.png?f356a3',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Тяжелое топливо',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Enriched Oil', wikiUrl: 'https://foxhole.wiki.gg/wiki/Enriched_Oil', imgUrl: 'https://foxhole.wiki.gg/images/FacilityOil2Icon.png?4dd33e',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Обогащенное топливо',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Oil', wikiUrl: 'https://foxhole.wiki.gg/wiki/Oil', imgUrl: 'https://foxhole.wiki.gg/images/OilIcon.png?33397b',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Нефть',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Petrol', wikiUrl: 'https://foxhole.wiki.gg/wiki/Petrol', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RefinedFuelIcon.png/100px-RefinedFuelIcon.png?415c90',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Бензин',
+      category: FoxholeItemCategory.Resource,
     inCrate: 1
   },
   {
     name: 'Pipe', wikiUrl: 'https://foxhole.wiki.gg/wiki/Pipe', imgUrl: 'https://foxhole.wiki.gg/images/thumb/EngineRoomPipeIcon.png/100px-EngineRoomPipeIcon.png?5b5cea',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Труба',
+      category: FoxholeItemCategory.Resource,
     inCrate: 2
   },
   {
     name: 'Aluminum Alloy', wikiUrl: 'https://foxhole.wiki.gg/wiki/Aluminum_Alloy', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ResouceAluminumRefinedIcon.png/100px-ResouceAluminumRefinedIcon.png?ac6736',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Алюминиевый сплав',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Basic Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Basic_Materials', imgUrl: 'https://foxhole.wiki.gg/images/thumb/BasicMaterialsIcon.png/100px-BasicMaterialsIcon.png?b246f1',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Базовые материалы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 100
   },
   {
     name: 'Copper Alloy', wikiUrl: 'https://foxhole.wiki.gg/wiki/Copper_Alloy', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ResourceCopperRefinedIcon.png/100px-ResourceCopperRefinedIcon.png?823a5c',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Медный сплав',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Explosive Powder', wikiUrl: 'https://foxhole.wiki.gg/wiki/Explosive_Powder', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ExplosiveMaterialIcon.png/100px-ExplosiveMaterialIcon.png?2de2ce',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Порох',
+      category: FoxholeItemCategory.Resource,
     inCrate: 40
   },
   {
     name: 'Construction Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Construction_Materials', imgUrl: 'https://foxhole.wiki.gg/images/ConstructionMaterialsIcon.png?571daa',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Строительные материалы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Rare Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Rare_Materials', imgUrl: 'https://foxhole.wiki.gg/images/MetalBeamPlatformItemIcon.png?34dbf9',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Редкие материалы',
+      category: FoxholeItemCategory.Resource,
   },
   {
     name: 'Gravel', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gravel', imgUrl: 'https://foxhole.wiki.gg/images/thumb/GroundMaterialsIcon.png/100px-GroundMaterialsIcon.png?13bc03',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Гравий',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Heavy Explosive Powder', wikiUrl: 'https://foxhole.wiki.gg/wiki/Heavy_Explosive_Powder', imgUrl: 'https://foxhole.wiki.gg/images/thumb/HeavyExplosiveMaterialsIcon.png/100px-HeavyExplosiveMaterialsIcon.png?f93996',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Тяжёлый порох',
+      category: FoxholeItemCategory.Resource,
     inCrate: 30
   },
   {
     name: 'Iron Alloy', wikiUrl: 'https://foxhole.wiki.gg/wiki/Iron_Alloy', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ResouceIronRefinedIcon.png/100px-ResouceIronRefinedIcon.png?9630b7',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Железный сплав',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Maintenance Supplies', wikiUrl: 'https://foxhole.wiki.gg/wiki/Maintenance_Supplies', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MaintenanceSuppliesIcon.png/100px-MaintenanceSuppliesIcon.png?2e3f5c',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Припасы Обслуживания',
+      category: FoxholeItemCategory.Resource,
     inCrate: 100
   },
   {
     name: 'Relic Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Relic_Materials', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RelicMaterialItemIcon.png/100px-RelicMaterialItemIcon.png?3e0244',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Реликтовые материалы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Refined Materials', wikiUrl: 'https://foxhole.wiki.gg/wiki/Refined_Materials', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RefinedMaterialsIcon.png/100px-RefinedMaterialsIcon.png?9656f0',
-    category: FoxholeItemCategory.Resource,
+    nameRus: 'Рафинированные материалы',
+      category: FoxholeItemCategory.Resource,
     inCrate: 20
   },
   {
     name: 'Specialist’s Overcoat', wikiUrl: 'https://foxhole.wiki.gg/wiki/Heavy_Ammo_Uniform', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AmmoUniformWIcon.png/100px-AmmoUniformWIcon.png?16c0b5',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Шинель специалиста',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Velian Flak Vest', wikiUrl: 'https://foxhole.wiki.gg/wiki/Velian_Flak_Vest', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ArmourUniformC.png/100px-ArmourUniformC.png?347b74',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Велианский бронежилет',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 10
   },
   {
     name: 'Gunner’s Breastplate', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gunner%27s_Breastplate', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ArmourUniformW.png/100px-ArmourUniformW.png?d249dc',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Стальная кираса',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 5
   },
   {
     name: 'Fabri Rucksack', wikiUrl: 'https://foxhole.wiki.gg/wiki/Fabri_Rucksack', imgUrl: 'https://foxhole.wiki.gg/images/thumb/EngineerUniformCIcon.png/100px-EngineerUniformCIcon.png?3c4789',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Рюкзак Fabri',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Sapper Gear', wikiUrl: 'https://foxhole.wiki.gg/wiki/Sapper_Gear', imgUrl: 'https://foxhole.wiki.gg/images/thumb/EngineerUniformWIcon.png/100px-EngineerUniformWIcon.png?f9f2ce',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Сапёрное снаряжение',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Grenadier’s Baldric', wikiUrl: 'https://foxhole.wiki.gg/wiki/Grenade_Uniform', imgUrl: 'https://foxhole.wiki.gg/images/thumb/GrenadeUniformCIcon.png/100px-GrenadeUniformCIcon.png?36cd4e',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Перевязь гренадера',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Medic Fatigues', wikiUrl: 'https://foxhole.wiki.gg/wiki/Medic_Fatigues', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MedicUniformCIcon.png/100px-MedicUniformCIcon.png?6822ce',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Медицинская форма',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Physician’s Jacket', wikiUrl: 'https://foxhole.wiki.gg/wiki/Physician%27s_Jacket', imgUrl: 'https://foxhole.wiki.gg/images/thumb/MedicUniformWIcon.png/100px-MedicUniformWIcon.png?d20d82',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Куртка врача',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Remex Garb', wikiUrl: 'https://foxhole.wiki.gg/wiki/Remex_Garb', imgUrl: 'https://foxhole.wiki.gg/images/thumb/NavalUniformC.png/100px-NavalUniformC.png?ef28cd',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Remex Garb',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Gentleman’s Peacoat', wikiUrl: 'https://foxhole.wiki.gg/wiki/Gentleman%27s_Peacoat', imgUrl: 'https://foxhole.wiki.gg/images/thumb/NavalUniformW.png/100px-NavalUniformW.png?28a5e3',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Gentleman’s Peacoat',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Officialis’ Attire', wikiUrl: 'https://foxhole.wiki.gg/wiki/Officialis%27_Attire', imgUrl: 'https://foxhole.wiki.gg/images/thumb/OfficerUniformCIcon.png/100px-OfficerUniformCIcon.png?3cd953',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Наряд чиновника',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 3
   },
   {
     name: 'Officer’s Regalia', wikiUrl: 'https://foxhole.wiki.gg/wiki/Officer%27s_Regalia', imgUrl: 'https://foxhole.wiki.gg/images/thumb/OfficerUniformWIcon.png/100px-OfficerUniformWIcon.png?e001c6',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Офицерская регалия',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 3
   },
   {
     name: 'Auster’s Harness', wikiUrl: 'https://foxhole.wiki.gg/wiki/Auster%E2%80%99s_Harness', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ParatrooperUniformCIcon.png/100px-ParatrooperUniformCIcon.png?fcee2f',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Auster’s Harness',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Cloudrunner’s Vesture', wikiUrl: 'https://foxhole.wiki.gg/wiki/Cloudrunner%E2%80%99s_Vesture', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ParatrooperUniformWIcon.png/100px-ParatrooperUniformWIcon.png?81ea76',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Cloudrunner’s Vesture',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Lodesman’s Lorica', wikiUrl: 'https://foxhole.wiki.gg/wiki/Lodesman%E2%80%99s_Lorica', imgUrl: 'https://foxhole.wiki.gg/images/thumb/PilotUniformCIcon.png/100px-PilotUniformCIcon.png?6d58a0',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Lodesman’s Lorica',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 1
   },
   {
     name: 'Aviator’s Raiment', wikiUrl: 'https://foxhole.wiki.gg/wiki/Aviator%E2%80%99s_Raiment', imgUrl: 'https://foxhole.wiki.gg/images/thumb/PilotUniformWIcon.png/100px-PilotUniformWIcon.png?d81ad9',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Aviator’s Raiment',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 1
   },
   {
     name: 'Legionary’s Oilcoat', wikiUrl: 'https://foxhole.wiki.gg/wiki/Rain_Uniform', imgUrl: 'https://foxhole.wiki.gg/images/thumb/RainUniformCIcon.png/100px-RainUniformCIcon.png?dc83fb',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Легионерский дождевик',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Recon Camo', wikiUrl: 'https://foxhole.wiki.gg/wiki/Recon_Camo', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ScoutUniformCIcon.png/100px-ScoutUniformCIcon.png?bdf7ec',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Камуфляж разведчика',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Outrider’s Mantle', wikiUrl: 'https://foxhole.wiki.gg/wiki/Outrider%27s_Mantle', imgUrl: 'https://foxhole.wiki.gg/images/thumb/ScoutUniformWIcon.png/100px-ScoutUniformWIcon.png?de8fc6',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Дозорная мантия',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Heavy Topcoat', wikiUrl: 'https://foxhole.wiki.gg/wiki/Heavy_Topcoat', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SnowUniformCIcon.png/100px-SnowUniformCIcon.png?55b958',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Утеплённая шинель',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Caoivish Parka', wikiUrl: 'https://foxhole.wiki.gg/wiki/Caoivish_Parka', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SnowUniformWIcon.png/100px-SnowUniformWIcon.png?479b41',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Парка Caoivish',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Legionary Fatigues', wikiUrl: 'https://foxhole.wiki.gg/wiki/Legionary_Fatigues', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SoldierUniformCIcon.png/100px-SoldierUniformCIcon.png?272be9',
-    category: FoxholeItemCategory.Uniforms
+    nameRus: 'Одежда легионера',
+      category: FoxholeItemCategory.Uniforms
   },
   {
     name: 'Infantry Battledress', wikiUrl: 'https://foxhole.wiki.gg/wiki/Infantry_Battledress', imgUrl: 'https://foxhole.wiki.gg/images/thumb/SoldierUniformWIcon.png/100px-SoldierUniformWIcon.png?66c9de',
-    category: FoxholeItemCategory.Uniforms
+    nameRus: 'Пехотная униформа',
+      category: FoxholeItemCategory.Uniforms
   },
   {
     name: 'Tankman’s Coveralls', wikiUrl: 'https://foxhole.wiki.gg/wiki/Tankman%27s_Coveralls', imgUrl: 'https://foxhole.wiki.gg/images/thumb/TankUniformCIcon.png/100px-TankUniformCIcon.png?ffe013',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Комбинезон танкиста',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Padded Boiler Suit', wikiUrl: 'https://foxhole.wiki.gg/wiki/Padded_Boiler_Suit', imgUrl: 'https://foxhole.wiki.gg/images/thumb/TankUniformWIcon.png/100px-TankUniformWIcon.png?aebe3c',
-    category: FoxholeItemCategory.Uniforms,
+    nameRus: 'Стеганный Комбинезон',
+      category: FoxholeItemCategory.Uniforms,
     inCrate: 15
   },
   {
     name: 'Colonial Aircraft Engine (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Colonial_Aircraft_Engine_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AircraftPartSmallEngineCIcon.png/100px-AircraftPartSmallEngineCIcon.png?d22a99',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Colonial Aircraft Engine (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Warden Aircraft Engine (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Warden_Aircraft_Engine_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AircraftSmallEngineWIcon.png/100px-AircraftSmallEngineWIcon.png?84590e',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Warden Aircraft Engine (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Damaged Colonial Aircraft Engine (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Damaged_Colonial_Aircraft_Engine_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DamagedAircraftPartSmallEngineCIcon.png/100px-DamagedAircraftPartSmallEngineCIcon.png?81b2e8',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Damaged Colonial Aircraft Engine (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Damaged Warden Aircraft Engine (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Damaged_Warden_Aircraft_Engine_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DamagedAircraftSmallEngineWIcon.png/100px-DamagedAircraftSmallEngineWIcon.png?43a5eb',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Damaged Warden Aircraft Engine (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Colonial Aircraft Mechanical Parts (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Colonial_Aircraft_Mechanical_Parts_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AircraftPartSmallMechanicalCIcon.png/100px-AircraftPartSmallMechanicalCIcon.png?cb417c',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Colonial Aircraft Mechanical Parts (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Warden Aircraft Mechanical Parts (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Warden_Aircraft_Mechanical_Parts_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/AircraftWingsIcon.png/100px-AircraftWingsIcon.png?8c9512',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Warden Aircraft Mechanical Parts (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Damaged Colonial Aircraft Mechanical Parts (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Damaged_Colonial_Aircraft_Mechanical_Parts_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DamagedAircraftPartSmallMechanicalCIcon.png/100px-DamagedAircraftPartSmallMechanicalCIcon.png?31285e',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Damaged Colonial Aircraft Mechanical Parts (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'Damaged Warden Aircraft Mechanical Parts (Small)', wikiUrl: 'https://foxhole.wiki.gg/wiki/Damaged_Warden_Aircraft_Mechanical_Parts_(Small)', imgUrl: 'https://foxhole.wiki.gg/images/thumb/DamagedAircraftWingsIcon.png/100px-DamagedAircraftWingsIcon.png?662312',
-    category: FoxholeItemCategory.AircraftParts
+    nameRus: 'Damaged Warden Aircraft Mechanical Parts (Small)',
+      category: FoxholeItemCategory.AircraftParts
   },
   {
     name: 'R-12 - “Salus” Ambulance', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-12_-_%E2%80%9CSalus%E2%80%9D_Ambulance', imgUrl: 'https://foxhole.wiki.gg/images/Ambulance.png?f99cc6',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Скорая помощь R-12 - “Salus”',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'R-12b - “Salva” Flame Truck', wikiUrl: 'https://foxhole.wiki.gg/wiki/R-12b_-_%E2%80%9CSalva%E2%80%9D_Flame_Truck', imgUrl: 'https://foxhole.wiki.gg/images/AmbulanceFlameC.png?b35874',
-    category: FoxholeItemCategory.VehiclesNonCrate
+    nameRus: 'Пожарный автомобиль R-12b - “Salva”',
+      category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Dunne Dousing Engine 3r', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Dousing_Engine_3r', imgUrl: 'https://foxhole.wiki.gg/images/AmbulanceFlameW.png?825657',
@@ -1053,7 +1253,8 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'BMS - Class 2 Mobile Auto-Crane', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Class_2_Mobile_Auto-Crane', imgUrl: 'https://foxhole.wiki.gg/images/CraneVehicleIcon.png?b08a43',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Мобильный автокран БМС 2 класса',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'Noble Firebrand Mk. XVII', wikiUrl: 'https://foxhole.wiki.gg/wiki/Noble_Firebrand_Mk._XVII', imgUrl: 'https://foxhole.wiki.gg/images/DestroyerTankFlameWIcon.png?2d66aa',
@@ -1077,11 +1278,13 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Balfour Rampart 68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Rampart_68mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldCannonOffensiveWIcon.png?430b0d',
-    category: FoxholeItemCategory.VehiclesNonCrate
+    nameRus: 'Balfour Rampart 68-мм',
+      category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Collins Cannon 68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Collins_Cannon_68mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldAntiTankWarVehicleIcon.png?a945d3',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Collins орудие 68-мм',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: '40-45 “Smelter”', wikiUrl: 'https://foxhole.wiki.gg/wiki/40-45_%E2%80%9CSmelter%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/FieldATOffensiveCIcon.png?90fc43',
@@ -1089,7 +1292,8 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Balfour Wolfhound 40mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Wolfhound_40mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldCannonWVehicleIcon.png?fd561f',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Balfour Wolfhound 40мм',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'G40 “Sagittarii”', wikiUrl: 'https://foxhole.wiki.gg/wiki/G40_%E2%80%9CSagittarii%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/FieldMachineGun.png?81becc',
@@ -1101,15 +1305,18 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: '30-250 “Tisiphone” Field Cannon', wikiUrl: 'https://foxhole.wiki.gg/wiki/30-250_%E2%80%9CTisiphone%E2%80%9D_Field_Cannon', imgUrl: 'https://foxhole.wiki.gg/images/FieldMortarCIcon.png?d24698',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Полевая пушка 30-250 “Tisiphone”',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'Balfour Falconer 250mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Falconer_250mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldMortarWIcon.png?56a820',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Balfour Falconer 250-мм',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'BMS - Packmule Flatbed', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Packmule_Flatbed', imgUrl: 'https://foxhole.wiki.gg/images/FlatbedTruckVehicleIcon.png?d7c701',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Бортовой грузовик BMS - Packmule',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'BMS - Ironship', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Ironship', imgUrl: 'https://foxhole.wiki.gg/images/Freighter02ItemIcon.png?4e066a',
@@ -1161,7 +1368,8 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Niska Mk. I Gun Motor Carriage', wikiUrl: 'https://foxhole.wiki.gg/wiki/Niska_Mk._I_Gun_Motor_Carriage', imgUrl: 'https://foxhole.wiki.gg/images/HalfTrackWarVehicleIcon.png?4c5a24',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Полугусеничный Бронетранспортер Niska Mk. I',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'BMS - Scrap Hauler', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Scrap_Hauler', imgUrl: 'https://foxhole.wiki.gg/images/Harvester.png?47e415',
@@ -1193,11 +1401,13 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Balfour Stockade 75mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Balfour_Stockade_75mm', imgUrl: 'https://foxhole.wiki.gg/images/FieldCannonHeavyWIcon.png?2d4ad5',
-    category: FoxholeItemCategory.VehiclesNonCrate
+    nameRus: 'Balfour Stockade 75-мм',
+      category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: '120-68 “Koronides” Field Gun', wikiUrl: 'https://foxhole.wiki.gg/wiki/120-68_%E2%80%9CKoronides%E2%80%9D_Field_Gun', imgUrl: 'https://foxhole.wiki.gg/images/FieldArtilleryColVehicleIcon.png?fc3da1',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Артиллерийское орудие 120-68 “Koronides”',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: '40-250 “Alekto” Heavy Cannon', wikiUrl: 'https://foxhole.wiki.gg/wiki/40-250_%E2%80%9CAlekto%E2%80%9D_Heavy_Cannon', imgUrl: 'https://foxhole.wiki.gg/images/LargeFieldMortarCIcon.png?fbe6ac',
@@ -1377,15 +1587,18 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'T14 “Vesta” Tankette', wikiUrl: 'https://foxhole.wiki.gg/wiki/T14_%E2%80%9CVesta%E2%80%9D_Tankette', imgUrl: 'https://foxhole.wiki.gg/images/TanketteFlameCIcon.png?65db14',
-    category: FoxholeItemCategory.VehiclesNonCrate
+    nameRus: 'Танкетка T14 “Vesta”',
+      category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T13 “Deioneus” Rocket Battery', wikiUrl: 'https://foxhole.wiki.gg/wiki/T13_%E2%80%9CDeioneus%E2%80%9D_Rocket_Battery', imgUrl: 'https://foxhole.wiki.gg/images/TanketteMultiCIcon.png?341c9d',
-    category: FoxholeItemCategory.VehiclesNonCrate
+    nameRus: 'Реактивный миномет T13 “Deioneus”',
+      category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'T20 “Ixion” Tankette', wikiUrl: 'https://foxhole.wiki.gg/wiki/T20_%E2%80%9CIxion%E2%80%9D_Tankette', imgUrl: 'https://foxhole.wiki.gg/images/TanketteOffensiveCVehicleIcon.png?d9a7f7',
-    category: FoxholeItemCategory.VehiclesNonCrate
+    nameRus: 'Танкетка T20 “Ixion”',
+      category: FoxholeItemCategory.VehiclesNonCrate
   },
   {
     name: 'Rooster - Lamploader', wikiUrl: 'https://foxhole.wiki.gg/wiki/Rooster_-_Lamploader', imgUrl: 'https://foxhole.wiki.gg/images/FuelTrailerIcon.png?aa3c7c',
@@ -1409,7 +1622,8 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'RR-3 “Stolon” Tanker', wikiUrl: 'https://foxhole.wiki.gg/wiki/RR-3_%E2%80%9CStolon%E2%80%9D_Tanker', imgUrl: 'https://foxhole.wiki.gg/images/OilTankerIcon.png?1e5797',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Танкер RR-3 “Stolon”',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'Dunne Fuelrunner 2d', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Fuelrunner_2d', imgUrl: 'https://foxhole.wiki.gg/images/OilTankerWarIcon.png?e85e98',
@@ -1437,7 +1651,8 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Dunne Loadlugger 3c', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Loadlugger_3c', imgUrl: 'https://foxhole.wiki.gg/images/TruckUtilityWarVehicleIcon.png?956603',
-    category: FoxholeItemCategory.Vehicles
+    nameRus: 'Самосвал Dunne Loadlugger 3c',
+      category: FoxholeItemCategory.Vehicles
   },
   {
     name: 'Dunne Transport', wikiUrl: 'https://foxhole.wiki.gg/wiki/Dunne_Transport', imgUrl: 'https://foxhole.wiki.gg/images/TruckWarVehicleIcon.png?9f870b',
@@ -1488,8 +1703,13 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
     category: FoxholeItemCategory.Vehicles
   },
   {
-    name: 'Concrete Mixer', wikiUrl: 'https://foxhole.wiki.gg/wiki/Concrete_Mixer', imgUrl: 'https://foxhole.wiki.gg/images/ConcreteMixerIcon.png?2f97ee',
+    name: 'BMS - Aquatipper', wikiUrl: 'https://foxhole.wiki.gg/wiki/BMS_-_Aquatipper#Engine_&amp;_Mobility-0', imgUrl: 'https://foxhole.wiki.gg/images/BargeVehicleIcon.png?7918b7',
     category: FoxholeItemCategory.ShippableStructures
+  },
+  {
+    name: 'Concrete Mixer', wikiUrl: 'https://foxhole.wiki.gg/wiki/Concrete_Mixer', imgUrl: 'https://foxhole.wiki.gg/images/ConcreteMixerIcon.png?2f97ee',
+    nameRus: 'Бетономешалка',
+      category: FoxholeItemCategory.ShippableStructures
   },
   {
     name: 'Construction Equipment', wikiUrl: 'https://foxhole.wiki.gg/wiki/Construction_Equipment', imgUrl: 'https://foxhole.wiki.gg/images/ConstructionEquipment.png?8a1295',
@@ -1505,11 +1725,13 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Huber Starbreaker 94.5mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Huber_Starbreaker_94.5mm', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedATLargeWIcon.png?d1b02c',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'Huber Starbreaker 94.5мм',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Leary Shellbore 68mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Leary_Shellbore_68mm', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedATIcon.png?94922d',
-    category: FoxholeItemCategory.ShippableStructures
+    nameRus: 'Leary Shellbore 68-мм',
+      category: FoxholeItemCategory.ShippableStructures
   },
   {
     name: 'DAE 2a-1 “Ruptura”', wikiUrl: 'https://foxhole.wiki.gg/wiki/DAE_2a-1_%E2%80%9CRuptura%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedCannonLargeC.png?ce3cf9',
@@ -1537,7 +1759,8 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Huber Lariat 120mm', wikiUrl: 'https://foxhole.wiki.gg/wiki/Huber_Lariat_120mm', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedHowitzerIcon.png?f0c9cc',
-    category: FoxholeItemCategory.ShippableStructures
+    nameRus: 'Huber Lariat 120мм',
+      category: FoxholeItemCategory.ShippableStructures
   },
   {
     name: 'DAE 3b-2 “Hades’ Net”', wikiUrl: 'https://foxhole.wiki.gg/wiki/DAE_3b-2_%E2%80%9CHades%E2%80%99_Net%E2%80%9D', imgUrl: 'https://foxhole.wiki.gg/images/EmplacedMultiCStructureIcon.png?9f2fe2',
@@ -1573,42 +1796,52 @@ export const FOXHOLE_ITEMS: FoxholeItem[] = [
   },
   {
     name: 'Liquid Container', wikiUrl: 'https://foxhole.wiki.gg/wiki/Liquid_Container', imgUrl: 'https://foxhole.wiki.gg/images/FuelTankIcon.png?ef063c',
-    category: FoxholeItemCategory.ShippableStructures
+    nameRus: 'Жидкостный контейнер',
+      category: FoxholeItemCategory.ShippableStructures
   },
   {
     name: 'Material Pallet', wikiUrl: 'https://foxhole.wiki.gg/wiki/Material_Pallet', imgUrl: 'https://foxhole.wiki.gg/images/MaterialPlatformItemIcon.png?7b0b70',
-    category: FoxholeItemCategory.ShippableStructures
+    nameRus: 'Поддон для материалов',
+      category: FoxholeItemCategory.ShippableStructures
   },
   {
     name: 'Resource Container', wikiUrl: 'https://foxhole.wiki.gg/wiki/Resource_Container', imgUrl: 'https://foxhole.wiki.gg/images/ResourceContainerIcon.png?b76182',
-    category: FoxholeItemCategory.ShippableStructures
+    nameRus: 'Контейнер для ресурсов',
+      category: FoxholeItemCategory.ShippableStructures
   },
   {
     name: 'A0E-9 Rocket Booster', wikiUrl: 'https://foxhole.wiki.gg/wiki/A0E-9_Rocket_Booster', imgUrl: 'https://foxhole.wiki.gg/images/RocketPartBottomIcon.png?180318',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'A0E-9 Ракетный Ускоритель',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'A0E-9 Rocket Body', wikiUrl: 'https://foxhole.wiki.gg/wiki/A0E-9_Rocket_Body', imgUrl: 'https://foxhole.wiki.gg/images/RocketPartCenterIcon.png?854260',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'Корпус ракеты A0E-9',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'A0E-9 Rocket Warhead', wikiUrl: 'https://foxhole.wiki.gg/wiki/A0E-9_Rocket_Warhead', imgUrl: 'https://foxhole.wiki.gg/images/RocketPartTopIcon.png?9c907a',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'A0E-9 Ракетная боеголовка',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Naval Hull Segments', wikiUrl: 'https://foxhole.wiki.gg/wiki/Naval_Hull_Segments', imgUrl: 'https://foxhole.wiki.gg/images/ShipPart1.png?7e4881',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'Корабельный сегмент корпуса',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Naval Shell Plating', wikiUrl: 'https://foxhole.wiki.gg/wiki/Naval_Shell_Plating', imgUrl: 'https://foxhole.wiki.gg/images/ShipPart2.png?5ff1f5',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'Корабельная обшивка корпуса',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Naval Turbine Components', wikiUrl: 'https://foxhole.wiki.gg/wiki/Naval_Turbine_Components', imgUrl: 'https://foxhole.wiki.gg/images/ShipPart3.png?7d0832',
-    category: FoxholeItemCategory.ShippableStructuresNonCrate
+    nameRus: 'Компоненты морских турбин',
+      category: FoxholeItemCategory.ShippableStructuresNonCrate
   },
   {
     name: 'Shipping Container', wikiUrl: 'https://foxhole.wiki.gg/wiki/Shipping_Container', imgUrl: 'https://foxhole.wiki.gg/images/ShippingContainerStructureIcon.png?284fa2',
-    category: FoxholeItemCategory.ShippableStructures 
+    nameRus: 'Грузовой контейнер',
+      category: FoxholeItemCategory.ShippableStructures 
   },
 ];
